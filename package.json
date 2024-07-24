@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@bitovyevolki/ui-kit-int": "^0.0.9",
+    "@it-incubator/eslint-config": "^1.0.3",
+    "@it-incubator/prettier-config": "^0.1.2",
+    "@it-incubator/stylelint-config": "^2.0.0",
     "@radix-ui/themes": "^3.1.1",
     "next": "14.2.5",
     "react": "^18",

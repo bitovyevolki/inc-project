@@ -8,21 +8,13 @@ export default function Home() {
   return (
     <>
       <div>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link href="/forgotpassword">Forgot password</Link>
-              </li>
-              <li>
-                <Link href="/signin">Sign In</Link>
-              </li>
-              <li>
-                <Link href="/signup">Sign Up</Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <nav className="navigation">
+          <Link href="/forgot-password">Forgot password</Link>
+          <Link href="/signin">Sign In</Link>
+          <Link href="/signup">Sign Up</Link>
+          <Link href="/create-password">Create Password</Link>
+          <Link href="/personal-info">Profile</Link>
+        </nav>
       </div>
     </>
   )

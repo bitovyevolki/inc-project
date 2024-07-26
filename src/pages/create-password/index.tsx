@@ -7,7 +7,7 @@ export default function CreatePassword() {
   return (
     <>
       <h2>CreatePassword</h2>
-      <Link href="/">back</Link>
+      <Link href={'/'}>back</Link>
     </>
   )
 }

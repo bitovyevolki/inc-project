@@ -7,7 +7,7 @@ export default function PersonalInfo() {
   return (
     <>
       <h2>PersonalInfo</h2>
-      <Link href="/">back</Link>
+      <Link href={'/'}>back</Link>
     </>
   )
 }

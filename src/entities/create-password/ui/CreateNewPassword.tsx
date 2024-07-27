@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Input, Button } from '@bitovyevolki/ui-kit-int'
+import { Card, Input, Button, Typography } from '@bitovyevolki/ui-kit-int'
 import s from './CreateNewPassword.module.scss'
 
 export const CreateNewPassword = () => {
@@ -20,6 +20,9 @@ export const CreateNewPassword = () => {
             value="***************"
             variant="password"
           />
+          <Typography className={s.helptext} variant="body1">
+            Your password must be beetwen 6 and 20 charters
+          </Typography>
           <div className={s.spacer}></div>
           <Button className={s.btn} as="button" fullWidth variant="primary">
             Create new password

@@ -14,16 +14,14 @@ export const CreateNewPassword = () => {
             value="***************"
             variant="password"
           />
-          <div className={s.hr}></div>
           <Input
             onChange={() => {}}
             placeholder="Password confirmation"
             value="***************"
             variant="password"
           />
-          <div className={s.hr2}></div>
           <Button as="button" fullWidth type="" variant="primary">
-            Create password
+            Create new password
           </Button>
         </form>
       </Card>

@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ['latin'] })
 export default function CreatePassword() {
   return (
     <>
-      <CreateNewPassword />
       <Link href="/">back</Link>
+      <CreateNewPassword />
     </>
   )
 }

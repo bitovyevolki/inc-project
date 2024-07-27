@@ -20,7 +20,8 @@ export const CreateNewPassword = () => {
             value="***************"
             variant="password"
           />
-          <Button as="button" fullWidth type="" variant="primary">
+          <div className={s.spacer}></div>
+          <Button className={s.btn} as="button" fullWidth variant="primary">
             Create new password
           </Button>
         </form>

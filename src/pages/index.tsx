@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
-import '@bitovyevolki/ui-kit-int/css'
 import Link from 'next/link'
+import '@bitovyevolki/ui-kit-int/dist/style.css'
+import { Button, TextArea } from '@bitovyevolki/ui-kit-int'
 
 const inter = Inter({ subsets: ['latin'] })
 

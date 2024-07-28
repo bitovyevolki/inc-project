@@ -8,9 +8,12 @@ import Link from 'next/link'
 
 import s from './singUp.form.module.scss'
 
-export const SingUpForm = () => {
-  const termsOfServiceLink = ''
-  const privacyPolicyLink = ''
+export type SingUpFormProps = {
+  onSubmit: (data: FormData) => void
+}
+export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
+  const termsOfServiceLink = '/terms-of-service'
+  const privacyPolicyLink = '/privacy-policy'
 
   const { control, handleSubmit } = useSignUpForm()
 
@@ -21,12 +24,7 @@ export const SingUpForm = () => {
     formData.append('email', data.email)
     formData.append('password', data.password ?? '')
     formData.append('baseUrl', 'http://localhost:3000')
-
-    //// check formData values
-    // @ts-ignore
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`)
-    }
+    onSubmit(formData)
   }
 
   return (
@@ -125,10 +123,12 @@ export const SingUpForm = () => {
         <Button fullWidth variant={'primary'}>
           {'Sign Up'}
         </Button>
-        <Typography variant={'body1'}>{'Do You have account ?'}</Typography>
-        <Typography as={Link} href={'/signin'} variant={'link1'}>
-          {'Sign-In'}
-        </Typography>
+        <div className={s.loginLink}>
+          <Typography variant={'subTitle1'}>{'Do You have an account ?'}</Typography>
+          <Typography as={Link} className={s.link} href={'/signin'} variant={'subTitle1'}>
+            {'Sign-In'}
+          </Typography>
+        </div>
       </form>
     </Card>
   )

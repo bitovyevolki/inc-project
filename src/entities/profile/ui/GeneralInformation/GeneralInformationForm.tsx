@@ -1,15 +1,60 @@
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
-import { DatePicker, Input, Select, TextArea } from '@bitovyevolki/ui-kit-int'
+import { DatePicker, IOption, Input, Select, TextArea } from '@bitovyevolki/ui-kit-int'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
 import s from './GeneralInformation.module.scss'
 
 import { IProfile } from '../../model/types/profile'
 
+const countryOptions: IOption[] = [
+  {
+    label: 'Russia',
+    value: 'russia',
+  },
+  {
+    label: 'Sweden',
+    value: 'sweden',
+  },
+  {
+    label: 'USA',
+    value: 'usa',
+  },
+]
+
+const cityOptions: IOption[] = [
+  {
+    label: 'Penza',
+    value: 'penza',
+  },
+  {
+    label: 'Moscow',
+    value: 'moscow',
+  },
+  {
+    label: 'Vladivostok',
+    value: 'vladivostok',
+  },
+]
+
+const schema: z.ZodType<Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>> = z
+  .object({
+    aboutMe: z.string().max(100),
+    city: z.string().max(20),
+    country: z.string().max(20),
+    dateOfBirth: z.date(),
+    firstName: z.string().max(20).min(2),
+    lastName: z.string().max(20).min(2),
+    userName: z.string().max(20).min(2),
+  })
+  .partial()
+
 export const GeneralInformationForm = () => {
   const { control, handleSubmit } = useForm<IProfile>({
     defaultValues: {},
     mode: 'onSubmit',
+    resolver: zodResolver(schema),
   })
 
   const onSubmit: SubmitHandler<IProfile> = data => {
@@ -17,7 +62,7 @@ export const GeneralInformationForm = () => {
   }
 
   return (
-    <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+    <form className={s.form} id={'general-profile'} onSubmit={handleSubmit(onSubmit)}>
       <div className={s.box}>
         <Controller
           control={control}
@@ -26,7 +71,7 @@ export const GeneralInformationForm = () => {
             <Input
               error={error?.message}
               onChange={onChange}
-              placeholder={'Имя'}
+              placeholder={'Username'}
               value={value}
               variant={'base'}
             />
@@ -68,28 +113,57 @@ export const GeneralInformationForm = () => {
           control={control}
           name={'dateOfBirth'}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <DatePicker date={value} onSelect={onChange} />
+            <DatePicker
+              date={value}
+              error={error?.message}
+              label={'Date of birth'}
+              onSelect={onChange}
+            />
           )}
         />
       </div>
       <div className={s.selectsBox}>
-        {/* <Controller
-       control={control}
-       name={'country'}
-       render={({ field: { onChange, value }, fieldState: { error } }) => <Select />}
-     />
+        <div>
+          <Controller
+            control={control}
+            name={'country'}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <Select
+                onValueChange={onChange}
+                options={countryOptions}
+                title={'Select your country'}
+                // placeholder={'Country'}
+                value={value}
+                variant={'large'}
+              />
+            )}
+          />
+        </div>
 
-     <Controller
-       control={control}
-       name={'city'}
-       render={({ field: { onChange, value }, fieldState: { error } }) => <Select />}
-     /> */}
+        <div>
+          <Controller
+            control={control}
+            name={'city'}
+            render={({ field: { onChange, value } }) => (
+              <Select
+                onValueChange={onChange}
+                options={cityOptions}
+                title={'Select your city'}
+                // placeholder={'City'}
+                value={value}
+                variant={'large'}
+              />
+            )}
+          />
+        </div>
       </div>
       <div className={s.box}>
         <Controller
           control={control}
           name={'aboutMe'}
-          render={({ field: { onChange, value }, fieldState: { error } }) => <TextArea />}
+          render={({ field, fieldState: { error } }) => (
+            <TextArea errorMessage={error?.message} label={'About me'} {...field} />
+          )}
         />
       </div>
     </form>

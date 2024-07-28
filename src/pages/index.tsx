@@ -1,6 +1,8 @@
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 
+import '@bitovyevolki/ui-kit-int/dist/style.css'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {

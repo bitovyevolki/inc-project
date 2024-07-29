@@ -63,7 +63,7 @@ export const GeneralInformationForm = () => {
 
   return (
     <form className={s.form} id={'general-profile'} onSubmit={handleSubmit(onSubmit)}>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'userName'}
@@ -78,7 +78,7 @@ export const GeneralInformationForm = () => {
           )}
         />
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'firstName'}
@@ -93,7 +93,7 @@ export const GeneralInformationForm = () => {
           )}
         />
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'lastName'}
@@ -108,7 +108,7 @@ export const GeneralInformationForm = () => {
           )}
         />
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'dateOfBirth'}
@@ -131,15 +131,14 @@ export const GeneralInformationForm = () => {
               <Select
                 onValueChange={onChange}
                 options={countryOptions}
-                title={'Select your country'}
                 // placeholder={'Country'}
+                title={'Select your country'}
                 value={value}
                 variant={'large'}
               />
             )}
           />
         </div>
-
         <div>
           <Controller
             control={control}
@@ -157,7 +156,7 @@ export const GeneralInformationForm = () => {
           />
         </div>
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'aboutMe'}

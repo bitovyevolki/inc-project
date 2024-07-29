@@ -32,12 +32,10 @@ export const Profile = () => {
           value={contentType}
         ></Tabs>
       </div>
-      <div className={s.content}>
-        {contentType === ProfileContentType.GENERAL && <GeneralInformation />}
-        {contentType === ProfileContentType.DEVICES && <div>devices</div>}
-        {contentType === ProfileContentType.MANAGEMENT && <div>Management</div>}
-        {contentType === ProfileContentType.PAYMENTS && <div>payments</div>}
-      </div>
+      {contentType === ProfileContentType.GENERAL && <GeneralInformation />}
+      {contentType === ProfileContentType.DEVICES && <div>devices</div>}
+      {contentType === ProfileContentType.MANAGEMENT && <div>Management</div>}
+      {contentType === ProfileContentType.PAYMENTS && <div>payments</div>}
     </div>
   )
 }

@@ -17,7 +17,7 @@ const schema = z
       .max(20, 'Password must be at most 20 characters long'),
   })
   .refine(data => data.newPassword === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: 'The passwords must match',
     path: ['confirmPassword'],
   })
 

@@ -7,6 +7,7 @@ import * as z from 'zod'
 import s from './GeneralInformation.module.scss'
 
 import { IProfile } from '../../model/types/profile'
+import { checkAge } from '../../utils/date'
 
 const countryOptions: IOption[] = [
   {
@@ -43,7 +44,9 @@ const schema: z.ZodType<Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>>
     aboutMe: z.string().max(100),
     city: z.string().max(20),
     country: z.string().max(20),
-    dateOfBirth: z.date(),
+    dateOfBirth: z.date().refine(date => checkAge(date), {
+      message: 'A user under 13 cannot create a profile. Privacy Policy',
+    }),
     firstName: z.string().max(20).min(2),
     lastName: z.string().max(20).min(2),
     userName: z.string().max(20).min(2),
@@ -63,7 +66,7 @@ export const GeneralInformationForm = () => {
 
   return (
     <form className={s.form} id={'general-profile'} onSubmit={handleSubmit(onSubmit)}>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'userName'}
@@ -78,7 +81,7 @@ export const GeneralInformationForm = () => {
           )}
         />
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'firstName'}
@@ -93,7 +96,7 @@ export const GeneralInformationForm = () => {
           )}
         />
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'lastName'}
@@ -108,7 +111,7 @@ export const GeneralInformationForm = () => {
           )}
         />
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'dateOfBirth'}
@@ -131,15 +134,14 @@ export const GeneralInformationForm = () => {
               <Select
                 onValueChange={onChange}
                 options={countryOptions}
-                title={'Select your country'}
                 // placeholder={'Country'}
+                title={'Select your country'}
                 value={value}
                 variant={'large'}
               />
             )}
           />
         </div>
-
         <div>
           <Controller
             control={control}
@@ -157,7 +159,7 @@ export const GeneralInformationForm = () => {
           />
         </div>
       </div>
-      <div className={s.box}>
+      <div>
         <Controller
           control={control}
           name={'aboutMe'}

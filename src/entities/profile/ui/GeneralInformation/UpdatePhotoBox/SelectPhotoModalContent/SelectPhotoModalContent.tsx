@@ -1,38 +1,38 @@
-import { ChangeEvent, useRef } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 
+import { changeImageHandler } from '@/src/entities/profile/utils/image'
 import { Button } from '@bitovyevolki/ui-kit-int'
 
 import s from './SelectPhotoModalContent.module.scss'
+
+import { Alert } from '../../../Alert/Alert'
 
 interface IProps {
   onChangePhoto: (value: ArrayBuffer | string) => void
 }
 
 export const SelectPhotoModalContent = ({ onChangePhoto }: IProps) => {
+  const [alert, setAlert] = useState<{ show: boolean; text: string }>({ show: false, text: '' })
+
   const inputFileRef = useRef<HTMLInputElement | null>(null)
+
+  const showAlertHandler = (text: string) => {
+    setAlert({ ...alert, show: true, text })
+  }
 
   const onClickFileInputHandler = () => {
     inputFileRef?.current?.click()
   }
 
   const changePhotoHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event?.target?.files[0]
-
-      const fileReader = new FileReader()
-
-      fileReader.onload = function (event) {
-        if (event?.target?.result) {
-          onChangePhoto(event?.target?.result)
-        }
-      }
-
-      fileReader.readAsDataURL(file)
-    }
+    changeImageHandler(event, onChangePhoto, showAlertHandler)
   }
 
   return (
     <div className={s.modalContent}>
+      <div className={s.alertBox}>
+        {alert.show && <Alert text={alert.text} variant={'error'} />}
+      </div>
       <div className={s.square}>
         <svg
           fill={'none'}
@@ -66,7 +66,7 @@ export const SelectPhotoModalContent = ({ onChangePhoto }: IProps) => {
         Select from Computer
       </Button>
       <input
-        accept={'.jpg, .jpeg, .png'}
+        // accept={'.jpg, .jpeg, .png'}
         className={s.fileInp}
         onChange={changePhotoHandler}
         ref={inputFileRef}

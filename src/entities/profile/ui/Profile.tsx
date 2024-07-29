@@ -1,8 +1,8 @@
-'use client'
-
 import { useState } from 'react'
 
 import { IOption, Tabs } from '@bitovyevolki/ui-kit-int'
+
+import '@bitovyevolki/ui-kit-int/dist/style.css'
 
 import s from './Profile.module.scss'
 

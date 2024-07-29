@@ -1,5 +1,7 @@
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
+import '@bitovyevolki/ui-kit-int/dist/style.css'
+import { Button, TextArea } from '@bitovyevolki/ui-kit-int'
 
 import '@bitovyevolki/ui-kit-int/dist/style.css'
 

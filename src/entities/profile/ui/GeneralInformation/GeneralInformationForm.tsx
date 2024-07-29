@@ -7,6 +7,7 @@ import * as z from 'zod'
 import s from './GeneralInformation.module.scss'
 
 import { IProfile } from '../../model/types/profile'
+import { checkAge } from '../../utils/date'
 
 const countryOptions: IOption[] = [
   {
@@ -43,7 +44,9 @@ const schema: z.ZodType<Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>>
     aboutMe: z.string().max(100),
     city: z.string().max(20),
     country: z.string().max(20),
-    dateOfBirth: z.date(),
+    dateOfBirth: z.date().refine(date => checkAge(date), {
+      message: 'A user under 13 cannot create a profile. Privacy Policy',
+    }),
     firstName: z.string().max(20).min(2),
     lastName: z.string().max(20).min(2),
     userName: z.string().max(20).min(2),

@@ -2,11 +2,13 @@ import * as React from 'react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 import s from './restorePassword.module.scss'
+
+import { FormInput } from './FormInput.tsx'
 
 const schema = z.object({
   email: z.string().email(),
@@ -39,7 +41,7 @@ export const RestorePassword = () => {
             <label className={s.caption} htmlFor={'email'}>
               Email
             </label>
-            <Controller
+            {/*            <Controller
               control={control}
               name={'email'}
               render={({ field }) => (
@@ -49,9 +51,17 @@ export const RestorePassword = () => {
                   id={'email'}
                   onChange={field.onChange}
                   placeholder={'Epam@epam.com'}
+                  required
                   variant={'base'}
                 />
               )}
+            />*/}
+            <FormInput
+              control={control}
+              name={'email'}
+              placeholder={'Epam@epam.com'}
+              required
+              variant={'base'}
             />
           </div>
           <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>

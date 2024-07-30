@@ -4,40 +4,11 @@ import { DatePicker, IOption, Input, Select, TextArea } from '@bitovyevolki/ui-k
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
-import s from './GeneralInformation.module.scss'
+import s from './GeneralInformationForm.module.scss'
 
-import { IProfile } from '../../model/types/profile'
-import { checkAge } from '../../utils/date'
-
-const countryOptions: IOption[] = [
-  {
-    label: 'Russia',
-    value: 'russia',
-  },
-  {
-    label: 'Sweden',
-    value: 'sweden',
-  },
-  {
-    label: 'USA',
-    value: 'usa',
-  },
-]
-
-const cityOptions: IOption[] = [
-  {
-    label: 'Penza',
-    value: 'penza',
-  },
-  {
-    label: 'Moscow',
-    value: 'moscow',
-  },
-  {
-    label: 'Vladivostok',
-    value: 'vladivostok',
-  },
-]
+import { cityOptions, countryOptions } from '../../../model/mock/options'
+import { IProfile } from '../../../model/types/profile'
+import { checkAge } from '../../../model/utils/date'
 
 const schema: z.ZodType<Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>> = z
   .object({
@@ -53,14 +24,20 @@ const schema: z.ZodType<Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>>
   })
   .partial()
 
-export const GeneralInformationForm = () => {
-  const { control, handleSubmit } = useForm<IProfile>({
-    defaultValues: {},
+interface IGeneralFormProps {
+  profile: IProfile
+}
+
+export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
+  const { control, handleSubmit } = useForm<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>({
+    defaultValues: {
+      ...profile,
+    },
     mode: 'onSubmit',
     resolver: zodResolver(schema),
   })
 
-  const onSubmit: SubmitHandler<IProfile> = data => {
+  const onSubmit: SubmitHandler<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>> = data => {
     alert(JSON.stringify(data))
   }
 
@@ -72,11 +49,10 @@ export const GeneralInformationForm = () => {
           name={'userName'}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Input
-              error={error?.message}
+              errorMessage={error?.message}
+              label={'User name'}
               onChange={onChange}
-              placeholder={'Username'}
               value={value}
-              variant={'base'}
             />
           )}
         />
@@ -87,11 +63,10 @@ export const GeneralInformationForm = () => {
           name={'firstName'}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Input
-              error={error?.message}
+              errorMessage={error?.message}
+              label={'First name'}
               onChange={onChange}
-              placeholder={'First Name'}
               value={value}
-              variant={'base'}
             />
           )}
         />
@@ -102,11 +77,10 @@ export const GeneralInformationForm = () => {
           name={'lastName'}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <Input
-              error={error?.message}
+              errorMessage={error?.message}
+              label={'Last Name'}
               onChange={onChange}
-              placeholder={'Last Name'}
               value={value}
-              variant={'base'}
             />
           )}
         />
@@ -134,7 +108,7 @@ export const GeneralInformationForm = () => {
               <Select
                 onValueChange={onChange}
                 options={countryOptions}
-                // placeholder={'Country'}
+                placeholder={'Country'}
                 title={'Select your country'}
                 value={value}
                 variant={'large'}
@@ -150,8 +124,8 @@ export const GeneralInformationForm = () => {
               <Select
                 onValueChange={onChange}
                 options={cityOptions}
+                placeholder={'City'}
                 title={'Select your city'}
-                // placeholder={'City'}
                 value={value}
                 variant={'large'}
               />

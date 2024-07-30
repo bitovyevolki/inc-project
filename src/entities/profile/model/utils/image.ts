@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react'
 
-export const changeImageHandler = (
+export const convertImage = (
   event: ChangeEvent<HTMLInputElement>,
   setState: (value: ArrayBuffer | string) => void,
   showAlert?: (text: string) => void

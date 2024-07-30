@@ -1,0 +1,17 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 30px;
+
+  margin-left: 50px;
+}
+
+.selectsBox {
+  display: flex;
+  align-items: center;
+
+  & div {
+    flex-grow: 1;
+  }
+}

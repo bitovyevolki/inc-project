@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
 import { DatePicker, IOption, Input, Select, TextArea } from '@bitovyevolki/ui-kit-int'
@@ -9,18 +10,19 @@ import s from './GeneralInformationForm.module.scss'
 import { cityOptions, countryOptions } from '../../../model/mock/options'
 import { IProfile } from '../../../model/types/profile'
 import { checkAge } from '../../../model/utils/date'
+import { Alert } from '../../Alert/Alert'
 
 const schema: z.ZodType<Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>> = z
   .object({
-    aboutMe: z.string().max(100),
+    aboutMe: z.string().max(200),
     city: z.string().max(20),
     country: z.string().max(20),
     dateOfBirth: z.date().refine(date => checkAge(date), {
       message: 'A user under 13 cannot create a profile. Privacy Policy',
     }),
-    firstName: z.string().max(20).min(2),
-    lastName: z.string().max(20).min(2),
-    userName: z.string().max(20).min(2),
+    firstName: z.string().max(50).min(1),
+    lastName: z.string().max(50).min(1),
+    userName: z.string().max(30).min(6),
   })
   .partial()
 
@@ -29,6 +31,12 @@ interface IGeneralFormProps {
 }
 
 export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
+  const [alert, setAlert] = useState<{ show: boolean; text: string }>({ show: false, text: '' })
+
+  const closeAlertHandler = () => {
+    setAlert({ ...alert, show: false })
+  }
+
   const { control, handleSubmit } = useForm<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>({
     defaultValues: {
       ...profile,
@@ -38,11 +46,20 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
   })
 
   const onSubmit: SubmitHandler<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>> = data => {
-    alert(JSON.stringify(data))
+    setAlert({ ...alert, show: true, text: 'Your settings are saved!' })
   }
 
   return (
     <form className={s.form} id={'general-profile'} onSubmit={handleSubmit(onSubmit)}>
+      {alert.show && (
+        <Alert
+          close={closeAlertHandler}
+          style={{ position: 'fixed', right: '60px', top: '60px' }}
+          text={alert.text}
+          variant={'success'}
+        />
+      )}
+
       <div>
         <Controller
           control={control}

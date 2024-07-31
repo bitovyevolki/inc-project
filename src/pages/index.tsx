@@ -14,7 +14,7 @@ export default function Home() {
           <Link href="/signin">Sign In</Link>
           <Link href="/signup">Sign Up</Link>
           {/* <Link href="/create-password">Create Password</Link> */}
-          <Link href="/personal-info">Profile</Link>
+          {/* <Link href="/personal-info">Profile</Link> */}
         </nav>
       </div>
     </>

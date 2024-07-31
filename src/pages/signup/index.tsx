@@ -7,7 +7,7 @@ export default function SignUp() {
   return (
     <>
       <h2>sign up</h2>
-      <Link href="/">back</Link>
+      <Link href={'/'}>back</Link>
     </>
   )
 }

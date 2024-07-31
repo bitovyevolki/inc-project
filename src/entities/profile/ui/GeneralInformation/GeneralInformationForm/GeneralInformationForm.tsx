@@ -68,7 +68,7 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
             <Input
               error={error?.message}
               // errorMessage={error?.message}
-              label={'User name'}
+              // label={'User name'}
               onChange={onChange}
               value={value}
             />

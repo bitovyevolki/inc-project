@@ -16,7 +16,7 @@ export interface IProfile {
   id: number
   lastName: string
   userName: string
-  label?: string
+  // label?: string
 }
 
 export interface IProfileAvatars {

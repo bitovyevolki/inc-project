@@ -1,4 +1,5 @@
 import Link from 'next/link'
+
 import '@bitovyevolki/ui-kit-int/dist/style.css'
 
 export default function Home() {

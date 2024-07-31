@@ -30,7 +30,12 @@ export const CreateNewPassword = () => {
     resolver: zodResolver(schema),
   })
 
-  const onSubmit = data => {
+  interface FormData {
+    field1: string | number
+    field2: string | number
+  }
+
+  const onSubmit = (data: FormData) => {
     console.log(data)
   }
 

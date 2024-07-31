@@ -1,40 +1,25 @@
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
-import { DatePicker, IOption, Input, Select, TextArea } from '@bitovyevolki/ui-kit-int'
+import { DatePicker, Input, Select, TextArea } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 
 import s from './GeneralInformationForm.module.scss'
 
 import { cityOptions, countryOptions } from '../../../model/mock/options'
+import { generalProfileSchema } from '../../../model/schema/general-profile.schema'
 import { IProfile } from '../../../model/types/profile'
-import { checkAge } from '../../../model/utils/date'
-import { Alert } from '../../Alert/Alert'
-
-const schema: z.ZodType<Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>> = z
-  .object({
-    aboutMe: z.string().max(200),
-    city: z.string().max(20),
-    country: z.string().max(20),
-    dateOfBirth: z.date().refine(date => checkAge(date), {
-      message: 'A user under 13 cannot create a profile. Privacy Policy',
-    }),
-    firstName: z.string().max(50).min(1),
-    lastName: z.string().max(50).min(1),
-    userName: z.string().max(30).min(6),
-  })
-  .partial()
+import { Alert, IAlert } from '../../Alert/Alert'
 
 interface IGeneralFormProps {
   profile: IProfile
 }
 
 export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
-  const [alert, setAlert] = useState<{ show: boolean; text: string }>({ show: false, text: '' })
+  const [alert, setAlert] = useState<IAlert>({ isShow: false, text: '', variant: 'success' })
 
   const closeAlertHandler = () => {
-    setAlert({ ...alert, show: false })
+    setAlert({ ...alert, isShow: false })
   }
 
   const { control, handleSubmit } = useForm<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>({
@@ -42,24 +27,26 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
       ...profile,
     },
     mode: 'onSubmit',
-    resolver: zodResolver(schema),
+    resolver: zodResolver(generalProfileSchema),
   })
 
   const onSubmit: SubmitHandler<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>> = data => {
-    setAlert({ ...alert, show: true, text: 'Your settings are saved!' })
+    setAlert({ ...alert, isShow: true, text: 'Your settings are saved!', variant: 'success' })
+
+    // if (error) {
+    //   setAlert({ ...alert, isShow: true, text: 'Server is not available!', variant: 'error' })
+    // }
   }
 
   return (
     <form className={s.form} id={'general-profile'} onSubmit={handleSubmit(onSubmit)}>
-      {alert.show && (
+      {alert.isShow && (
         <Alert
+          {...alert}
           close={closeAlertHandler}
           style={{ position: 'fixed', right: '60px', top: '60px' }}
-          text={alert.text}
-          variant={'success'}
         />
       )}
-
       <div>
         <Controller
           control={control}

@@ -24,7 +24,9 @@ export const useUpdatePhoto = () => {
   }
 
   const removePhotoHandler = () => {
-    setPhoto('')
+    const confirmed = confirm('Do you really want to delete your profile photo?')
+
+    confirmed && setPhoto('')
   }
 
   return {

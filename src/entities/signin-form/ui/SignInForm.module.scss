@@ -34,6 +34,13 @@
 
   margin-top: 24px;
 
+  .input {
+    p {
+			font-size: 14px;
+      color: var(--color-light-900);
+    }
+  }
+
   .link {
     text-decoration: none;
 

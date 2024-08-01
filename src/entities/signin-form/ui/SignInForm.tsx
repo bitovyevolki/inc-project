@@ -1,6 +1,6 @@
 import React from 'react'
-import { Card, Input, Button, Typography } from '@bitovyevolki/ui-kit-int'
-import { useForm, Controller, SubmitHandler, useFormState } from 'react-hook-form'
+import { Card, Button, Typography, FormInput } from '@bitovyevolki/ui-kit-int'
+import { useForm, SubmitHandler, useFormState } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import s from './SignInForm.module.scss'
@@ -11,11 +11,15 @@ const schema = z.object({
     .string()
     .email('Invalid email address')
     .min(6, 'Email must be at least 6 characters long')
-    .max(50, 'Email must be at most 30 characters long'),
+    .max(30, 'Email must be at most 30 characters long'),
   password: z
     .string()
     .min(6, 'Password must be at least 6 characters long')
-    .max(20, 'Password must be at most 20 characters long'),
+    .max(20, 'Password must be at most 20 characters long')
+    .regex(
+      /^[A-Za-z0-9!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]*$/,
+      'Password can only contain English letters, numbers, and symbols'
+    ),
 })
 
 type FormData = z.infer<typeof schema>
@@ -34,8 +38,9 @@ export const SignInForm = () => {
         type: 'manual',
         message: 'The email or password are incorrect. Try again please',
       })
+      alert('for test: test@example.com password')
     } else {
-      console.log('Logged in successfully')
+      alert('Logged in successfully')
     }
   }
 
@@ -98,39 +103,16 @@ export const SignInForm = () => {
         </div>
 
         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <div>
-                <div style={{ marginTop: '24px' }}></div>
-                <Input
-                  {...field}
-                  placeholder="Email"
-                  variant="base"
-                  error={errors.email?.message as string}
-                />
-              </div>
-            )}
-          />
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <div>
-                <div style={{ marginTop: '24px' }}></div>
-                <Input
-                  {...field}
-                  placeholder="Password"
-                  variant="password"
-                  error={errors.password?.message as string}
-                />
-                <Link className={s.link} href={'forgot-password'}>
-                  <Typography variant={'body2'}>Forgot Password</Typography>
-                </Link>
-              </div>
-            )}
-          />
+          <div className={s.input}>
+            <FormInput control={control} name={'email'} label="Email" />
+          </div>
+
+          <div className={s.input}>
+            <FormInput control={control} name={'password'} label="Password" type={'password'} />
+            <Link className={s.link} href={'forgot-password'}>
+              <Typography variant={'body2'}>Forgot Password</Typography>
+            </Link>
+          </div>
 
           <div className={s.buttons}>
             <Button as="button" fullWidth variant="primary">

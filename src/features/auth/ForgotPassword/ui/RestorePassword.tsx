@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ExpiredLink } from '@/src/features/auth/ForgotPassword/ui/expiredLink'
+import { ExpiredLink } from '@/src/features/auth/ForgotPassword/ui/ExpiredLink'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Inter } from 'next/font/google'
@@ -69,6 +69,7 @@ export const RestorePassword = () => {
           <div className={s.captureWrapper}>Capture</div>
         </Card>
       </div>
+      {/*Temporary fix for demonstration of ExpiredLink which is dependent on user's actions*/}
       {isLinkSent && <ExpiredLink />}
     </>
   )

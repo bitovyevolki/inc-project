@@ -1,4 +1,4 @@
-import { RestorePassword } from '@/src/features/auth/ForgotPassword/ui/restorePassword'
+import { RestorePassword } from '@/src/features/auth/ForgotPassword/ui/RestorePassword'
 import { Header } from '@bitovyevolki/ui-kit-int'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'

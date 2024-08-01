@@ -1,7 +1,7 @@
 // import { CreateNewPassword } from '@/src/entities/create-password/ui/CreateNewPassword'
 import Link from 'next/link'
 
-export default function CreatePassword() {
+const CreatePassword = () => {
   return (
     <>
       <Link href="/">back</Link>
@@ -9,3 +9,5 @@ export default function CreatePassword() {
     </>
   )
 }
+
+export default CreatePassword

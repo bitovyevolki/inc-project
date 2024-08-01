@@ -9,7 +9,9 @@ import Link from 'next/link'
 //   return <Profile />
 // }
 
-export default function PersonalInfo() {
+import React from 'react'
+
+const PersonalInfo = () => {
   return (
     <>
       <Link href="/">back</Link>
@@ -17,3 +19,5 @@ export default function PersonalInfo() {
     </>
   )
 }
+
+export default PersonalInfo

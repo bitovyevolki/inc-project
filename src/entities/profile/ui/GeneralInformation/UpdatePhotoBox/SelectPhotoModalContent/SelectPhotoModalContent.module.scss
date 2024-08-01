@@ -1,0 +1,28 @@
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 30px 60px;
+}
+
+.alertBox {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 222px;
+  height: 228px;
+  margin-bottom: 40px;
+
+  background-color: var(--color-dark-500);
+  border-radius: 2px;
+}
+
+.fileInp {
+  visibility: hidden;
+}

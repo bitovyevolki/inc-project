@@ -1,0 +1,52 @@
+.photoBox {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+
+  .avatarRound {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 200px;
+    height: 200px;
+    margin-bottom: 30px;
+
+    background-color: var(--color-dark-500);
+    border-radius: 50%;
+  }
+
+  .photoWrapper {
+    position: relative;
+    margin-bottom: 30px;
+  }
+
+  .photo {
+    position: relative;
+
+    overflow: hidden;
+
+    width: 200px;
+    height: 200px;
+
+    border-radius: 50%;
+
+    & > img {
+      object-fit: cover;
+    }
+  }
+
+  .removeIcon {
+    cursor: pointer;
+
+    position: absolute;
+    z-index: 100;
+    top: 20px;
+    right: 10px;
+
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+  }
+}

@@ -2,53 +2,55 @@ import * as React from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ExpiredLink } from '@/src/features/auth/ForgotPassword/ui/expiredLink'
-import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
+import { ExpiredLink } from '@/src/features/auth/ForgotPassword/ui/expiredLink.tsx'
+import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Inter } from 'next/font/google'
+import { z } from 'zod'
 
 import s from './restorePassword.module.scss'
 
 const inter = Inter({ subsets: ['latin'] })
 
-type Fields = {
-  email: string
-}
+const schema = z.object({
+  email: z.string().email({ message: "Hello, that's not a way to write email" }).trim(),
+})
 
-type Props = {}
-export const RestorePassword = (props: Props) => {
-  const [isLinkSent, setLinkSet] = useState(false)
+type Fields = z.infer<typeof schema>
+
+export const RestorePassword1 = () => {
   const {
+    control,
     formState: { errors },
     handleSubmit,
-    register,
-  } = useForm<Fields>()
+  } = useForm<Fields>({ resolver: zodResolver(schema) })
+
+  const [isLinkSent, setLinkSent] = useState(false)
 
   const onSubmit = handleSubmit(data => {
     console.log(data)
-    setLinkSet(!isLinkSent)
+    setLinkSent(!isLinkSent)
   })
 
   return (
     <>
       <div className={s.wrapper}>
-        <Card className={s.card}>
+        <Card as={'div'} className={s.card}>
           <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
             Forgot password
           </Typography>
           <form className={s.form} onSubmit={onSubmit}>
-            <Input
-              id={'email'}
-              {...register('email', {
-                required: 'Email is required',
-              })}
+            <FormInput
+              control={control}
               errorMessage={errors.email?.message}
               label={'Email'}
-              placeholder={'Enamp@enam.com'}
+              name={'email'}
+              placeholder={'Epam@epam.com'}
               required
               type={'email'}
             />
             <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
-              Enter your email address and we will send you further instructions
+              Enter your email address and we will send you further instructions.
             </Typography>
             {isLinkSent && (
               <Typography as={'p'} className={s.accentColor} variant={'caption'}>
@@ -59,10 +61,10 @@ export const RestorePassword = (props: Props) => {
               Send link
             </Button>
             <Button as={'a'} fullWidth href={'/signin'} variant={'ghost'}>
-              Back to Sign in
+              Back to sign in
             </Button>
           </form>
-          <div className={s.wrapper}>Capture</div>
+          <div className={s.captureWrapper}>Capture</div>
         </Card>
       </div>
       {isLinkSent && <ExpiredLink />}

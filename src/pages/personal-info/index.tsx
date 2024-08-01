@@ -13,10 +13,10 @@ import React from 'react'
 
 const PersonalInfo = () => {
   return (
-    <>
-      <Link href="/">back</Link>
+    <div>
+      <Link href={'/'}>back</Link>
       {/* <CreateNewPassword /> */}
-    </>
+    </div>
   )
 }
 

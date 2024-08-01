@@ -3,10 +3,10 @@ import Link from 'next/link'
 
 const CreatePassword = () => {
   return (
-    <>
-      <Link href="/">back</Link>
+    <div>
+      <Link href={'/'}>back</Link>
       {/* <CreateNewPassword /> */}
-    </>
+    </div>
   )
 }
 

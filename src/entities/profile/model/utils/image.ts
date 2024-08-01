@@ -20,7 +20,7 @@ export const convertImage = (
       return
     }
 
-    getFileReaderURL(file, setState)
+    setState(URL.createObjectURL(file))
   }
 }
 
@@ -34,16 +34,4 @@ const checkFileFormat = (format: string) => {
   const type = format.split('/')[1]
 
   return allowedFormats.includes(type)
-}
-
-const getFileReaderURL = (file: File, cb: (value: ArrayBuffer | string) => void) => {
-  const fileReader = new FileReader()
-
-  fileReader.onload = function (event) {
-    if (event?.target?.result) {
-      cb(event?.target?.result)
-    }
-  }
-
-  fileReader.readAsDataURL(file)
 }

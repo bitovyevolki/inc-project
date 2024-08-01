@@ -149,3 +149,4 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
     </form>
   )
 }
+

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
-import { DatePicker, Input, Select, TextArea } from '@bitovyevolki/ui-kit-int'
+import { DatePicker, FormInput, Select, TextArea } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import s from './GeneralInformationForm.module.scss'
@@ -32,6 +32,7 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
 
   const onSubmit: SubmitHandler<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>> = data => {
     setAlert({ ...alert, isShow: true, text: 'Your settings are saved!', variant: 'success' })
+    console.log(data)
 
     // if (error) {
     //   setAlert({ ...alert, isShow: true, text: 'Server is not available!', variant: 'error' })
@@ -48,58 +49,20 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
         />
       )}
       <div>
-        <Controller
-          control={control}
-          name={'userName'}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <Input
-              errorMessage={error?.message}
-              label={'User name'}
-              onChange={onChange}
-              value={value}
-            />
-          )}
-        />
+        <FormInput control={control} label={'User name'} name={'userName'} />
       </div>
       <div>
-        <Controller
-          control={control}
-          name={'firstName'}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <Input
-              errorMessage={error?.message}
-              label={'First name'}
-              onChange={onChange}
-              value={value}
-            />
-          )}
-        />
+        <FormInput control={control} label={'First name'} name={'firstName'} />
       </div>
       <div>
-        <Controller
-          control={control}
-          name={'lastName'}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <Input
-              errorMessage={error?.message}
-              label={'Last Name'}
-              onChange={onChange}
-              value={value}
-            />
-          )}
-        />
+        <FormInput control={control} label={'Last name'} name={'lastName'} />
       </div>
       <div>
         <Controller
           control={control}
           name={'dateOfBirth'}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <DatePicker
-              date={value}
-              error={error?.message}
-              label={'Date of birth'}
-              onSelect={onChange}
-            />
+          render={({ field, fieldState: { error } }) => (
+            <DatePicker errorMessage={error?.message} label={'Date of birth'} {...field} />
           )}
         />
       </div>
@@ -108,13 +71,13 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
           <Controller
             control={control}
             name={'country'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
+            render={({ field, fieldState: { error } }) => (
               <Select
-                onValueChange={onChange}
+                {...field}
+                errorMessage={error?.message}
                 options={countryOptions}
                 placeholder={'Country'}
                 title={'Select your country'}
-                value={value}
                 variant={'large'}
               />
             )}
@@ -124,13 +87,13 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
           <Controller
             control={control}
             name={'city'}
-            render={({ field: { onChange, value } }) => (
+            render={({ field, fieldState: { error } }) => (
               <Select
-                onValueChange={onChange}
+                {...field}
+                errorMessage={error?.message}
                 options={cityOptions}
                 placeholder={'City'}
                 title={'Select your city'}
-                value={value}
                 variant={'large'}
               />
             )}
@@ -149,4 +112,3 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
     </form>
   )
 }
-

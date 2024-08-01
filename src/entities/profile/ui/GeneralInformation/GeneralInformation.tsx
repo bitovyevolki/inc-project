@@ -1,4 +1,4 @@
-// import { Button } from '@bitovyevolki/ui-kit-int'
+import { Button } from '@bitovyevolki/ui-kit-int'
 
 // import s from './GeneralInformation.module.scss'
 

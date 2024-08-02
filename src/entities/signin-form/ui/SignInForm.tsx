@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Button, Typography, FormInput } from '@bitovyevolki/ui-kit-int'
-import { useForm, SubmitHandler, useFormState } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import s from './SignInForm.module.scss'
@@ -28,8 +28,6 @@ export const SignInForm = () => {
   const { control, handleSubmit, setError } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
-
-  const { errors } = useFormState({ control })
 
   const onSubmit: SubmitHandler<FormData> = data => {
     // Симуляция ошибки логина

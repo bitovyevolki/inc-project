@@ -1,0 +1,42 @@
+.alert {
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 18px;
+
+  border: 1px solid;
+  border-radius: 2px;
+}
+
+.title {
+  margin-right: 4px;
+}
+
+.close {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 6px;
+
+  transition: color 0.2s;
+
+  &:hover path {
+    fill: var(--color-light-700);
+  }
+}
+
+.error {
+  background-color: var(--color-danger-900);
+  border-color: var(--color-danger-500);
+}
+
+.success {
+  background-color: var(--color-success-900);
+  border-color: var(--color-success-500);
+}

@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
-import { DatePicker, FormInput, Select, TextArea } from '@bitovyevolki/ui-kit-int'
+import {
+  DatePicker,
+  FormDatePicker,
+  FormInput,
+  FormSelect,
+  Select,
+  TextArea,
+} from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import s from './GeneralInformationForm.module.scss'
@@ -58,45 +65,27 @@ export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
         <FormInput control={control} label={'Last name'} name={'lastName'} />
       </div>
       <div>
-        <Controller
-          control={control}
-          name={'dateOfBirth'}
-          render={({ field, fieldState: { error } }) => (
-            <DatePicker errorMessage={error?.message} label={'Date of birth'} {...field} />
-          )}
-        />
+        <FormDatePicker control={control} label={'Date of birth'} name={'dateOfBirth'} />
       </div>
       <div className={s.selectsBox}>
         <div>
-          <Controller
+          <FormSelect
             control={control}
             name={'country'}
-            render={({ field, fieldState: { error } }) => (
-              <Select
-                {...field}
-                errorMessage={error?.message}
-                options={countryOptions}
-                placeholder={'Country'}
-                title={'Select your country'}
-                variant={'large'}
-              />
-            )}
+            options={countryOptions}
+            placeholder={'Country'}
+            title={'Select your country'}
+            variant={'large'}
           />
         </div>
         <div>
-          <Controller
+          <FormSelect
             control={control}
             name={'city'}
-            render={({ field, fieldState: { error } }) => (
-              <Select
-                {...field}
-                errorMessage={error?.message}
-                options={cityOptions}
-                placeholder={'City'}
-                title={'Select your city'}
-                variant={'large'}
-              />
-            )}
+            options={cityOptions}
+            placeholder={'City'}
+            title={'Select your city'}
+            variant={'large'}
           />
         </div>
       </div>

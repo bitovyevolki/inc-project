@@ -23,17 +23,13 @@
   }
 
   .mainPhoto {
-    position: relative;
     z-index: 100;
 
     width: 316px;
     height: 316px;
 
+    object-fit: cover;
     border-radius: 50%;
-
-    & > img {
-      object-fit: cover;
-    }
   }
 }
 

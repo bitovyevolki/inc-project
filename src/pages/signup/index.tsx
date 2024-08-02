@@ -5,9 +5,9 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function SignUp() {
   return (
-    <>
+    <div>
       <h2>sign up</h2>
       <Link href="/">back</Link>
-    </>
+    </div>
   )
 }

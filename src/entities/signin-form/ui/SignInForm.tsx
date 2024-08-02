@@ -1,10 +1,9 @@
-import React from 'react'
-import { Card, Button, Typography, FormInput } from '@bitovyevolki/ui-kit-int'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import s from './SignInForm.module.scss'
-import Link from 'next/link'
 
 const schema = z.object({
   email: z

@@ -7,7 +7,7 @@ export default function ForgotPassword() {
   return (
     <div>
       <h2>forgotpassword</h2>
-      <Link href="/">back</Link>
+      <Link href={'/'}>back</Link>
     </div>
   )
 }

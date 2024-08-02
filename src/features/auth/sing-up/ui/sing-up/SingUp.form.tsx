@@ -1,9 +1,7 @@
-import { Controller } from 'react-hook-form'
-
 import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/sing-up/model/singUpSchema'
 import { GitHubIcon } from '@/src/shared/assets/icons/github'
 import { GoogleIcon } from '@/src/shared/assets/icons/google'
-import { Button, Card, Checkbox, Input, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 
 import s from './singUp.form.module.scss'
@@ -12,10 +10,11 @@ export type SingUpFormProps = {
   onSubmit: (data: FormData) => void
 }
 export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
-  const termsOfServiceLink = '/terms-of-service'
-  const privacyPolicyLink = '/privacy-policy'
-
-  const { control, handleSubmit } = useSignUpForm()
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useSignUpForm()
 
   const sendHandler = (data: SignUpFormValues) => {
     const formData = new FormData()
@@ -34,92 +33,61 @@ export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
         <GoogleIcon height={48} width={48} />
         <GitHubIcon height={48} width={48} />
       </div>
-
       <form className={s.form} onSubmit={handleSubmit(sendHandler)}>
         <div className={s.inputWrapper}>
-          <Controller
+          <FormInput
             control={control}
+            label={'User Name'}
             name={'userName'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <Input
-                error={error?.message}
-                onChange={onChange}
-                placeholder={'User Name'}
-                value={value}
-                variant={'base'}
-              />
-            )}
+            placeholder={'User Name'}
+            type={'text'}
           />
         </div>
         <div className={s.inputWrapper}>
-          <Controller
+          <FormInput
             control={control}
+            label={'Email'}
             name={'email'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <Input
-                error={error?.message}
-                onChange={onChange}
-                placeholder={'Email'}
-                value={value}
-                variant={'base'}
-              />
-            )}
+            placeholder={'Email'}
+            type={'email'}
           />
         </div>
         <div className={s.inputWrapper}>
-          <Controller
+          <FormInput
             control={control}
+            label={'Password'}
             name={'password'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <Input
-                error={error?.message}
-                onChange={onChange}
-                placeholder={'Password'}
-                value={value}
-                variant={'password'}
-              />
-            )}
+            placeholder={'Password'}
+            type={'password'}
           />
         </div>
         <div className={s.inputWrapper}>
-          <Controller
+          <FormInput
             control={control}
+            label={'Confirm Password'}
             name={'confirmPassword'}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <Input
-                error={error?.message}
-                onChange={onChange}
-                placeholder={'Confirm Password'}
-                value={value}
-                variant={'password'}
-              />
-            )}
+            placeholder={'Confirm Password'}
+            type={'password'}
           />
         </div>
-        <Controller
-          control={control}
-          name={'agreeToTerms'}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <div className={s.agreeBlock}>
-              <div className={s.checkBoxWrapper}>
-                <Checkbox checked={value} label={'I agree to the'} onChange={onChange} />
-
-                <Typography as={Link} href={termsOfServiceLink} variant={'link1'}>
-                  {'Terms of Service'}
-                </Typography>
-                <Typography variant={'body2'}>{'and'}</Typography>
-                <Typography as={Link} href={privacyPolicyLink} variant={'link1'}>
-                  {'Privacy Policy'}
-                </Typography>
-              </div>
-              {error && (
-                <Typography className={error && s.error} variant={'body1'}>
-                  {error.message}
-                </Typography>
-              )}
-            </div>
+        <div className={s.agreeBlock}>
+          <div className={s.checkBoxWrapper}>
+            <FormCheckbox control={control} label={'I agree to the'} name={'agreeToTerms'} />
+            <Typography as={Link} href={'/terms-of-service'} variant={'link1'}>
+              {'Terms of Service'}
+            </Typography>
+            <Typography variant={'body2'}>{'and'}</Typography>
+            <Typography as={Link} href={'/privacy-policy'} variant={'link1'}>
+              {'Privacy Policy'}
+            </Typography>
+          </div>
+          {errors.agreeToTerms && (
+            <Typography className={errors && s.error} variant={'body1'}>
+              {errors.agreeToTerms.message}
+            </Typography>
           )}
-        />
+        </div>
+
         <Button fullWidth variant={'primary'}>
           {'Sign Up'}
         </Button>

@@ -32,6 +32,8 @@ export const RestorePassword = () => {
   } = useForm<Fields>({ resolver: zodResolver(schema) })
 
   const [isLinkSent, setLinkSent] = useState(false)
+  const [isCaptureChecked, setIsCaptureChecked] = useState(false)
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
 
   const onSubmit = handleSubmit(data => {
     console.log(data)
@@ -40,6 +42,8 @@ export const RestorePassword = () => {
 
   const captchaHandler = (token: null | string) => {
     console.log('Captcha token: ', token)
+    setIsCaptureChecked(true)
+    setIsSubmitDisabled(false)
   }
 
   return (
@@ -67,7 +71,7 @@ export const RestorePassword = () => {
                 The link has been sent by email. If you don’t receive an email send link again
               </Typography>
             )}
-            <Button fullWidth type={'submit'} variant={'primary'}>
+            <Button disabled={isSubmitDisabled} fullWidth type={'submit'} variant={'primary'}>
               Send link
             </Button>
             <Button as={'a'} fullWidth href={'/signin'} variant={'ghost'}>

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Inter } from 'next/font/google'
+import { useRouter } from 'next/router'
 import { z } from 'zod'
 
 import s from './restorePassword.module.scss'
@@ -43,9 +44,13 @@ export const CreateNewPassword = () => {
 
   const [isLinkSent, setLinkSent] = useState(false)
 
+  const router = useRouter()
+
   const onSubmit = handleSubmit(data => {
     console.log(data)
-    setLinkSent(!isLinkSent)
+    const newPassword = data.newPassword
+
+    router.push('/signin')
   })
 
   return (

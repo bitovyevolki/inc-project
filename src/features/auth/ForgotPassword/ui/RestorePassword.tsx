@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 
 import { ExpiredLink } from '@/src/features/auth/ForgotPassword/ui/ExpiredLink'
@@ -11,6 +12,8 @@ import { z } from 'zod'
 import s from './restorePassword.module.scss'
 
 const inter = Inter({ subsets: ['latin'] })
+
+const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 
 const schema = z.object({
   email: z
@@ -35,6 +38,10 @@ export const RestorePassword = () => {
     setLinkSent(!isLinkSent)
   })
 
+  const captchaHandler = (token: null | string) => {
+    console.log('Captcha token: ', token)
+  }
+
   return (
     <>
       <div className={s.wrapper}>
@@ -46,6 +53,7 @@ export const RestorePassword = () => {
             <FormInput
               control={control}
               errorMessage={errors.email?.message}
+              inputMode={'email'}
               label={'Email'}
               name={'email'}
               placeholder={'Epam@epam.com'}
@@ -65,8 +73,14 @@ export const RestorePassword = () => {
             <Button as={'a'} fullWidth href={'/signin'} variant={'ghost'}>
               Back to sign in
             </Button>
+            <ReCAPTCHA
+              className={s.capture}
+              hl={'en'}
+              onChange={captchaHandler}
+              sitekey={TEST_SITE_KEY}
+              theme={'dark'}
+            />
           </form>
-          <div className={s.captureWrapper}>Capture</div>
         </Card>
       </div>
       {/*Temporary fix for demonstration of ExpiredLink which is dependent on user's actions*/}

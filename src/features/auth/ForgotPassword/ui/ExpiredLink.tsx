@@ -38,19 +38,19 @@ export const ExpiredLink = () => {
       <div>
         <Image alt={'time-management'} height={352} src={time} width={474} />
       </div>
-      {isModalOpen && <Modal closeModal={closeModal} open={isModalOpen} />}
+      {isModalOpen && <Modal onOpenStateChange={closeModal} open={isModalOpen} />}
     </div>
   )
 }
 
 type ModalProps = {
-  closeModal: () => void
+  onOpenStateChange: () => void
   open: boolean
 }
 
-const Modal = ({ closeModal, open }: ModalProps) => {
+const Modal = ({ onOpenStateChange, open }: ModalProps) => {
   return (
-    <ModalWindow onOpenChange={closeModal} open={open} title={'Email sent'}>
+    <ModalWindow onOpenChange={onOpenStateChange} open={open} title={'Email sent'}>
       <div className={s.card}>
         <Typography as={'p'} variant={'caption'}>
           We have sent a link to confirm your email to epam@epam.com

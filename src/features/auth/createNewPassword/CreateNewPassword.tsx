@@ -8,7 +8,7 @@ import { Inter } from 'next/font/google'
 import { useRouter } from 'next/router'
 import { z } from 'zod'
 
-import s from './restorePassword.module.scss'
+import s from './CreateNewPassword.module.scss'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,7 +35,7 @@ const schema = z
 
 type Fields = z.infer<typeof schema>
 
-export const CreateNewPassword = () => {
+const CreateNewPassword = () => {
   const {
     control,
     formState: { errors },
@@ -89,3 +89,5 @@ export const CreateNewPassword = () => {
     </>
   )
 }
+
+export default CreateNewPassword

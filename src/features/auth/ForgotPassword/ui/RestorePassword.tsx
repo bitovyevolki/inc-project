@@ -24,7 +24,7 @@ const schema = z.object({
 
 type Fields = z.infer<typeof schema>
 
-export const RestorePassword = () => {
+const RestorePassword = () => {
   const {
     control,
     formState: { errors },
@@ -92,3 +92,5 @@ export const RestorePassword = () => {
     </>
   )
 }
+
+export default RestorePassword

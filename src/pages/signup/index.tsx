@@ -12,7 +12,6 @@ export default function SignUp() {
 
   return (
     <div className={s.page}>
-      <Link href={'/'}>back</Link>
       <SignUpForm onSubmit={handleSubmit} />
     </div>
   )

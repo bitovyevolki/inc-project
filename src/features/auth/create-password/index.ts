@@ -1,2 +1,2 @@
-// export { CreateNewPassword } from './ui/CreateNewPassword'
-export {}
+export { CreateNewPassword } from './ui/CreateNewPassword'
+// export {}

@@ -7,7 +7,7 @@ export default function SignUp() {
   const handleSubmit = (data: FormData) => {
     const formValues = Object.fromEntries(data)
 
-    console.log(formValues)
+    // console.log(formValues)
   }
 
   return (

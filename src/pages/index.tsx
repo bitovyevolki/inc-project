@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div style={{ paddingBottom: '24px' }}>
+    <div>
       <nav className={'navigation'}>
         <Link href={'/forgot-password'}>Forgot password</Link>
         <Link href={'/signin'}>Sign In</Link>

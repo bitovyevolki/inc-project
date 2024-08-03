@@ -9,13 +9,10 @@ import Link from 'next/link'
 //   return <Profile />
 // }
 
-import React from 'react'
-
 const PersonalInfo = () => {
   return (
     <div>
       <Link href={'/'}>back</Link>
-      {/* <CreateNewPassword /> */}
     </div>
   )
 }

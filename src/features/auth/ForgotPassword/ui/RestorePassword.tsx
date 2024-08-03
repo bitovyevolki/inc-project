@@ -23,8 +23,7 @@ const schema = z.object({
 })
 
 type Fields = z.infer<typeof schema>
-
-export const RestorePassword = () => {
+const RestorePassword = () => {
   const {
     control,
     formState: { errors },
@@ -36,12 +35,12 @@ export const RestorePassword = () => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
 
   const onSubmit = handleSubmit(data => {
-    console.log(data)
+    // console.log(data)
     setLinkSent(!isLinkSent)
   })
 
   const captchaHandler = (token: null | string) => {
-    console.log('Captcha token: ', token)
+    // console.log('Captcha token: ', token)
     setIsCaptureChecked(true)
     setIsSubmitDisabled(false)
   }
@@ -92,3 +91,5 @@ export const RestorePassword = () => {
     </>
   )
 }
+
+export default RestorePassword

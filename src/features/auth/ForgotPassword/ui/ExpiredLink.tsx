@@ -11,7 +11,7 @@ import time from '../../../../../public/rafiki.svg'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const ExpiredLink = () => {
+const ExpiredLink = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const openModal = () => {
@@ -67,3 +67,5 @@ const Modal = ({ onOpenStateChange, open }: ModalProps) => {
     </ModalWindow>
   )
 }
+
+export default ExpiredLink

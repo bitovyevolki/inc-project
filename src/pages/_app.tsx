@@ -1,6 +1,5 @@
-import type { AppProps } from 'next/app'
-
 import { Header } from '@bitovyevolki/ui-kit-int'
+import { AppProps } from 'next/app'
 
 import '../styles/globals.scss'
 

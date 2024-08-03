@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-export const PersonalInfo = () => {
+export default function PersonalInfo() {
   return (
     <div>
       <Link href={'/'}>back</Link>

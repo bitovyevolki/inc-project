@@ -1,17 +1,19 @@
 import React from 'react'
-// import { Card, Input, Button, Typography } from '@bitovyevolki/ui-kit-int'
-// import { useForm, Controller } from 'react-hook-form'
+// import { Controller, useForm } from 'react-hook-form'
+
+// import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
 // import { zodResolver } from '@hookform/resolvers/zod'
 // import * as z from 'zod'
+
 // import s from './CreateNewPassword.module.scss'
 
 // const schema = z
 //   .object({
-//     newPassword: z
+//     confirmPassword: z
 //       .string()
 //       .min(6, 'Password must be at least 6 characters long')
 //       .max(20, 'Password must be at most 20 characters long'),
-//     confirmPassword: z
+//     newPassword: z
 //       .string()
 //       .min(6, 'Password must be at least 6 characters long')
 //       .max(20, 'Password must be at most 20 characters long'),
@@ -24,15 +26,15 @@ import React from 'react'
 // export const CreateNewPassword = () => {
 //   const {
 //     control,
-//     handleSubmit,
 //     formState: { errors },
+//     handleSubmit,
 //   } = useForm({
 //     resolver: zodResolver(schema),
 //   })
 
 //   interface FormData {
-//     newPassword: string | number
-//     confirmPassword: string | number
+//     confirmPassword: number | string
+//     newPassword: number | string
 //   }
 
 //   const onSubmit = (data: FormData) => {
@@ -45,38 +47,38 @@ import React from 'react'
 //         <h3 className={s.text}>Create New Password</h3>
 //         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 //           <Controller
-//             name="newPassword"
 //             control={control}
+//             name={'newPassword'}
 //             render={({ field }) => (
 //               <Input
 //                 {...field}
-//                 onChange={field.onChange}
-//                 placeholder="New password"
-//                 variant="password"
 //                 error={errors.newPassword?.message}
+//                 onChange={field.onChange}
+//                 placeholder={'New password'}
+//                 variant={'password'}
 //               />
 //             )}
 //           />
 //           <div className={s.space}></div>
 //           <Controller
-//             name="confirmPassword"
 //             control={control}
+//             name={'confirmPassword'}
 //             render={({ field }) => (
 //               <Input
 //                 {...field}
-//                 onChange={field.onChange}
-//                 placeholder="Password confirmation"
-//                 variant="password"
 //                 error={errors.confirmPassword?.message}
+//                 onChange={field.onChange}
+//                 placeholder={'Password confirmation'}
+//                 variant={'password'}
 //               />
 //             )}
 //           />
 
-//           <Typography className={s.helptext} variant="body1">
+//           <Typography className={s.helptext} variant={'body1'}>
 //             Your password must be between 6 and 20 characters
 //           </Typography>
 //           <div className={s.spacer}></div>
-//           <Button className={s.btn} as="button" fullWidth variant="primary">
+//           <Button as={'button'} className={s.btn} fullWidth variant={'primary'}>
 //             Create new password
 //           </Button>
 //         </form>

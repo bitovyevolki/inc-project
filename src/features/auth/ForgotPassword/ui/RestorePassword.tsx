@@ -23,6 +23,7 @@ const schema = z.object({
 })
 
 type Fields = z.infer<typeof schema>
+
 const RestorePassword = () => {
   const {
     control,

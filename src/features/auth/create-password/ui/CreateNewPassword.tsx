@@ -1,88 +1,91 @@
-import React from 'react'
-// import { Controller, useForm } from 'react-hook-form'
+import * as React from 'react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
-// import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
-// import { zodResolver } from '@hookform/resolvers/zod'
-// import * as z from 'zod'
+import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Inter } from 'next/font/google'
+import { useRouter } from 'next/router'
+import { z } from 'zod'
 
-// import s from './CreateNewPassword.module.scss'
+import s from './restorePassword.module.scss'
 
-// const schema = z
-//   .object({
-//     confirmPassword: z
-//       .string()
-//       .min(6, 'Password must be at least 6 characters long')
-//       .max(20, 'Password must be at most 20 characters long'),
-//     newPassword: z
-//       .string()
-//       .min(6, 'Password must be at least 6 characters long')
-//       .max(20, 'Password must be at most 20 characters long'),
-//   })
-//   .refine(data => data.newPassword === data.confirmPassword, {
-//     message: 'The passwords must match',
-//     path: ['confirmPassword'],
-//   })
+const inter = Inter({ subsets: ['latin'] })
 
-// export const CreateNewPassword = () => {
-//   const {
-//     control,
-//     formState: { errors },
-//     handleSubmit,
-//   } = useForm({
-//     resolver: zodResolver(schema),
-//   })
+const schema = z
+  .object({
+    confirmPassword: z
+      .string({ required_error: 'Password is absolutely necessary!' })
+      .min(6, 'Password must be min 6 characters long')
+      .max(20, 'Password must be max 20 characters long'),
+    newPassword: z
+      .string({ required_error: 'Password is absolutely necessary!' })
+      .min(6, 'Password must be min 6 characters long')
+      .max(20, 'Password must be max 20 characters long'),
+  })
+  .refine(
+    values => {
+      return values.newPassword === values.confirmPassword
+    },
+    {
+      message: 'Passwords must match',
+      path: ['confirmPassword'],
+    }
+  )
 
-//   interface FormData {
-//     confirmPassword: number | string
-//     newPassword: number | string
-//   }
+type Fields = z.infer<typeof schema>
 
-//   const onSubmit = (data: FormData) => {
-//     console.log(data)
-//   }
+export const CreateNewPassword = () => {
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<Fields>({ resolver: zodResolver(schema) })
 
-//   return (
-//     <div className={s.wrapper}>
-//       <Card className={s.card}>
-//         <h3 className={s.text}>Create New Password</h3>
-//         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-//           <Controller
-//             control={control}
-//             name={'newPassword'}
-//             render={({ field }) => (
-//               <Input
-//                 {...field}
-//                 error={errors.newPassword?.message}
-//                 onChange={field.onChange}
-//                 placeholder={'New password'}
-//                 variant={'password'}
-//               />
-//             )}
-//           />
-//           <div className={s.space}></div>
-//           <Controller
-//             control={control}
-//             name={'confirmPassword'}
-//             render={({ field }) => (
-//               <Input
-//                 {...field}
-//                 error={errors.confirmPassword?.message}
-//                 onChange={field.onChange}
-//                 placeholder={'Password confirmation'}
-//                 variant={'password'}
-//               />
-//             )}
-//           />
+  const [isLinkSent, setLinkSent] = useState(false)
 
-//           <Typography className={s.helptext} variant={'body1'}>
-//             Your password must be between 6 and 20 characters
-//           </Typography>
-//           <div className={s.spacer}></div>
-//           <Button as={'button'} className={s.btn} fullWidth variant={'primary'}>
-//             Create new password
-//           </Button>
-//         </form>
-//       </Card>
-//     </div>
-//   )
-// }
+  const router = useRouter()
+
+  const onSubmit = handleSubmit(data => {
+    // console.log(data)
+    const newPassword = data.newPassword
+
+    router.push('/signin')
+  })
+
+  return (
+    <>
+      <div className={s.wrapper}>
+        <Card as={'div'} className={s.card}>
+          <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
+            Create new password
+          </Typography>
+          <form className={s.form} onSubmit={onSubmit}>
+            <FormInput
+              control={control}
+              errorMessage={errors.newPassword?.message}
+              inputMode={'text'}
+              label={'New password'}
+              name={'newPassword'}
+              type={'password'}
+            />
+            <FormInput
+              control={control}
+              errorMessage={errors.confirmPassword?.message}
+              inputMode={'text'}
+              label={'Password confirmation'}
+              name={'confirmPassword'}
+              type={'password'}
+            />
+            <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
+              Your password must be between 6 and 20 characters
+            </Typography>
+            <Button fullWidth type={'submit'} variant={'primary'}>
+              Create new password
+            </Button>
+          </form>
+        </Card>
+      </div>
+    </>
+  )
+}

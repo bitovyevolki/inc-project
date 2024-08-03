@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -41,7 +41,7 @@ export const CreateNewPassword = () => {
     newPassword: string
   }
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit: SubmitHandler<FormData> = data => {
     // console.log(data)
   }
 

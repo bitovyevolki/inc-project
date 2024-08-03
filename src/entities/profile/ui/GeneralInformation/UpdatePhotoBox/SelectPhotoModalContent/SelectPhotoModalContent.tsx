@@ -17,9 +17,7 @@ export const SelectPhotoModalContent = ({ onChangePhoto }: IProps) => {
 
   return (
     <div className={s.modalContent}>
-      <div className={s.alertBox}>
-        {alert.show && <Alert text={alert.text} variant={'error'} />}
-      </div>
+      <div className={s.alertBox}>{alert.isShow && <Alert {...alert} />}</div>
       <div className={s.square}>
         <SquareSvg />
       </div>

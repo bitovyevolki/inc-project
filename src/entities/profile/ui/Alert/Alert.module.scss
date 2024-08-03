@@ -40,3 +40,24 @@
   background-color: var(--color-success-900);
   border-color: var(--color-success-500);
 }
+
+.show {
+  animation: alert-open 0.5s forwards;
+}
+
+.hide {
+  visibility: hidden;
+  opacity: 0;
+}
+
+@keyframes alert-open {
+  from {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  to {
+    visibility: visible;
+    opacity: 0.9;
+  }
+}

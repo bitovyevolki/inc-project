@@ -1,4 +1,3 @@
-import { Button, TextArea } from '@bitovyevolki/ui-kit-int'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 

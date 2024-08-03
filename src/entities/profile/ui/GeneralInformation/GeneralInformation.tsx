@@ -1,12 +1,26 @@
-import s from './GeneralInformation.module.scss'
+import { Button } from '@bitovyevolki/ui-kit-int'
 
-import { GeneralInformationForm } from './GeneralInformationForm'
+// import s from './GeneralInformation.module.scss'
 
-export const GeneralInformation = () => {
-  return (
-    <div className={s.generalInformation}>
-      <div className={s.photoBox}>photo</div>
-      <GeneralInformationForm />
-    </div>
-  )
-}
+// import { mockProfile } from '../../model/mock/profile'
+// import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformationForm'
+// import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
+
+// export const GeneralInformation = () => {
+//   const profile = mockProfile
+
+//   return (
+//     <>
+//       <div className={s.generalInformation}>
+//         <UpdatePhotoBox />
+//         <GeneralInformationForm profile={profile} />
+//       </div>
+//       <div className={s.border} />
+//       <div className={s.btnBox}>
+//         <Button form={'general-profile'} type={'submit'} variant={'primary'}>
+//           Save Changes
+//         </Button>
+//       </div>
+//     </>
+//   )
+// }

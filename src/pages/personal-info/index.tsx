@@ -1,8 +1,20 @@
-import { Profile } from '@/src/entities/profile'
-import { Inter } from 'next/font/google'
+// // import { Profile } from '@/src/entities/profile'
+// import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+import Link from 'next/link'
 
-export default function PersonalInfo() {
-  return <Profile />
+// const inter = Inter({ subsets: ['latin'] })
+
+// export default function PersonalInfo() {
+//   return <Profile />
+// }
+
+const PersonalInfo = () => {
+  return (
+    <div>
+      <Link href={'/'}>back</Link>
+    </div>
+  )
 }
+
+export default PersonalInfo

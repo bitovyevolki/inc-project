@@ -1,0 +1,41 @@
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+.photoBox {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 332px;
+  height: 340px;
+  margin-bottom: 30px;
+
+  .background {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(#171717, 0.87);
+  }
+
+  .mainPhoto {
+    z-index: 100;
+
+    width: 316px;
+    height: 316px;
+
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
+
+.btnBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}

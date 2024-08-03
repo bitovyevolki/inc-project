@@ -42,7 +42,7 @@ export const CreateNewPassword = () => {
   }
 
   const onSubmit = (data: FormData) => {
-    console.log(data)
+    // console.log(data)
   }
 
   return (
@@ -59,7 +59,7 @@ export const CreateNewPassword = () => {
                   <FormInput
                     {...field}
                     control={control}
-                    error={errors.newPassword?.message}
+                    errorMessage={errors.newPassword?.message}
                     placeholder="New password"
                     variant="password"
                   />
@@ -74,7 +74,7 @@ export const CreateNewPassword = () => {
                   <FormInput
                     {...field}
                     control={control}
-                    error={errors.confirmPassword?.message}
+                    errorMessage={errors.confirmPassword?.message}
                     placeholder="Password confirmation"
                     variant="password"
                   />

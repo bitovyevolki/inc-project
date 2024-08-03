@@ -47,7 +47,7 @@ export const CreateNewPassword = () => {
   const router = useRouter()
 
   const onSubmit = handleSubmit(data => {
-    console.log(data)
+    // console.log(data)
     const newPassword = data.newPassword
 
     router.push('/signin')

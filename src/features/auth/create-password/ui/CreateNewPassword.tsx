@@ -4,13 +4,10 @@ import { useForm } from 'react-hook-form'
 
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Inter } from 'next/font/google'
 import { useRouter } from 'next/router'
 import { z } from 'zod'
 
-import s from './restorePassword.module.scss'
-
-const inter = Inter({ subsets: ['latin'] })
+import s from './CreateNewPassword.module.scss'
 
 const schema = z
   .object({

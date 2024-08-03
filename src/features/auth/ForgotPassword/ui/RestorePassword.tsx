@@ -1,17 +1,15 @@
 import * as React from 'react'
 import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
+import { ReCAPTCHA } from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 
-import { ExpiredLink } from '@/src/features/auth/ForgotPassword/ui/ExpiredLink'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Inter } from 'next/font/google'
 import { z } from 'zod'
 
 import s from './restorePassword.module.scss'
 
-const inter = Inter({ subsets: ['latin'] })
+import ExpiredLink from './ExpiredLink'
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 
@@ -24,7 +22,7 @@ const schema = z.object({
 
 type Fields = z.infer<typeof schema>
 
-const RestorePassword = () => {
+export const RestorePassword = () => {
   const {
     control,
     formState: { errors },
@@ -92,5 +90,3 @@ const RestorePassword = () => {
     </>
   )
 }
-
-export default RestorePassword

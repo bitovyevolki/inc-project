@@ -8,7 +8,6 @@ const inter = Inter({ subsets: ['latin'] })
 export default function ForgotPassword() {
   return (
     <>
-      <Header isAuth onLanguageChange={() => {}} title={'Inctagram'} />
       <Link href={'/'}>back</Link>
       <CreateNewPassword />
     </>

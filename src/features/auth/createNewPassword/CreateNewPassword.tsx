@@ -4,13 +4,10 @@ import { useForm } from 'react-hook-form'
 
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Inter } from 'next/font/google'
 import { useRouter } from 'next/router'
 import { z } from 'zod'
 
 import s from './CreateNewPassword.module.scss'
-
-const inter = Inter({ subsets: ['latin'] })
 
 const schema = z
   .object({
@@ -47,7 +44,6 @@ const CreateNewPassword = () => {
   const router = useRouter()
 
   const onSubmit = handleSubmit(data => {
-
     const newPassword = data.newPassword
 
     router.push('/signin')

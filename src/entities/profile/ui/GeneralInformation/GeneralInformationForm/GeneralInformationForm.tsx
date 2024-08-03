@@ -1,60 +1,21 @@
-import { useState } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { Control, Controller, SubmitHandler, UseFormHandleSubmit } from 'react-hook-form'
 
-import {
-  DatePicker,
-  FormDatePicker,
-  FormInput,
-  FormSelect,
-  Select,
-  TextArea,
-} from '@bitovyevolki/ui-kit-int'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { FormDatePicker, FormInput, FormSelect, TextArea } from '@bitovyevolki/ui-kit-int'
 
 import s from './GeneralInformationForm.module.scss'
 
 import { cityOptions, countryOptions } from '../../../model/mock/options'
-import { generalProfileSchema } from '../../../model/schema/general-profile.schema'
-import { IProfile } from '../../../model/types/profile'
-import { Alert, IAlert } from '../../Alert/Alert'
+import { GeneralProfileFormType } from '../../../model/types/profile'
 
 interface IGeneralFormProps {
-  profile: IProfile
+  control: Control<GeneralProfileFormType>
+  handleSubmit: UseFormHandleSubmit<GeneralProfileFormType>
+  onSubmit: SubmitHandler<GeneralProfileFormType>
 }
 
-export const GeneralInformationForm = ({ profile }: IGeneralFormProps) => {
-  const [alert, setAlert] = useState<IAlert>({ isShow: false, text: '', variant: 'success' })
-
-  const closeAlertHandler = () => {
-    setAlert({ ...alert, isShow: false })
-  }
-
-  const { control, handleSubmit } = useForm<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>({
-    defaultValues: {
-      ...profile,
-    },
-    mode: 'onSubmit',
-    resolver: zodResolver(generalProfileSchema),
-  })
-
-  const onSubmit: SubmitHandler<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>> = data => {
-    setAlert({ ...alert, isShow: true, text: 'Your settings are saved!', variant: 'success' })
-    console.log(data)
-
-    // if (error) {
-    //   setAlert({ ...alert, isShow: true, text: 'Server is not available!', variant: 'error' })
-    // }
-  }
-
+export const GeneralInformationForm = ({ control, handleSubmit, onSubmit }: IGeneralFormProps) => {
   return (
     <form className={s.form} id={'general-profile'} onSubmit={handleSubmit(onSubmit)}>
-      {alert.isShow && (
-        <Alert
-          {...alert}
-          close={closeAlertHandler}
-          style={{ position: 'fixed', right: '60px', top: '60px' }}
-        />
-      )}
       <div>
         <FormInput control={control} label={'User name'} name={'userName'} />
       </div>

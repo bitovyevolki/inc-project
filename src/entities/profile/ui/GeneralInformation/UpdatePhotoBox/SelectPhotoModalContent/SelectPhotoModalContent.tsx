@@ -3,7 +3,7 @@ import { Button } from '@bitovyevolki/ui-kit-int'
 import s from './SelectPhotoModalContent.module.scss'
 
 import { Alert } from '../../../Alert/Alert'
-import { SquareSvg } from '../../../Icons/Icons'
+import { SquareSvg } from '../../../icons/Icons'
 import { useSelectPhoto } from './useSelectPhoto'
 
 interface IProps {

@@ -2,7 +2,6 @@ import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/sing-up/mod
 import { GitHubIcon } from '@/src/shared/assets/icons/github'
 import { GoogleIcon } from '@/src/shared/assets/icons/google'
 import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
-import Link from 'next/link'
 
 import s from './singUp.form.module.scss'
 
@@ -73,11 +72,11 @@ export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
         <div className={s.agreeBlock}>
           <div className={s.checkBoxWrapper}>
             <FormCheckbox control={control} label={'I agree to the'} name={'agreeToTerms'} />
-            <Typography as={Link} href={'/terms-of-service'} variant={'link1'}>
+            <Typography as={'a'} href={'/terms-of-service'} variant={'link1'}>
               {'Terms of Service'}
             </Typography>
             <Typography variant={'body2'}>{'and'}</Typography>
-            <Typography as={Link} href={'/privacy-policy'} variant={'link1'}>
+            <Typography as={'a'} href={'/privacy-policy'} variant={'link1'}>
               {'Privacy Policy'}
             </Typography>
           </div>
@@ -93,7 +92,7 @@ export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
         </Button>
         <div className={s.loginLink}>
           <Typography variant={'subTitle1'}>{'Do You have an account ?'}</Typography>
-          <Typography as={Link} className={s.link} href={'/signin'} variant={'subTitle1'}>
+          <Typography as={'a'} className={s.link} href={'/signin'} variant={'subTitle1'}>
             {'Sign-In'}
           </Typography>
         </div>

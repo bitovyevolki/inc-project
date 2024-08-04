@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import s from './UpdatePhotoBox.module.scss'
 
-import { AvatarSvg, RemovePhotoSvg } from '../../Icons/Icons'
+import { AvatarSvg, RemovePhotoSvg } from '../../icons/Icons'
 import { SelectPhotoModalContent } from './SelectPhotoModalContent/SelectPhotoModalContent'
 import { UploadPhotoModalContent } from './UploadPhotoModalContent/UploadPhotoModalContent'
 import { useUpdatePhoto } from './useUpdatePhoto'

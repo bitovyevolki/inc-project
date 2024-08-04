@@ -1,11 +1,9 @@
 import * as z from 'zod'
 
-import { IProfile } from '../types/profile'
+import { GeneralProfileFormType } from '../types/profile'
 import { checkAge } from '../utils/date'
 
-export const generalProfileSchema: z.ZodType<
-  Partial<Omit<IProfile, 'avatars' | 'createdAt' | 'id'>>
-> = z.object({
+export const generalProfileSchema: z.ZodType<Partial<GeneralProfileFormType>> = z.object({
   aboutMe: z.string().max(200).optional(),
   city: z.string().optional(),
   country: z.string().optional(),
@@ -37,6 +35,6 @@ export const generalProfileSchema: z.ZodType<
     .min(6)
     .refine(
       value => /^[-_a-zA-Z0-9]+$/.test(value ?? ''),
-      'User name should contain only latin alphabets and numbers'
+      'User name should contain only latin alphabets, numbers and symbols - or _'
     ),
 })

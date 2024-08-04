@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, SVGProps } from 'react'
+import { ComponentPropsWithoutRef } from 'react'
 
 import { Typography } from '@bitovyevolki/ui-kit-int'
 

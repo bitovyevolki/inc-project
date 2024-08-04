@@ -16,7 +16,6 @@ export interface IProfile {
   id: number
   lastName: string
   userName: string
-  // label?: string
 }
 
 export interface IProfileAvatars {
@@ -26,3 +25,5 @@ export interface IProfileAvatars {
   url: string
   width: number
 }
+
+export type GeneralProfileFormType = Omit<IProfile, 'avatars' | 'createdAt' | 'id'>

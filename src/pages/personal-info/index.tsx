@@ -1,11 +1,5 @@
-// // import { Profile } from '@/src/entities/profile'
-
-import Link from 'next/link'
+import { Profile } from '@/src/entities/profile'
 
 export default function PersonalInfo() {
-  return (
-    <div>
-      <Link href={'/'}>back</Link>
-    </div>
-  )
+  return <Profile />
 }

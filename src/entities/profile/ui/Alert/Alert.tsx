@@ -4,7 +4,7 @@ import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './Alert.module.scss'
 
-import { CloseIcon } from '../Icons/Icons'
+import { CloseIcon } from '../icons/Icons'
 
 export type AlertVariantType = 'error' | 'success'
 

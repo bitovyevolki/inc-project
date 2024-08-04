@@ -1,10 +1,10 @@
-import { ComponentPropsWithoutRef, SVGProps } from 'react'
+import { ComponentPropsWithoutRef } from 'react'
 
 import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './Alert.module.scss'
 
-import { CloseIcon } from '../icons/Icons'
+import { CloseIcon } from '../Icons/Icons'
 
 export type AlertVariantType = 'error' | 'success'
 

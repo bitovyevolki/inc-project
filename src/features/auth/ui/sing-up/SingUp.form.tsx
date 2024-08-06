@@ -1,6 +1,6 @@
-import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/model/singUpSchema.ts'
-import { GitHubIcon } from '@/src/shared/assets/icons/github.tsx'
-import { GoogleIcon } from '@/src/shared/assets/icons/google.tsx'
+import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/model/singUpSchema'
+import { GitHubIcon } from '@/src/shared/assets/icons/github'
+import { GoogleIcon } from '@/src/shared/assets/icons/google'
 import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './singUp.form.module.scss'

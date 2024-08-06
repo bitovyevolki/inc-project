@@ -9,7 +9,7 @@ import { z } from 'zod'
 
 import s from './restorePassword.module.scss'
 
-import ExpiredLink from './ExpiredLink.tsx'
+import ExpiredLink from './ExpiredLink'
 
 const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 

@@ -1,4 +1,4 @@
-import { SignUpForm } from '@/src/features/auth/sing-up/ui/sing-up/SingUp.form'
+import { SignUpForm } from '@/src/features/auth/ui/sing-up/SingUp.form.tsx'
 import Link from 'next/link'
 
 import s from './sing-up.module.scss'

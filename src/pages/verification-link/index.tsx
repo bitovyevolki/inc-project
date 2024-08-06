@@ -1,4 +1,4 @@
-import ExpiredLink from '@/src/features/auth/ForgotPassword/ui/ExpiredLink'
+import ExpiredLink from '@/src/features/auth/ui/ForgotPassword/ExpiredLink.tsx'
 import Link from 'next/link'
 
 export default function SignIn() {

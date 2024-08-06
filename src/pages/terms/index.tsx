@@ -1,4 +1,4 @@
-import { TermsOfService } from '@/src/features/auth/terms-of-service'
+import { TermsOfService } from '../../features/auth/ui/legal/terms-of-service'
 import Link from 'next/link'
 
 export default function SignIn() {

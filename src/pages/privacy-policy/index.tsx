@@ -1,4 +1,4 @@
-import { PrivacyPolicy } from '@/src/features/auth/privacy-policy/PrivacyPolicy'
+import { PrivacyPolicy } from '@/src/features/auth/ui/legal/privacy-policy/PrivacyPolicy'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'

@@ -1,6 +1,6 @@
-import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/sing-up/model/singUpSchema'
-import { GitHubIcon } from '@/src/shared/assets/icons/github'
-import { GoogleIcon } from '@/src/shared/assets/icons/google'
+import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/model/singUpSchema.ts'
+import { GitHubIcon } from '@/src/shared/assets/icons/github.tsx'
+import { GoogleIcon } from '@/src/shared/assets/icons/google.tsx'
 import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './singUp.form.module.scss'
@@ -74,7 +74,7 @@ export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
         <div className={s.agreeBlock}>
           <div className={s.checkBoxWrapper}>
             <FormCheckbox control={control} label={'I agree to the'} name={'agreeToTerms'} />
-            <Typography as={'a'} href={'/terms-of-service'} variant={'link1'}>
+            <Typography as={'a'} href={'/terms-of-services'} variant={'link1'}>
               {'Terms of Service'}
             </Typography>
             <Typography variant={'body2'}>{'and'}</Typography>

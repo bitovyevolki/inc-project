@@ -1,4 +1,4 @@
-import { TermsOfService } from '@/src/features/auth/terms-of-service/TermsOfService'
+import { TermsOfService } from '@/src/features/auth/ui/legal/terms-of-service/TermsOfService'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'

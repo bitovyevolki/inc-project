@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { RouterPaths } from '../../config/router.paths'
 import {
   CreateIcon,
@@ -11,7 +13,7 @@ import {
 
 interface ILink {
   path: string
-  svg: () => JSX.Element
+  svg: () => React.JSX.Element
   title: string
 }
 

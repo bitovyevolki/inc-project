@@ -1,17 +1,15 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { ReCAPTCHA } from 'react-google-recaptcha'
+// eslint-disable-next-line import/no-named-as-default
+import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import { z } from 'zod'
 
 import s from './restorePassword.module.scss'
-
-import ExpiredLink from './ExpiredLink'
-
-const TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 
 const schema = z.object({
   email: z
@@ -20,73 +18,78 @@ const schema = z.object({
     .trim(),
 })
 
-type Fields = z.infer<typeof schema>
+type Nullable<T> = T | null
 
-export const RestorePassword = () => {
+type Fields = z.infer<typeof schema>
+const RestorePassword = () => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
-  } = useForm<Fields>({ resolver: zodResolver(schema) })
+  } = useForm<Fields>({ defaultValues: { email: '' }, resolver: zodResolver(schema) })
+
+  const [captchaToken, setCaptchaToken] = useState<Nullable<string>>()
 
   const [isLinkSent, setLinkSent] = useState(false)
-  const [isCaptureChecked, setIsCaptureChecked] = useState(false)
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
 
   const onSubmit = handleSubmit(data => {
-    // console.log(data)
     setLinkSent(!isLinkSent)
   })
 
   const captchaHandler = (token: null | string) => {
-    // console.log('Captcha token: ', token)
-    setIsCaptureChecked(true)
-    setIsSubmitDisabled(false)
+    setCaptchaToken(token)
+  }
+  const reCaptchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY_ID
+
+  if (!reCaptchaKey) {
+    throw new Error('We are not getting reCaptcha here')
   }
 
   return (
-    <>
-      <div className={s.wrapper}>
-        <Card as={'div'} className={s.card}>
-          <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
-            Forgot password
+    <div className={s.wrapper}>
+      <Card as={'div'} className={s.card}>
+        <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
+          Forgot password
+        </Typography>
+        <form className={s.form} onSubmit={onSubmit}>
+          <FormInput
+            control={control}
+            errorMessage={errors.email?.message}
+            inputMode={'email'}
+            label={'Email'}
+            name={'email'}
+            placeholder={'Epam@epam.com'}
+          />
+          <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
+            Enter your email address and we will send you further instructions.
           </Typography>
-          <form className={s.form} onSubmit={onSubmit}>
-            <FormInput
-              control={control}
-              errorMessage={errors.email?.message}
-              inputMode={'email'}
-              label={'Email'}
-              name={'email'}
-              placeholder={'Epam@epam.com'}
-              required
-            />
-            <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
-              Enter your email address and we will send you further instructions.
+          {isLinkSent && (
+            <Typography as={'p'} className={s.accentColor} variant={'caption'}>
+              The link has been sent by email. If you don’t receive an email send link again
             </Typography>
-            {isLinkSent && (
-              <Typography as={'p'} className={s.accentColor} variant={'caption'}>
-                The link has been sent by email. If you don’t receive an email send link again
-              </Typography>
-            )}
-            <Button disabled={isSubmitDisabled} fullWidth type={'submit'} variant={'primary'}>
-              Send link
-            </Button>
-            <Button as={'a'} fullWidth href={'/signin'} variant={'ghost'}>
-              Back to sign in
-            </Button>
-            <ReCAPTCHA
-              className={s.capture}
-              hl={'en'}
-              onChange={captchaHandler}
-              sitekey={TEST_SITE_KEY}
-              theme={'dark'}
-            />
-          </form>
-        </Card>
-      </div>
-      {/*Temporary fix for demonstration of ExpiredLink which is dependent on user's actions*/}
-      {isLinkSent && <ExpiredLink />}
-    </>
+          )}
+          <Button
+            disabled={!isValid || !captchaToken}
+            fullWidth
+            type={'submit'}
+            variant={'primary'}
+          >
+            Send link
+          </Button>
+          <Button as={Link} fullWidth href={'/signin'} variant={'ghost'}>
+            Back to sign in
+          </Button>
+          <ReCAPTCHA
+            className={s.capture}
+            hl={'en'}
+            onChange={captchaHandler}
+            sitekey={reCaptchaKey}
+            theme={'dark'}
+          />
+        </form>
+      </Card>
+    </div>
   )
 }
+
+export default RestorePassword

@@ -27,7 +27,9 @@ export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
 
   return (
     <Card className={s.card}>
-      <Typography variant={'h1'} as={'h1'}>{'Sing-Up'}</Typography>
+      <Typography as={'h1'} variant={'h1'}>
+        {'Sing-Up'}
+      </Typography>
       <div className={s.socialIcons}>
         <GoogleIcon height={36} width={36} />
         <GitHubIcon height={36} width={36} />

@@ -2,8 +2,14 @@ import { TermsOfService } from '@/src/features/auth/terms-of-service'
 import Link from 'next/link'
 
 export default function SignIn() {
+  const style = {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '30px',
+  }
+
   return (
-    <div>
+    <div style={style}>
       <Link href={'/'}>back</Link>
       <TermsOfService
         text={

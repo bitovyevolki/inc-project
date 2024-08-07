@@ -10,6 +10,7 @@ export default function Home() {
         <Link href={'/create-new-password'}>Create password</Link>
         <Link href={'/forgot-password'}>Forgot password</Link>
         <Link href={'/verification-link'}>Verification Link</Link>
+        <Link href={'/expired-link'}>Expired link</Link>
         <Link href={'/terms'}>Terms</Link>
         <Link href={'/privacy-policy'}>Privacy Policy</Link>
       </nav>

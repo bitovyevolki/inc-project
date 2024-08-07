@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 4.5rem auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 1.5rem;
+
+  width: 378px;
+}
+
+.accentColor {
+  color: var(--color-light-100);
+}
+
+.secondaryColor {
+  color: var(--color-light-900);
+}
+
+.capture {
+  align-self: center;
+}
+
+.buttonRight {
+  align-self: flex-end;
+}

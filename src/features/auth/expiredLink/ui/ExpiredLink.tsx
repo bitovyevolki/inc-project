@@ -5,7 +5,7 @@ import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import { Inter } from 'next/font/google'
 import Image from 'next/image'
 
-import s from './restorePassword.module.scss'
+import s from './expiredLink.module.scss'
 
 import time from '../../../../../public/rafiki.svg'
 

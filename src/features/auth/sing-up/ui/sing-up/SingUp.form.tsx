@@ -27,10 +27,12 @@ export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
 
   return (
     <Card className={s.card}>
-      <Typography variant={'h1'}>{'Sing-Up'}</Typography>
+      <Typography as={'h1'} variant={'h1'}>
+        {'Sing-Up'}
+      </Typography>
       <div className={s.socialIcons}>
-        <GoogleIcon height={48} width={48} />
-        <GitHubIcon height={48} width={48} />
+        <GoogleIcon height={36} width={36} />
+        <GitHubIcon height={36} width={36} />
       </div>
       <form className={s.form} onSubmit={handleSubmit(sendHandler)}>
         <div className={s.inputWrapper}>
@@ -81,7 +83,7 @@ export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
             </Typography>
           </div>
           {errors.agreeToTerms && (
-            <Typography className={errors && s.error} variant={'body1'}>
+            <Typography className={errors && s.error} variant={'caption'}>
               {errors.agreeToTerms.message}
             </Typography>
           )}

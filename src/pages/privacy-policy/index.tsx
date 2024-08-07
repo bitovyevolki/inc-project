@@ -10,6 +10,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className={s.page}>
       <div className={s.backButtonContainer}>
+        <Link href={'/'}>back</Link>
         <Button as={Link} className={s.backButton} href={'/signup'} variant={'ghost'}>
           {'Back to Sign Up'}
         </Button>

@@ -1,5 +1,4 @@
-import { SignUpForm } from '@/src/features/auth/sing-up/ui/sing-up/SingUp.form'
-import Link from 'next/link'
+import { SignUpForm } from '@/src/features/auth/sing-up/ui/sing-up'
 
 import s from './sing-up.module.scss'
 

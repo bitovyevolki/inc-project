@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Sidebar } from '../shared/ui/Sidebar/Sidebar'
 
 export default function Home() {
   return (

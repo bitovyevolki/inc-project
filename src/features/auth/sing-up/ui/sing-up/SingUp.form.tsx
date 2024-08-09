@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { SubmitHandler } from 'react-hook-form'
 
+import { useSignUpMutation } from '@/src/features/auth/service/auth.service'
+import { SignUpResponse } from '@/src/features/auth/service/auth.types'
 import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/sing-up/model/singUpSchema'
 import { SignUpModal } from '@/src/features/auth/sing-up/ui/sing-up/sign-up-modal/SignUpModal'
 import { GitHubIcon } from '@/src/shared/assets/icons/github'
@@ -8,34 +11,36 @@ import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki
 
 import s from './singUp.form.module.scss'
 
-export type SingUpFormProps = {
-  onSubmit: (data: FormData) => void
-}
-export const SignUpForm = ({ onSubmit }: SingUpFormProps) => {
+export const SignUpForm = () => {
   const {
     control,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useSignUpForm()
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [userEmail, setUserEmail] = useState<string>('')
-
+  const [signUp, isLoading] = useSignUpMutation()
   const onModalClose = () => {
     setIsModalOpen(prev => !prev)
     setUserEmail('')
   }
 
-  const sendHandler = (data: SignUpFormValues) => {
-    const formData = new FormData()
+  const sendHandler: SubmitHandler<SignUpFormValues> = async data => {
+    try {
+      await signUp({
+        email: data.email,
+        password: data.password,
+        userName: data.userName,
+      }).unwrap()
 
-    formData.append('userName', data.userName)
-    formData.append('email', data.email)
-    formData.append('password', data.password ?? '')
-    formData.append('baseUrl', 'http://localhost:3000')
-    setUserEmail(data.email)
-    onSubmit(formData)
-    setIsModalOpen(true)
+      setUserEmail(data.email)
+      setIsModalOpen(true)
+      reset()
+    } catch (error: any) {
+      console.log(error.message)
+    }
   }
 
   return (

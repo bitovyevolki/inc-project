@@ -5,14 +5,14 @@ export default function Home() {
     <div>
       <nav className={'navigation'}>
         <Link href={'/personal-info'}>Person info</Link>
-        <Link href={'/signin'}>Sign In</Link>
-        <Link href={'/signup'}>Sign Up</Link>
-        <Link href={'/create-new-password'}>Create password</Link>
-        <Link href={'/forgot-password'}>Forgot password</Link>
-        <Link href={'/verification-link'}>Verification Link</Link>
-        <Link href={'/expired-link'}>Expired link</Link>
-        <Link href={'/terms'}>Terms</Link>
-        <Link href={'/privacy-policy'}>Privacy Policy</Link>
+        <Link href={'/auth/sign-in'}>Sign in</Link>
+        <Link href={'/auth/sign-up'}>Sign up</Link>
+        <Link href={'/auth/create-new-password'}>Create password</Link>
+        <Link href={'/auth/forgot-password'}>Forgot password</Link>
+        <Link href={'/auth/verification-link'}>Verification Link</Link>
+        <Link href={'/auth/expired-link'}>Expired link</Link>
+        <Link href={'/auth/terms-of-service'}>Terms of service</Link>
+        <Link href={'/auth/privacy-policy'}>Privacy policy</Link>
       </nav>
     </div>
   )

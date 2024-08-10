@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 import { Profile } from '@/src/entities/profile'
-import { LayoutWithSidebar } from '@/src/shared/providers/LayoutWithSidebar/LayoutWithSidebar'
+import { LayoutWithSidebar } from '@/src/shared/ui/LayoutWithSidebar/LayoutWithSidebar'
 
 import { NextPageWithLayout } from '../_app'
 

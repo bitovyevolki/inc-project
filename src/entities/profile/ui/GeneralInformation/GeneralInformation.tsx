@@ -8,7 +8,7 @@ import s from './GeneralInformation.module.scss'
 
 import { mockProfile } from '../../model/mock/profile'
 import { generalProfileSchema } from '../../model/schema/general-profile.schema'
-import { GeneralProfileFormType, IProfile } from '../../model/types/profile'
+import { GeneralProfileFormType } from '../../model/types/profile'
 import { Alert, IAlert } from '../Alert/Alert'
 import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformationForm'
 import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { ReCAPTCHA } from 'react-google-recaptcha'
+// eslint-disable-next-line import/no-named-as-default
+import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'

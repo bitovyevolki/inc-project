@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import s from './GeneralInformation.module.scss'
 
+import { useGetProfileQuery } from '../../api/profile.service'
 import { mockProfile } from '../../model/mock/profile'
 import { generalProfileSchema } from '../../model/schema/general-profile.schema'
 import { GeneralProfileFormType, IProfile } from '../../model/types/profile'
@@ -15,6 +16,9 @@ import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 
 export const GeneralInformation = () => {
   const profile = mockProfile
+  // const { data } = useGetProfileQuery()
+
+  // console.log(data)
 
   const [alert, setAlert] = useState<IAlert>({ isShow: false, text: '', variant: 'success' })
 

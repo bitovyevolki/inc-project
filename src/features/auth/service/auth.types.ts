@@ -3,6 +3,15 @@ export type SignUpArgs = {
   password: string
   userName: string
 }
+export type ConfirmEmailArgs = {
+  confirmationCode: string
+}
+export type SignUpResendEmailType = {
+  email: string
+}
+export type SocialLoginType = {
+  accessToken?: string
+}
 export interface ErrorMessage {
   field: string
   message: string

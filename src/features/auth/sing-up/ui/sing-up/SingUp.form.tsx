@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
 import { useSignUpMutation } from '@/src/features/auth/service/auth.service'
-import { SignUpResponse } from '@/src/features/auth/service/auth.types'
 import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/sing-up/model/singUpSchema'
 import { SignUpModal } from '@/src/features/auth/sing-up/ui/sing-up/sign-up-modal/SignUpModal'
 import { GitHubIcon } from '@/src/shared/assets/icons/github'
@@ -39,7 +38,7 @@ export const SignUpForm = () => {
       setIsModalOpen(true)
       reset()
     } catch (error: any) {
-      console.log(error.message)
+      console.log(error.messages[0].message)
     }
   }
 

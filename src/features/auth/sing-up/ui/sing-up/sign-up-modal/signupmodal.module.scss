@@ -1,0 +1,17 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1.5rem;
+
+  & button {
+    width: 90px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+}

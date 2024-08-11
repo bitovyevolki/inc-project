@@ -6,7 +6,7 @@ export default function ExpiredLinkPage() {
   return (
     <div>
       <Link href={'/'}>back</Link>
-      <ExpiredLink email={email} />
+      {/* <ExpiredLink email={email} /> */}
     </div>
   )
 }

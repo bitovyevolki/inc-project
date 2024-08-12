@@ -60,4 +60,10 @@
       margin: 18px 0 6px;
     }
   }
+
+  .error {
+    margin-top: 10px;
+    color: var(--color-danger-500) !important;
+    text-align: center;
+  }
 }

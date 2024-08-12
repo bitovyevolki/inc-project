@@ -22,3 +22,21 @@ export interface SignUpResponse {
   messages: ErrorMessage[]
   statusCode: number
 }
+
+export interface SignInArgs {
+  email: string
+  password: string
+}
+
+export interface SignInResponse {
+  accessToken: string
+}
+
+export interface SignInResponseError {
+  data: {
+    error: string
+    messages: string
+    statusCode: number
+  }
+  status: number
+}

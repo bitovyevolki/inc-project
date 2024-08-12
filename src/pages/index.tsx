@@ -13,6 +13,7 @@ export default function Home() {
         <Link href={'/auth/expired-link'}>Expired link</Link>
         <Link href={'/auth/terms-of-service'}>Terms of service</Link>
         <Link href={'/auth/privacy-policy'}>Privacy policy</Link>
+        <Link href={'/auth/registration-confirmation'}>Sign up confirmation</Link>
       </nav>
     </div>
   )

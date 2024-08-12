@@ -6,15 +6,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import s from './GeneralInformation.module.scss'
 
-import { mockProfile } from '../../model/mock/profile'
-import { generalProfileSchema } from '../../model/schema/general-profile.schema'
-import { GeneralProfileFormType } from '../../model/types/profile'
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../api/profile.service'
+import {
+  GeneralProfileFormValue,
+  generalProfileSchema,
+} from '../../model/schema/general-profile.schema'
+
 import { Alert, IAlert } from '../Alert/Alert'
+import { Loader } from '../Loader/Loader'
 import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformationForm'
 import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 
 export const GeneralInformation = () => {
-  const profile = mockProfile
+  const { data, isLoading } = useGetProfileQuery()
+  const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
 
   const [alert, setAlert] = useState<IAlert>({ isShow: false, text: '', variant: 'success' })
 
@@ -26,20 +31,36 @@ export const GeneralInformation = () => {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm<GeneralProfileFormType>({
-    defaultValues: {
-      ...profile,
-    },
+  } = useForm<GeneralProfileFormValue>({
     mode: 'onSubmit',
     resolver: zodResolver(generalProfileSchema),
+    values: {
+      aboutMe: data?.aboutMe ?? '',
+      city: data?.city ?? '',
+      country: data?.country ?? '',
+      dateOfBirth: data?.dateOfBirth ?? null,
+      firstName: data?.firstName ?? '',
+      lastName: data?.lastName ?? '',
+      userName: data?.userName ?? '',
+    },
   })
 
-  const onSubmit: SubmitHandler<GeneralProfileFormType> = data => {
-    setAlert({ ...alert, isShow: true, text: 'Your settings are saved!', variant: 'success' })
+  const onSubmit: SubmitHandler<GeneralProfileFormValue> = async data => {
+    try {
+      await updateProfile(data).unwrap()
 
-    // if (error) {
-    //   setAlert({ ...alert, isShow: true, text: 'Server is not available!', variant: 'error' })
-    // }
+      setAlert({ ...alert, isShow: true, text: 'Your settings are saved!', variant: 'success' })
+    } catch (error) {
+      setAlert({ ...alert, isShow: true, text: 'Server is not available!', variant: 'error' })
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className={s.loader}>
+        <Loader variant={'large'} />
+      </div>
+    )
   }
 
   return (
@@ -52,18 +73,24 @@ export const GeneralInformation = () => {
         />
       )}
       <div className={s.generalInformation}>
-        <UpdatePhotoBox />
+        <UpdatePhotoBox avatars={data?.avatars} />
         <GeneralInformationForm control={control} handleSubmit={handleSubmit} onSubmit={onSubmit} />
       </div>
       <div className={s.border} />
       <div className={s.btnBox}>
         <Button
-          disabled={Object.keys(errors).length > 0}
+          disabled={Object.keys(errors).length > 0 || isLoadingUpdate}
           form={'general-profile'}
           type={'submit'}
           variant={'primary'}
         >
-          Save Changes
+          {isLoadingUpdate ? (
+            <div style={{ display: 'flex', justifyContent: 'center', width: '110px' }}>
+              <Loader variant={'small'} />
+            </div>
+          ) : (
+            'Save Changes'
+          )}
         </Button>
       </div>
     </>

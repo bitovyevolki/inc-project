@@ -7,18 +7,18 @@ export enum ProfileContentType {
 
 export interface IProfile {
   aboutMe: string
-  avatars: IProfileAvatars[]
+  avatars: IProfileAvatar[]
   city: string
   country: string
   createdAt: Date
-  dateOfBirth: Date
+  dateOfBirth: Date | null
   firstName: string
   id: number
   lastName: string
   userName: string
 }
 
-export interface IProfileAvatars {
+export interface IProfileAvatar {
   createdAt: Date
   fileSize: number
   height: number
@@ -26,4 +26,4 @@ export interface IProfileAvatars {
   width: number
 }
 
-export type GeneralProfileFormType = Omit<IProfile, 'avatars' | 'createdAt' | 'id'>
+export type UpdateGeneralProfileArgs = Omit<IProfile, 'avatars' | 'createdAt' | 'id'>

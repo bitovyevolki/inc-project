@@ -1,18 +1,17 @@
 import * as z from 'zod'
 
-import { GeneralProfileFormType } from '../types/profile'
 import { checkAge } from '../utils/date'
 
-export const generalProfileSchema: z.ZodType<Partial<GeneralProfileFormType>> = z.object({
-  aboutMe: z.string().max(200).optional(),
-  city: z.string().optional(),
-  country: z.string().optional(),
-  dateOfBirth: z
+export const generalProfileSchema = z.object({
+  aboutMe: z.string().max(200),
+  city: z.string(),
+  country: z.string(),
+  dateOfBirth: z.coerce
     .date()
     .refine(date => checkAge(date), {
       message: 'A user under 13 cannot create a profile. Privacy Policy',
     })
-    .optional(),
+    .nullable(),
   firstName: z
     .string()
     .max(50)
@@ -38,3 +37,5 @@ export const generalProfileSchema: z.ZodType<Partial<GeneralProfileFormType>> = 
       'User name should contain only latin alphabets, numbers and symbols - or _'
     ),
 })
+
+export type GeneralProfileFormValue = z.infer<typeof generalProfileSchema>

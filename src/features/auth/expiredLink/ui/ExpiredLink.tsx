@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ['latin'] })
 export type ExpiredLinkProps = {
   email: string
 }
-const ExpiredLink = ({ email }: ExpiredLinkProps) => {
+export const ExpiredLink = ({ email }: ExpiredLinkProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [resendEmail, { isLoading, isSuccess }] = useResendEmailMutation()
   const closeModal = () => {
@@ -77,7 +77,7 @@ const Modal = ({ email, onOpenStateChange, open }: ModalProps) => {
         <Button
           as={'a'}
           className={s.buttonRight}
-          href={'/create-new-password'}
+          href={'/auth/create-new-password'}
           variant={'primary'}
         >
           OK
@@ -86,5 +86,3 @@ const Modal = ({ email, onOpenStateChange, open }: ModalProps) => {
     </ModalWindow>
   )
 }
-
-export default ExpiredLink

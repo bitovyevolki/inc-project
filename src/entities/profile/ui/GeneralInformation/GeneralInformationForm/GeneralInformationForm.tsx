@@ -5,12 +5,12 @@ import { FormDatePicker, FormInput, FormSelect, TextArea } from '@bitovyevolki/u
 import s from './GeneralInformationForm.module.scss'
 
 import { cityOptions, countryOptions } from '../../../model/mock/options'
-import { GeneralProfileFormType } from '../../../model/types/profile'
+import { GeneralProfileFormValue } from '../../../model/schema/general-profile.schema'
 
 interface IGeneralFormProps {
-  control: Control<GeneralProfileFormType>
-  handleSubmit: UseFormHandleSubmit<GeneralProfileFormType>
-  onSubmit: SubmitHandler<GeneralProfileFormType>
+  control: Control<GeneralProfileFormValue>
+  handleSubmit: UseFormHandleSubmit<GeneralProfileFormValue>
+  onSubmit: SubmitHandler<GeneralProfileFormValue>
 }
 
 export const GeneralInformationForm = ({ control, handleSubmit, onSubmit }: IGeneralFormProps) => {

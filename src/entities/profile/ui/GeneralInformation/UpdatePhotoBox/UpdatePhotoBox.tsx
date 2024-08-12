@@ -1,14 +1,20 @@
+import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
+import { RemovePhotoIcon } from '@/src/shared/assets/icons/remove-photo'
 import { Button, ModalWindow } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
 import s from './UpdatePhotoBox.module.scss'
 
-import { AvatarSvg, RemovePhotoSvg } from '../../icons/Icons'
+import { IProfileAvatar } from '../../../model/types/profile'
 import { SelectPhotoModalContent } from './SelectPhotoModalContent/SelectPhotoModalContent'
 import { UploadPhotoModalContent } from './UploadPhotoModalContent/UploadPhotoModalContent'
 import { useUpdatePhoto } from './useUpdatePhoto'
 
-export const UpdatePhotoBox = () => {
+interface IProps {
+  avatars?: IProfileAvatar[]
+}
+
+export const UpdatePhotoBox = ({ avatars }: IProps) => {
   const {
     changePhotoHandler,
     isShowModal,
@@ -37,7 +43,7 @@ export const UpdatePhotoBox = () => {
       {photo ? (
         <div className={s.photoWrapper}>
           <span className={s.removeIcon} onClick={removePhotoHandler}>
-            <RemovePhotoSvg />
+            <RemovePhotoIcon />
           </span>
           <div className={s.photo}>
             <Image alt={'photo'} fill src={photo as string} />
@@ -45,7 +51,7 @@ export const UpdatePhotoBox = () => {
         </div>
       ) : (
         <div className={s.avatarRound}>
-          <AvatarSvg />
+          <AvatarIcon />
         </div>
       )}
       <Button onClick={showModalHandler} variant={'outlined'}>

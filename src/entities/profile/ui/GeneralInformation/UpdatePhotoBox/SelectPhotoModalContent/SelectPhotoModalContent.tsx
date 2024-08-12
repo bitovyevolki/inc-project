@@ -1,9 +1,9 @@
+import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Button } from '@bitovyevolki/ui-kit-int'
 
 import s from './SelectPhotoModalContent.module.scss'
 
 import { Alert } from '../../../Alert/Alert'
-import { SquareSvg } from '../../../icons/Icons'
 import { useSelectPhoto } from './useSelectPhoto'
 
 interface IProps {
@@ -19,7 +19,7 @@ export const SelectPhotoModalContent = ({ onChangePhoto }: IProps) => {
     <div className={s.modalContent}>
       <div className={s.alertBox}>{alert.isShow && <Alert {...alert} />}</div>
       <div className={s.square}>
-        <SquareSvg />
+        <AvatarIcon />
       </div>
       <Button fullWidth={false} onClick={onClickFileInputHandler}>
         Select from Computer

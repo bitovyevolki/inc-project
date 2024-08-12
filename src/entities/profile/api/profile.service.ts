@@ -1,6 +1,6 @@
 import { inctagramService } from '@/src/shared/model/inctagram.service'
 
-import { GeneralProfileFormType, IProfile } from '../model/types/profile'
+import { IProfile, UpdateGeneralProfileArgs } from '../model/types/profile'
 
 export const ProfileService = inctagramService.injectEndpoints({
   endpoints: builder => {
@@ -51,10 +51,11 @@ export const ProfileService = inctagramService.injectEndpoints({
           }
         },
       }),
-      updateProfile: builder.mutation<IProfile, GeneralProfileFormType>({
+      updateProfile: builder.mutation<IProfile, UpdateGeneralProfileArgs>({
         invalidatesTags: ['Profile'],
-        query: () => {
+        query: data => {
           return {
+            body: data,
             method: 'PUT',
             url: 'v1/users/profile',
           }
@@ -64,4 +65,4 @@ export const ProfileService = inctagramService.injectEndpoints({
   },
 })
 
-export const { useGetProfileQuery } = ProfileService
+export const { useGetProfileQuery, useUpdateProfileMutation } = ProfileService

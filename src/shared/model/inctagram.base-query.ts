@@ -49,6 +49,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           // retry the initial query
           result = await baseQuery(args, api, extraOptions)
         } else {
+          // eslint-disable-next-line no-console
           console.log('logged out')
           Router.push('/auth/login')
         }

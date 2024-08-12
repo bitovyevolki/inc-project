@@ -1,5 +1,5 @@
-import { SignIn } from '@/src/features/auth/signIn'
+import { SignInForm } from '@/src/features/auth/signIn'
 
 export default function SignInPage() {
-  return <SignIn />
+  return <SignInForm />
 }

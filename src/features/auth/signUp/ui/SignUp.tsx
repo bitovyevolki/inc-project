@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useSignUpMutation } from '@/src/features/auth/service/auth.service'
-import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/sing-up/model/singUpSchema'
-import { SignUpModal } from '@/src/features/auth/sing-up/ui/sing-up/sign-up-modal/SignUpModal'
+import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/signUp/model/signUpSchema'
+import { SignUpModal } from '@/src/features/auth/signUp/ui/signUp/sign-up-modal/SignUpModal'
 import { GitHubIcon } from '@/src/shared/assets/icons/github'
 import { GoogleIcon } from '@/src/shared/assets/icons/google'
 import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 
-import s from './signUp.form.module.scss'
+import s from './signUp.module.scss'
 
 export const SignUpForm = () => {
   const {

@@ -1,5 +1,7 @@
 import {
   ConfirmEmailArgs,
+  SignInArgs,
+  SignInResponse,
   SignUpArgs,
   SignUpResendEmailType,
 } from '@/src/features/auth/service/auth.types'
@@ -23,7 +25,22 @@ export const AuthService = inctagramService.injectEndpoints({
           url: `/v1/auth/registration-email-resending`,
         }),
       }),
+      signIn: builder.mutation<SignInResponse, SignInArgs>({
+        async onQueryStarted(_, { queryFulfilled }) {
+          const { data } = await queryFulfilled
 
+          if (data.accessToken) {
+            localStorage.setItem('token', data.accessToken)
+          }
+        },
+        query(data) {
+          return {
+            body: data,
+            method: 'POST',
+            url: '/v1/auth/login',
+          }
+        },
+      }),
       signUp: builder.mutation<void, SignUpArgs>({
         query(data) {
           return {
@@ -36,4 +53,9 @@ export const AuthService = inctagramService.injectEndpoints({
     }
   },
 })
-export const { useConfirmEmailMutation, useResendEmailMutation, useSignUpMutation } = AuthService
+export const {
+  useConfirmEmailMutation,
+  useResendEmailMutation,
+  useSignInMutation,
+  useSignUpMutation,
+} = AuthService

@@ -26,8 +26,10 @@ export default function RegistrationConfirmation() {
             error.data.messages[0].message === 'Confirmation code is invalid'
           ) {
             setIsExpired(true)
+            // eslint-disable-next-line no-console
             console.log(error.data.messages[0].message)
           } else {
+            // eslint-disable-next-line no-console
             console.log(error.data.messages[0].message)
           }
         }

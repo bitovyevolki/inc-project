@@ -11,7 +11,6 @@ import {
   GeneralProfileFormValue,
   generalProfileSchema,
 } from '../../model/schema/general-profile.schema'
-
 import { Alert, IAlert } from '../Alert/Alert'
 import { Loader } from '../Loader/Loader'
 import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformationForm'

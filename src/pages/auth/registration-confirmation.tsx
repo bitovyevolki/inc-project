@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import { EmailVerifySuccess } from '@/src/features/auth/emailVerifySuccess/email-verify-success'
-import ExpiredLink from '@/src/features/auth/expiredLink/ui/ExpiredLink'
+
 import { useConfirmEmailMutation } from '@/src/features/auth/service/auth.service'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { ExpiredLink } from '@/src/features/auth/expiredLink'
 
 export default function RegistrationConfirmation() {
   const router = useRouter()

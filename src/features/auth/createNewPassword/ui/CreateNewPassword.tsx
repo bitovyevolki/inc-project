@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { useCreateNewPasswordMutation } from '@/src/features/auth/service/auth.service'
+import { SignInForm } from '@/src/features/auth/signIn'
+import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/router'
 import { z } from 'zod'
 
 import s from './createNewPassword.module.scss'
@@ -32,22 +33,33 @@ const schema = z
 
 type Fields = z.infer<typeof schema>
 
-export const CreateNewPassword = () => {
+type Props = {
+  recoveryCode: string
+}
+
+export const CreateNewPassword = ({ recoveryCode }: Props) => {
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm<Fields>({ resolver: zodResolver(schema) })
 
-  const [isLinkSent, setLinkSent] = useState(false)
-
-  const router = useRouter()
+  const [createNewPassword, { error, isError, isLoading, isSuccess }] =
+    useCreateNewPasswordMutation()
 
   const onSubmit = handleSubmit(data => {
     const newPassword = data.newPassword
 
-    router.push('/signin')
+    createNewPassword({ newPassword, recoveryCode })
   })
+
+  if (isLoading) {
+    return <Loader />
+  }
+
+  if (isSuccess) {
+    return <SignInForm />
+  }
 
   return (
     <>

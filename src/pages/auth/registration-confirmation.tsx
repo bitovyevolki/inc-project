@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { EmailVerifySuccess } from '@/src/features/auth/emailVerifySuccess/email-verify-success'
-import ExpiredLink from '@/src/features/auth/expiredLink/ui/ExpiredLink'
+import { ExpiredLink } from '@/src/features/auth/expiredLink'
 import { useConfirmEmailMutation } from '@/src/features/auth/service/auth.service'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'

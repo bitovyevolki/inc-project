@@ -1,14 +1,15 @@
 import { ChangeEvent, useRef, useState } from 'react'
 
-import { convertImage } from '@/src/entities/profile/model/utils/image'
+import { formatImage } from '@/src/entities/profile/model/utils/image'
 
 import { IAlert } from '../../../Alert/Alert'
 
 interface IProps {
-  onChangePhoto: (value: ArrayBuffer | string) => void
+  onChangeFile: (file: FormData) => void
+  onChangeTempPhoto: (value: string) => void
 }
 
-export const useSelectPhoto = ({ onChangePhoto }: IProps) => {
+export const useSelectPhoto = ({ onChangeFile, onChangeTempPhoto }: IProps) => {
   const [alert, setAlert] = useState<IAlert>({ isShow: false, text: '', variant: 'error' })
 
   const inputFileRef = useRef<HTMLInputElement | null>(null)
@@ -22,7 +23,7 @@ export const useSelectPhoto = ({ onChangePhoto }: IProps) => {
   }
 
   const changePhotoHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    convertImage(event, onChangePhoto, showAlertHandler)
+    formatImage({ event, onChangeFile, onChangeTempPhoto, showAlert: showAlertHandler })
   }
 
   return { alert, changePhotoHandler, inputFileRef, onClickFileInputHandler }

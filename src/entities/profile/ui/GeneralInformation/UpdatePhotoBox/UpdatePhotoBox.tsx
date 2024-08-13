@@ -11,18 +11,19 @@ import { UploadPhotoModalContent } from './UploadPhotoModalContent/UploadPhotoMo
 import { useUpdatePhoto } from './useUpdatePhoto'
 
 interface IProps {
-  avatars?: IProfileAvatar[]
+  avatars: IProfileAvatar[]
 }
 
 export const UpdatePhotoBox = ({ avatars }: IProps) => {
   const {
-    changePhotoHandler,
+    changeFileHandler,
+    changeTempPhotoHandler,
+    isLoadingCreateAvatar,
     isShowModal,
-    newPhoto,
-    photo,
     removePhotoHandler,
     setIsShowModalHandler,
     showModalHandler,
+    tempPhoto,
     uploadImage,
   } = useUpdatePhoto()
 
@@ -33,20 +34,33 @@ export const UpdatePhotoBox = ({ avatars }: IProps) => {
         open={isShowModal}
         title={'Add a Profile Photo'}
       >
-        {newPhoto ? (
-          <UploadPhotoModalContent photo={newPhoto as string} upload={uploadImage} />
+        {tempPhoto ? (
+          <UploadPhotoModalContent
+            isLoading={isLoadingCreateAvatar}
+            photo={tempPhoto}
+            upload={uploadImage}
+          />
         ) : (
-          <SelectPhotoModalContent onChangePhoto={changePhotoHandler} />
+          <SelectPhotoModalContent
+            onChangeFile={changeFileHandler}
+            onChangeTempPhoto={changeTempPhotoHandler}
+          />
         )}
       </ModalWindow>
-
-      {photo ? (
+      {avatars?.length > 0 ? (
         <div className={s.photoWrapper}>
           <span className={s.removeIcon} onClick={removePhotoHandler}>
             <RemovePhotoIcon />
           </span>
           <div className={s.photo}>
-            <Image alt={'photo'} fill src={photo as string} />
+            <Image
+              alt={'avatar'}
+              fill
+              loading={'eager'}
+              priority
+              quality={100}
+              src={avatars[0].url}
+            />
           </div>
         </div>
       ) : (

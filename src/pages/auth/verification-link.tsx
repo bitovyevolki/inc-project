@@ -1,5 +1,9 @@
 import { ExpiredLink } from '@/src/features/auth/expiredLink'
 
 export default function VerificationLinkPage() {
-  return <ExpiredLink email={''} />
+
+  const email = 'test@test.com'
+
+  return <ExpiredLink email={email} />
+
 }

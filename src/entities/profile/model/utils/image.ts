@@ -1,10 +1,18 @@
 import { ChangeEvent } from 'react'
 
-export const convertImage = (
-  event: ChangeEvent<HTMLInputElement>,
-  setState: (value: ArrayBuffer | string) => void,
+interface FormatImageProps {
+  event: ChangeEvent<HTMLInputElement>
+  onChangeFile: (file: FormData) => void
+  onChangeTempPhoto: (value: string) => void
   showAlert?: (text: string) => void
-) => {
+}
+
+export const formatImage = ({
+  event,
+  onChangeFile,
+  onChangeTempPhoto,
+  showAlert,
+}: FormatImageProps) => {
   if (event.target.files) {
     const file = event?.target?.files[0]
 
@@ -20,8 +28,18 @@ export const convertImage = (
       return
     }
 
-    setState(URL.createObjectURL(file))
+    onChangeTempPhoto(URL.createObjectURL(file))
+
+    onChangeFile(getFormData(file))
   }
+}
+
+const getFormData = (file: Blob) => {
+  const formData = new FormData()
+
+  formData.append('file', file)
+
+  return formData
 }
 
 const checkFileSize = (fileSize: number): boolean => {

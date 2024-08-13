@@ -17,7 +17,7 @@ import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformat
 import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 
 export const GeneralInformation = () => {
-  const { data, isLoading } = useGetProfileQuery()
+  const { data, isFetching, isLoading } = useGetProfileQuery()
   const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
 
   const [alert, setAlert] = useState<IAlert>({ isShow: false, text: '', variant: 'success' })
@@ -72,19 +72,19 @@ export const GeneralInformation = () => {
         />
       )}
       <div className={s.generalInformation}>
-        <UpdatePhotoBox avatars={data?.avatars} />
+        <UpdatePhotoBox avatars={data?.avatars as []} />
         <GeneralInformationForm control={control} handleSubmit={handleSubmit} onSubmit={onSubmit} />
       </div>
       <div className={s.border} />
       <div className={s.btnBox}>
         <Button
-          disabled={Object.keys(errors).length > 0 || isLoadingUpdate}
+          disabled={Object.keys(errors).length > 0 || isLoadingUpdate || isFetching}
           form={'general-profile'}
           type={'submit'}
           variant={'primary'}
         >
           {isLoadingUpdate ? (
-            <div style={{ display: 'flex', justifyContent: 'center', width: '110px' }}>
+            <div className={s.btnLoaderWrapper}>
               <Loader variant={'small'} />
             </div>
           ) : (

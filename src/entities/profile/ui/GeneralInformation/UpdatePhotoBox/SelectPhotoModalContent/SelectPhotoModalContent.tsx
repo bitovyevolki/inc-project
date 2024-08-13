@@ -7,12 +7,14 @@ import { Alert } from '../../../Alert/Alert'
 import { useSelectPhoto } from './useSelectPhoto'
 
 interface IProps {
-  onChangePhoto: (value: ArrayBuffer | string) => void
+  onChangeFile: (file: FormData) => void
+  onChangeTempPhoto: (value: string) => void
 }
 
-export const SelectPhotoModalContent = ({ onChangePhoto }: IProps) => {
+export const SelectPhotoModalContent = ({ onChangeFile, onChangeTempPhoto }: IProps) => {
   const { alert, changePhotoHandler, inputFileRef, onClickFileInputHandler } = useSelectPhoto({
-    onChangePhoto,
+    onChangeFile,
+    onChangeTempPhoto,
   })
 
   return (

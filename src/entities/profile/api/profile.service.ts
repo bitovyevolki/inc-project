@@ -26,6 +26,19 @@ export const ProfileService = inctagramService.injectEndpoints({
       }),
       deleteProfileAvatar: builder.mutation<void, void>({
         invalidatesTags: ['Profile'],
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+          const patchResult = dispatch(
+            ProfileService.util.updateQueryData('getProfile', undefined, draft => {
+              draft.avatars = []
+            })
+          )
+
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
         query: () => {
           return {
             method: 'DELETE',
@@ -65,4 +78,9 @@ export const ProfileService = inctagramService.injectEndpoints({
   },
 })
 
-export const { useGetProfileQuery, useUpdateProfileMutation } = ProfileService
+export const {
+  useCreateProfileAvatarMutation,
+  useDeleteProfileAvatarMutation,
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} = ProfileService

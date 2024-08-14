@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { useResendEmailMutation } from '@/src/features/auth/service/auth.service'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
@@ -32,7 +33,7 @@ export const ExpiredLink = ({ email }: ExpiredLinkProps) => {
       }
     } catch (error: any) {
       // eslint-disable-next-line no-console
-      console.log(error.data.messages[0].message)
+      toast.error(error.data.messages[0].message)
     }
   }
 

@@ -1,5 +1,6 @@
 import {
   ConfirmEmailArgs,
+  GoogleLoginArgs,
   SignInArgs,
   SignInResponse,
   SignUpArgs,
@@ -11,11 +12,18 @@ export const AuthService = inctagramService.injectEndpoints({
   /// ADD Your Endpoints
   endpoints: builder => {
     return {
-      confirmEmail: builder.mutation<void, ConfirmEmailArgs>({
+      confirmEmail: builder.query<void, ConfirmEmailArgs>({
         query: data => ({
           body: { ...data },
           method: 'POST',
           url: `/v1/auth/registration-confirmation`,
+        }),
+      }),
+      googleLogin: builder.mutation<void, GoogleLoginArgs>({
+        query: data => ({
+          body: { ...data },
+          method: 'POST',
+          url: '/auth/google/login',
         }),
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
@@ -54,7 +62,8 @@ export const AuthService = inctagramService.injectEndpoints({
   },
 })
 export const {
-  useConfirmEmailMutation,
+  useConfirmEmailQuery,
+  useGoogleLoginMutation,
   useResendEmailMutation,
   useSignInMutation,
   useSignUpMutation,

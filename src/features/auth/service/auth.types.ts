@@ -12,12 +12,16 @@ export type SignUpResendEmailType = {
 export type SocialLoginType = {
   accessToken?: string
 }
+export type GoogleLoginArgs = {
+  email: string
+  token: string
+}
 export interface ErrorMessage {
   field: string
   message: string
 }
 
-export interface SignUpResponse {
+export interface SignUpErrorResponse {
   error: string
   messages: ErrorMessage[]
   statusCode: number

@@ -1,7 +1,7 @@
 import {
   ConfirmEmailArgs,
-  GoogleLoginArgs,
   CreateNewPasswordArgs,
+  GoogleLoginArgs,
   RecoverPasswordCodeArgs,
   SendResetPasswordArgs,
   SignInArgs,
@@ -16,20 +16,35 @@ export const AuthService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
       confirmEmail: builder.query<void, ConfirmEmailArgs>({
+        query: data => ({
+          body: { ...data },
+          method: 'POST',
+          url: '/v1/auth/registration-confirmation',
+        }),
+      }),
       checkPasswordRecoveryCode: builder.query<void, RecoverPasswordCodeArgs>({
         query: queryArgs => {
           return {
             body: queryArgs,
             method: 'POST',
-            url: `/v1/auth/check-recovery-code`,
+            url: '/v1/auth/check-recovery-code',
           }
         },
       }),
-      confirmEmail: builder.mutation<void, ConfirmEmailArgs>({
-        query: data => ({
-          body: { ...data },
+      createNewPassword: builder.mutation<void, CreateNewPasswordArgs>({
+        query: queryArgs => {
+          return {
+            body: queryArgs,
+            method: 'POST',
+            url: '/v1/auth/new-password',
+          }
+        },
+      }),
+      sendResetPasswordEmail: builder.mutation<void, SendResetPasswordArgs>({
+        query: queryArgs => ({
+          body: { baseUrl: 'http://localhost:3000', ...queryArgs },
           method: 'POST',
-          url: `/v1/auth/registration-confirmation`,
+          url: '/v1/auth/password-recovery',
         }),
       }),
       googleLogin: builder.mutation<void, GoogleLoginArgs>({
@@ -38,27 +53,12 @@ export const AuthService = inctagramService.injectEndpoints({
           method: 'POST',
           url: '/auth/google/login',
         }),
-      createNewPassword: builder.mutation<void, CreateNewPasswordArgs>({
-        query: queryArgs => {
-          return {
-            body: queryArgs,
-            method: 'POST',
-            url: `/v1/auth/new-password`,
-          }
-        },
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
           body: { ...data, baseUrl: process.env.NEXT_PUBLIC_BASE_URL },
           method: 'POST',
-          url: `/v1/auth/registration-email-resending`,
-        }),
-      }),
-      sendResetPasswordEmail: builder.mutation<void, SendResetPasswordArgs>({
-        query: queryArgs => ({
-          body: { baseUrl: 'http://localhost:3000', ...queryArgs },
-          method: 'POST',
-          url: `/v1/auth/password-recovery`,
+          url: '/v1/auth/registration-email-resending',
         }),
       }),
       signIn: builder.mutation<SignInResponse, SignInArgs>({
@@ -92,11 +92,10 @@ export const AuthService = inctagramService.injectEndpoints({
 export const {
   useConfirmEmailQuery,
   useGoogleLoginMutation,
-  useCheckPasswordRecoveryCodeQuery,
-  useConfirmEmailMutation,
-  useCreateNewPasswordMutation,
   useResendEmailMutation,
-  useSendResetPasswordEmailMutation,
   useSignInMutation,
   useSignUpMutation,
+  useCheckPasswordRecoveryCodeQuery,
+  useCreateNewPasswordMutation,
+  useSendResetPasswordEmailMutation,
 } = AuthService

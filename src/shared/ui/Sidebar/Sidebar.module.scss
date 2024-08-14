@@ -28,3 +28,33 @@
     }
   }
 }
+
+.buttonLogout {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  padding: 0;
+
+  & > svg {
+    margin-right: 10px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 1.5rem;
+
+  width: 378px;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+}

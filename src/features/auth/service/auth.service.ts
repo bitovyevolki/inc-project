@@ -39,6 +39,22 @@ export const AuthService = inctagramService.injectEndpoints({
           }
         },
       }),
+      logOut: builder.query<void, void>({
+        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled
+            localStorage.removeItem('token')
+            dispatch(AuthService.util.resetApiState())
+          } catch (error) {
+            console.log(error)
+          }
+        },
+        query: queryArgs => ({
+          //   body: { baseUrl: 'http://localhost:3000' },
+          method: 'POST',
+          url: `/v1/auth/logout`,
+        }),
+      }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
           body: { ...data, baseUrl: process.env.NEXT_PUBLIC_BASE_URL },
@@ -85,6 +101,7 @@ export const {
   useCheckPasswordRecoveryCodeQuery,
   useConfirmEmailMutation,
   useCreateNewPasswordMutation,
+  useLazyLogOutQuery,
   useResendEmailMutation,
   useSendResetPasswordEmailMutation,
   useSignInMutation,

@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, SVGProps } from 'react'
+import { ComponentPropsWithoutRef, SVGProps, useEffect, useRef } from 'react'
 
 import { Typography } from '@bitovyevolki/ui-kit-int'
 
@@ -14,6 +14,16 @@ export type IAlert = {
 } & ComponentPropsWithoutRef<'div'>
 
 export const Alert = ({ close, isShow, text, variant, ...rest }: IAlert) => {
+  const timerRef = useRef<ReturnType<typeof setTimeout>>()
+
+  useEffect(() => {
+    timerRef.current = setTimeout(() => {
+      close && close()
+    }, 2000)
+
+    return () => clearInterval(timerRef.current)
+  }, [close])
+
   return (
     <div className={`${s.alert} ${s[variant]} ${isShow ? s.show : s.hide}`} {...rest}>
       {variant === 'error' && (

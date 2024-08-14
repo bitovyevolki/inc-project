@@ -3,15 +3,13 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { useResendEmailMutation } from '@/src/features/auth/service/auth.service'
+import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
-import { Inter } from 'next/font/google'
 import Image from 'next/image'
 
 import s from './expiredLink.module.scss'
 
 import time from '../../../../../public/rafiki.svg'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export type ExpiredLinkProps = {
   email: string
@@ -38,27 +36,29 @@ export const ExpiredLink = ({ email }: ExpiredLinkProps) => {
   }
 
   if (isLoading) {
-    return <Typography variant={'body2'}>{'Loading .....'}</Typography>
+    return <Loader />
   }
 
   return (
-    <div className={s.wrapper}>
-      <div className={s.card}>
-        <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
-          Email verification link expired
-        </Typography>
-        <Typography as={'p'} className={s.accentColor} variant={'body1'}>
-          Looks like the verification link has expired. Not to worry, we can send the link again
-        </Typography>
-        <Button fullWidth onClick={handleOnResendLink} variant={'primary'}>
-          Resend link
-        </Button>
-      </div>
-      <div>
-        <Image alt={'time-management'} height={352} src={time} width={474} />
-      </div>
+    <>
       {isModalOpen && <Modal email={email} onOpenStateChange={closeModal} open={isModalOpen} />}
-    </div>
+      <div className={s.wrapper}>
+        <div className={s.card}>
+          <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
+            Email verification link expired
+          </Typography>
+          <Typography as={'p'} className={s.accentColor} variant={'body1'}>
+            Looks like the verification link has expired. Not to worry, we can send the link again
+          </Typography>
+          <Button fullWidth onClick={handleOnResendLink} variant={'primary'}>
+            Resend link
+          </Button>
+        </div>
+        <div>
+          <Image alt={'time-management'} height={352} src={time} width={474} />
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -73,14 +73,9 @@ const Modal = ({ email, onOpenStateChange, open }: ModalProps) => {
     <ModalWindow onOpenChange={onOpenStateChange} open={open} title={'Email sent'}>
       <div className={s.card}>
         <Typography as={'p'} variant={'body1'}>
-          {` We have sent a link to confirm your email to ${email}`}
+          {`We have sent a link to confirm your email to ${email}`}
         </Typography>
-        <Button
-          as={'a'}
-          className={s.buttonRight}
-          href={'/auth/create-new-password'}
-          variant={'primary'}
-        >
+        <Button className={s.buttonRight} onClick={onOpenStateChange} variant={'primary'}>
           OK
         </Button>
       </div>

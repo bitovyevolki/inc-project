@@ -8,7 +8,9 @@ const makeStore = () =>
   configureStore({
     devTools: true,
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(inctagramService.middleware),
-    reducer: {},
+    reducer: {
+      [inctagramService.reducerPath]: inctagramService.reducer,
+    },
   })
 
 export type AppStore = ReturnType<typeof makeStore>

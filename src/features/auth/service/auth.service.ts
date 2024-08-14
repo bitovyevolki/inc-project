@@ -1,6 +1,9 @@
 import {
   ConfirmEmailArgs,
   GoogleLoginArgs,
+  CreateNewPasswordArgs,
+  RecoverPasswordCodeArgs,
+  SendResetPasswordArgs,
   SignInArgs,
   SignInResponse,
   SignUpArgs,
@@ -13,6 +16,16 @@ export const AuthService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
       confirmEmail: builder.query<void, ConfirmEmailArgs>({
+      checkPasswordRecoveryCode: builder.query<void, RecoverPasswordCodeArgs>({
+        query: queryArgs => {
+          return {
+            body: queryArgs,
+            method: 'POST',
+            url: `/v1/auth/check-recovery-code`,
+          }
+        },
+      }),
+      confirmEmail: builder.mutation<void, ConfirmEmailArgs>({
         query: data => ({
           body: { ...data },
           method: 'POST',
@@ -25,12 +38,27 @@ export const AuthService = inctagramService.injectEndpoints({
           method: 'POST',
           url: '/auth/google/login',
         }),
+      createNewPassword: builder.mutation<void, CreateNewPasswordArgs>({
+        query: queryArgs => {
+          return {
+            body: queryArgs,
+            method: 'POST',
+            url: `/v1/auth/new-password`,
+          }
+        },
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
           body: { ...data, baseUrl: process.env.NEXT_PUBLIC_BASE_URL },
           method: 'POST',
           url: `/v1/auth/registration-email-resending`,
+        }),
+      }),
+      sendResetPasswordEmail: builder.mutation<void, SendResetPasswordArgs>({
+        query: queryArgs => ({
+          body: { baseUrl: 'http://localhost:3000', ...queryArgs },
+          method: 'POST',
+          url: `/v1/auth/password-recovery`,
         }),
       }),
       signIn: builder.mutation<SignInResponse, SignInArgs>({
@@ -64,7 +92,11 @@ export const AuthService = inctagramService.injectEndpoints({
 export const {
   useConfirmEmailQuery,
   useGoogleLoginMutation,
+  useCheckPasswordRecoveryCodeQuery,
+  useConfirmEmailMutation,
+  useCreateNewPasswordMutation,
   useResendEmailMutation,
+  useSendResetPasswordEmailMutation,
   useSignInMutation,
   useSignUpMutation,
 } = AuthService

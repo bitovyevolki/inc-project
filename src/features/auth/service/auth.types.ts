@@ -1,3 +1,5 @@
+import { Nullable } from '@vitest/utils'
+
 export type SignUpArgs = {
   email: string
   password: string
@@ -9,9 +11,35 @@ export type ConfirmEmailArgs = {
 export type SignUpResendEmailType = {
   email: string
 }
+export type SendResetPasswordArgs = {
+  baseUrl?: string
+  email: string
+  recaptcha: Nullable<string>
+}
+export type RecoverPasswordCodeArgs = {
+  recoveryCode: string
+}
+export type CreateNewPasswordArgs = {
+  newPassword: string
+  recoveryCode: string
+}
+
+export type ErrorResponse = {
+  data: {
+    error: string
+    messages: [
+      {
+        field: string
+        message: string
+      },
+    ]
+    statusCode: number
+  }
+}
 export type SocialLoginType = {
   accessToken?: string
 }
+
 export interface ErrorMessage {
   field: string
   message: string

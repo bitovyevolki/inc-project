@@ -1,5 +1,8 @@
 import {
   ConfirmEmailArgs,
+  CreateNewPasswordArgs,
+  RecoverPasswordCodeArgs,
+  SendResetPasswordArgs,
   SignInArgs,
   SignInResponse,
   SignUpArgs,
@@ -11,6 +14,15 @@ export const AuthService = inctagramService.injectEndpoints({
   /// ADD Your Endpoints
   endpoints: builder => {
     return {
+      checkPasswordRecoveryCode: builder.query<void, RecoverPasswordCodeArgs>({
+        query: queryArgs => {
+          return {
+            body: queryArgs,
+            method: 'POST',
+            url: `/v1/auth/check-recovery-code`,
+          }
+        },
+      }),
       confirmEmail: builder.mutation<void, ConfirmEmailArgs>({
         query: data => ({
           body: { ...data },
@@ -18,11 +30,27 @@ export const AuthService = inctagramService.injectEndpoints({
           url: `/v1/auth/registration-confirmation`,
         }),
       }),
+      createNewPassword: builder.mutation<void, CreateNewPasswordArgs>({
+        query: queryArgs => {
+          return {
+            body: queryArgs,
+            method: 'POST',
+            url: `/v1/auth/new-password`,
+          }
+        },
+      }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
           body: { ...data, baseUrl: process.env.NEXT_PUBLIC_BASE_URL },
           method: 'POST',
           url: `/v1/auth/registration-email-resending`,
+        }),
+      }),
+      sendResetPasswordEmail: builder.mutation<void, SendResetPasswordArgs>({
+        query: queryArgs => ({
+          body: { baseUrl: 'http://localhost:3000', ...queryArgs },
+          method: 'POST',
+          url: `/v1/auth/password-recovery`,
         }),
       }),
       signIn: builder.mutation<SignInResponse, SignInArgs>({
@@ -54,8 +82,11 @@ export const AuthService = inctagramService.injectEndpoints({
   },
 })
 export const {
+  useCheckPasswordRecoveryCodeQuery,
   useConfirmEmailMutation,
+  useCreateNewPasswordMutation,
   useResendEmailMutation,
+  useSendResetPasswordEmailMutation,
   useSignInMutation,
   useSignUpMutation,
 } = AuthService

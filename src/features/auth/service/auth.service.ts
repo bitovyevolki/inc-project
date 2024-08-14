@@ -1,5 +1,6 @@
 import {
   ConfirmEmailArgs,
+  GoogleLoginArgs,
   CreateNewPasswordArgs,
   RecoverPasswordCodeArgs,
   SendResetPasswordArgs,
@@ -14,6 +15,7 @@ export const AuthService = inctagramService.injectEndpoints({
   /// ADD Your Endpoints
   endpoints: builder => {
     return {
+      confirmEmail: builder.query<void, ConfirmEmailArgs>({
       checkPasswordRecoveryCode: builder.query<void, RecoverPasswordCodeArgs>({
         query: queryArgs => {
           return {
@@ -30,6 +32,12 @@ export const AuthService = inctagramService.injectEndpoints({
           url: `/v1/auth/registration-confirmation`,
         }),
       }),
+      googleLogin: builder.mutation<void, GoogleLoginArgs>({
+        query: data => ({
+          body: { ...data },
+          method: 'POST',
+          url: '/auth/google/login',
+        }),
       createNewPassword: builder.mutation<void, CreateNewPasswordArgs>({
         query: queryArgs => {
           return {
@@ -82,6 +90,8 @@ export const AuthService = inctagramService.injectEndpoints({
   },
 })
 export const {
+  useConfirmEmailQuery,
+  useGoogleLoginMutation,
   useCheckPasswordRecoveryCodeQuery,
   useConfirmEmailMutation,
   useCreateNewPasswordMutation,

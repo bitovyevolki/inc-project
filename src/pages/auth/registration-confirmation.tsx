@@ -1,52 +1,41 @@
-import { useEffect, useState } from 'react'
-
 import { EmailVerifySuccess } from '@/src/features/auth/emailVerifySuccess/email-verify-success'
 import { ExpiredLink } from '@/src/features/auth/expiredLink'
-import { useConfirmEmailMutation } from '@/src/features/auth/service/auth.service'
+import { useConfirmEmailQuery } from '@/src/features/auth/service/auth.service'
 import { Typography } from '@bitovyevolki/ui-kit-int'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export default function RegistrationConfirmation() {
   const router = useRouter()
-  const [confirmEmail, { isLoading }] = useConfirmEmailMutation()
   const { code, email } = router.query
-  const [isExpired, setIsExpired] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (router.isReady) {
-      const fetchConfirmation = async () => {
-        try {
-          await confirmEmail({
-            confirmationCode: code as string,
-          }).unwrap()
-        } catch (error: any) {
-          if (
-            error.status === 400 &&
-            error.data.messages[0].message === 'Confirmation code is invalid'
-          ) {
-            setIsExpired(true)
-            // eslint-disable-next-line no-console
-            console.log(error.data.messages[0].message)
-          } else {
-            // eslint-disable-next-line no-console
-            console.log(error.data.messages[0].message)
-          }
-        }
-      }
-
-      fetchConfirmation()
-    }
-  }, [router.isReady, code, email, confirmEmail])
+  const { error, isLoading, isSuccess } = useConfirmEmailQuery(
+    { confirmationCode: code as string },
+    { skip: !code }
+  )
 
   if (isLoading) {
     return <Typography variant={'body2'}>{'Loading .....'}</Typography>
   }
-
-  return (
-    <>
-      <Link href={'/'}>back</Link>
-      {isExpired ? <ExpiredLink email={email as string} /> : <EmailVerifySuccess />}
-    </>
-  )
+  if (
+    (error as FetchBaseQueryError)?.status === 400 &&
+    (error as FetchBaseQueryError)?.data &&
+    (error as any).data?.messages?.[0]?.message === 'Confirmation code is invalid'
+  ) {
+    return (
+      <>
+        <Link href={'/'}>back</Link>
+        <ExpiredLink email={email as string} />
+      </>
+    )
+  }
+  if (isSuccess) {
+    return (
+      <>
+        <Link href={'/'}>back</Link>
+        <EmailVerifySuccess />
+      </>
+    )
+  }
 }

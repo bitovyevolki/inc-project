@@ -14,6 +14,7 @@ import s from './socialRegisterLogin.module.scss'
 export const SocialsRegisterLogin = () => {
   const [googleLogin] = useGoogleLoginMutation()
   const router = useRouter()
+
   const handleGoogleLogin = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async tokenResponse => {
@@ -27,12 +28,20 @@ export const SocialsRegisterLogin = () => {
     },
   })
 
+  const githubLoginAndRegister = () => {
+    if (process.env.NEXT_PUBLIC_GITHUB_AUTH_URL) {
+      window.location.assign(process.env.NEXT_PUBLIC_GITHUB_AUTH_URL)
+
+      return
+    }
+  }
+
   return (
     <div className={s.socialIcons}>
       <Button onClick={handleGoogleLogin} variant={'ghost'}>
         <GoogleIcon height={36} width={36} />
       </Button>
-      <Button onClick={() => {}} variant={'ghost'}>
+      <Button onClick={githubLoginAndRegister} variant={'ghost'}>
         <GitHubIcon height={36} width={36} />
       </Button>
     </div>

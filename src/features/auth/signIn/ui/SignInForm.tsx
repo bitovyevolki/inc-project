@@ -8,7 +8,6 @@ import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-// import { useTranslation } from 'next-i18next'
 import { useTranslations } from 'next-intl'
 
 import s from './signInForm.module.scss'

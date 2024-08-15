@@ -1,25 +1,24 @@
-// i18n.ts
-import { initReactI18next } from 'react-i18next'
+import { GetServerSidePropsContext } from 'next'
 
-import i18n from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
+export const getI18nConfig = async (context: GetServerSidePropsContext) => {
+  const localeFromCookie = context.req.cookies['next-language']
+  const localeFromBrowser = context.req.headers['accept-language']?.split(',')[0] || 'en'
 
-import enTranslations from '../public/locales/en/common.json'
-import ruTranslations from '../public/locales/ru/common.json'
+  const locale = localeFromCookie || localeFromBrowser
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    debug: true,
-    defaultNS: 'common',
-    fallbackLng: 'en',
-    interpolation: { escapeValue: false },
-    ns: ['common'],
-    resources: {
-      en: { common: enTranslations },
-      ru: { common: ruTranslations },
-    },
-  })
+  try {
+    const messages = (await import(`../locales/${locale}.json`)).default
 
-export default i18n
+    return {
+      locale,
+      messages,
+    }
+  } catch (error) {
+    console.error('Error loading locale messages:', error)
+
+    return {
+      locale,
+      messages: {},
+    }
+  }
+}

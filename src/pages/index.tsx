@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 
 function Home() {

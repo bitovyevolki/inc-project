@@ -1,21 +1,17 @@
 import { SignInForm } from '@/src/features/auth/signIn'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetServerSideProps } from 'next'
 
 export default function SignInPage(props: any) {
-  console.log(props)
-
-  return <SignInForm />
+  return <SignInForm {...props} />
 }
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const locale = context.locale
+export const getServerSideProps: GetServerSideProps = async context => {
+  const locale = context.req.cookies['next-language'] || 'en'
+  const messages = (await import(`../../locales/${locale}.json`)).default
 
   return {
     props: {
-      ...(await serverSideTranslations(locale as string, ['common'])),
+      messages,
     },
   }
 }

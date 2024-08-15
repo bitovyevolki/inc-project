@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { GetServerSidePropsContext } from 'next'
 
 export const getI18nConfig = async (context: GetServerSidePropsContext) => {
@@ -14,7 +16,7 @@ export const getI18nConfig = async (context: GetServerSidePropsContext) => {
       messages,
     }
   } catch (error) {
-    console.error('Error loading locale messages:', error)
+    toast.error('Error loading locale messages:')
 
     return {
       locale,

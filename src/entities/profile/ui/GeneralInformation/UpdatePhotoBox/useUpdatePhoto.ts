@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 import {
   useCreateProfileAvatarMutation,
@@ -21,22 +22,20 @@ export const useUpdatePhoto = () => {
     setIsShowModal(value)
   }
 
-  const showModalHandler = () => {
-    setTempPhoto('')
-    setIsShowModal(true)
-  }
-
   const changeTempPhotoHandler = (photo: string) => {
     setTempPhoto(photo)
   }
 
   const uploadImage = async () => {
     try {
-      await createAvatar({ file } as { file: FormData })
+      await createAvatar({ file } as { file: FormData }).unwrap()
 
-      setIsShowModalHandler(false)
+      toast.success('Your avatar has been updated')
     } catch (error) {
-      alert(JSON.stringify(error))
+      toast.error('Error! Server is not available!')
+    } finally {
+      setIsShowModalHandler(false)
+      setTempPhoto('')
     }
   }
 
@@ -44,9 +43,9 @@ export const useUpdatePhoto = () => {
     try {
       const confirmed = confirm('Do you really want to delete your profile photo?')
 
-      confirmed && (await deleteAvatar())
+      confirmed && (await deleteAvatar().unwrap())
     } catch (error) {
-      alert(JSON.stringify(error))
+      toast.error('Error! Server is not available!')
     }
   }
 
@@ -57,7 +56,6 @@ export const useUpdatePhoto = () => {
     isShowModal,
     removePhotoHandler,
     setIsShowModalHandler,
-    showModalHandler,
     tempPhoto,
     uploadImage,
   }

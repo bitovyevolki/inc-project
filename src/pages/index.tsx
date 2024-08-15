@@ -1,6 +1,7 @@
+import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 
-export default function Home() {
+function Home() {
   return (
     <div>
       <nav className={'navigation'}>
@@ -17,3 +18,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home

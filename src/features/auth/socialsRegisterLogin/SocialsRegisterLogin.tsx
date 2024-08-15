@@ -1,33 +1,28 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 
 import { useGoogleLoginMutation } from '@/src/features/auth/service/auth.service'
 import { GitHubIcon } from '@/src/shared/assets/icons/github'
 import { GoogleIcon } from '@/src/shared/assets/icons/google'
+import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { useGoogleLogin } from '@react-oauth/google'
+import { useRouter } from 'next/router'
 
 import s from './socialRegisterLogin.module.scss'
 
 export const SocialsRegisterLogin = () => {
   const [googleLogin] = useGoogleLoginMutation()
-
+  const router = useRouter()
   const handleGoogleLogin = useGoogleLogin({
+    flow: 'auth-code',
     onSuccess: async tokenResponse => {
       try {
-        const userInfo = await fetch('https://inctagram.work/api/v1/auth/google/login', {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
-          },
-        }).then(res => res.json())
-
-        const data = {
-          email: userInfo.email,
-          token: tokenResponse.access_token,
-        }
-
-        await googleLogin(data).unwrap()
+        await googleLogin({ code: tokenResponse.code }).unwrap()
+        toast.success('Login successful:')
+        router.push(RouterPaths.PERSONAL_INFO)
       } catch (error: any) {
-        console.error(error.data.messages[0].message)
+        toast.error(error.data.messages[0].message)
       }
     },
   })

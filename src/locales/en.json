@@ -1,0 +1,11 @@
+{
+	"Signin": {
+    "title": "Sign in",
+    "forgot": "Forgot Password",
+    "signin": "Sign in",
+    "have-account": "Don’t have an account?",
+    "email": "Email",
+    "password": "Password",
+    "registration": "Sign up"
+  }
+}

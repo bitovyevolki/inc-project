@@ -1,0 +1,20 @@
+{
+	"Signin": {
+    "title": "Вход",
+    "forgot": "Забыли пароль?",
+    "signin": "Войти",
+    "have-account": "Ещё нет аккаунта?",
+    "email": "Почта",
+    "password": "Пароль",
+    "registration": "Регистрация"
+  },
+	"Signup": {
+    "title": "Вход",
+    "forgot": "Забыли пароль?",
+    "signin": "Войти",
+    "have-account": "Ещё нет аккаунта?",
+    "email": "Почта",
+    "password": "Пароль",
+    "registration": "Регистрация"
+  }
+}

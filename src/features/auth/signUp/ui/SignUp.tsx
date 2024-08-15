@@ -37,7 +37,9 @@ export const SignUpForm = () => {
       setUserEmail(data.email)
       setIsModalOpen(true)
       reset()
-    } catch (error: any) {}
+    } catch (error: any) {
+      alert(JSON.stringify(error))
+    }
   }
 
   return (

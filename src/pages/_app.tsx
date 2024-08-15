@@ -1,7 +1,9 @@
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
 
 import { Header } from '@bitovyevolki/ui-kit-int'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import Cookies from 'js-cookie'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
@@ -9,9 +11,9 @@ import { useRouter } from 'next/router'
 import { NextIntlClientProvider } from 'next-intl'
 
 import '../styles/globals.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { wrapper } from './../shared/model/store'
-
 export type NextPageWithLayout<P = {}, IP = P> = {
   getLayout?: (page: ReactElement) => ReactNode
 } & NextPage<P, IP>
@@ -41,15 +43,29 @@ export default function MyApp({ Component, pageProps, ...rest }: AppPropsWithLay
   return (
     <NextIntlClientProvider locale={selectedLanguage} messages={pageProps.messages}>
       <Provider store={store}>
-        <section>
-          <Header
-            isAuth
-            onLanguageChange={onLanguageChange}
-            selectedLanguage={selectedLanguage}
-            title={'Inctagram'}
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_ID ?? ''}>
+          <section>
+            <Header
+              isAuth
+              onLanguageChange={onLanguageChange}
+              selectedLanguage={selectedLanguage}
+              title={'Inctagram'}
+            />
+            <main>{getLayout(<Component {...pageProps} />)}</main>
+          </section>
+          <ToastContainer
+            autoClose={5000}
+            closeOnClick
+            draggable
+            hideProgressBar={false}
+            newestOnTop={false}
+            pauseOnFocusLoss
+            pauseOnHover
+            position={'bottom-right'}
+            rtl={false}
+            theme={'dark'}
           />
-          <main>{getLayout(<Component {...pageProps} />)}</main>
-        </section>
+        </GoogleOAuthProvider>
       </Provider>
     </NextIntlClientProvider>
   )

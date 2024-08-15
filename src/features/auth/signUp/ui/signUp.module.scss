@@ -1,3 +1,11 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 4.5rem auto;
+}
 .card {
   display: flex;
   flex-direction: column;
@@ -9,14 +17,6 @@
   min-height: 648px;
   max-height: 744px;
   padding: 1.5rem;
-}
-
-.socialIcons {
-  display: flex;
-  flex-direction: row;
-  gap: 3.5rem;
-  align-items: center;
-  justify-content: center;
 }
 
 .form {

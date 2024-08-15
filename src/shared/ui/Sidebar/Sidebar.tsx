@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { useLazyLogOutQuery } from '@/src/features/auth/service/auth.service'
+import { ErrorResponse } from '@/src/features/auth/service/auth.types'
 import { SignInForm } from '@/src/features/auth/signIn'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Loader } from '@/src/shared/ui/loader/Loader'
@@ -13,25 +15,23 @@ import { sidebarLinks } from './links'
 
 export const Sidebar = () => {
   //
-  const [logOutQuery, { isError, isLoading, isSuccess }] = useLazyLogOutQuery()
+  const [logOutQuery, { error, isError, isLoading, isSuccess }] = useLazyLogOutQuery()
+  const serverError = (error as ErrorResponse)?.data.messages[0]?.message
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const logout = () => {
     logOutQuery()
-      .unwrap()
-      .then(result => {})
-      .catch(result => {
-        console.log(result)
-      })
   }
 
   if (isLoading) {
     return <Loader />
   }
 
-  if (isSuccess) {
-    setIsModalOpen(false)
+  if (isError) {
+    toast.error(serverError)
+  }
 
+  if (isSuccess) {
     return <SignInForm />
   }
 

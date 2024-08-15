@@ -7,7 +7,6 @@ export default function Home() {
         <Link href={'/personal-info'}>Person info</Link>
         <Link href={'/auth/sign-in'}>Sign in</Link>
         <Link href={'/auth/sign-up'}>Sign up</Link>
-        <Link href={'/auth/create-new-password'}>Create password</Link>
         <Link href={'/auth/forgot-password'}>Forgot password</Link>
         <Link href={'/auth/verification-link'}>Verification Link</Link>
         <Link href={'/auth/expired-link'}>Expired link</Link>

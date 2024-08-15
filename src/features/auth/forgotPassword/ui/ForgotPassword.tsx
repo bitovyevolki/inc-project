@@ -45,6 +45,7 @@ export const ForgotPassword = () => {
       return
     }
     await sendResetPassword({ email, recaptcha: captchaToken })
+    setCaptchaToken(null)
     setIsModalOpen(true)
   })
 
@@ -52,7 +53,7 @@ export const ForgotPassword = () => {
     setIsModalOpen(false)
   }
 
-  const captchaHandler = (token: null | string) => {
+  const captchaHandler = (token: Nullable<string>) => {
     setCaptchaToken(token)
   }
 

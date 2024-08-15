@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import {
   ConfirmEmailArgs,
   CreateNewPasswordArgs,
@@ -53,12 +55,13 @@ export const AuthService = inctagramService.injectEndpoints({
             await queryFulfilled
             localStorage.removeItem('token')
             dispatch(AuthService.util.resetApiState())
-          } catch (error) {
-            console.log(error)
+            console.log(localStorage.getItem('token'))
+          } catch (error: any) {
+            toast.error(error)
           }
         },
         query: queryArgs => ({
-          //   body: { baseUrl: 'http://localhost:3000' },
+          body: { baseUrl: 'http://localhost:3000' },
           method: 'POST',
           url: `/v1/auth/logout`,
         }),

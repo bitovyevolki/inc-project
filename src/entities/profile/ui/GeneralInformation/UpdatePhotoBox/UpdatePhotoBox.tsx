@@ -22,7 +22,6 @@ export const UpdatePhotoBox = ({ avatars }: IProps) => {
     isShowModal,
     removePhotoHandler,
     setIsShowModalHandler,
-    showModalHandler,
     tempPhoto,
     uploadImage,
   } = useUpdatePhoto()
@@ -68,7 +67,7 @@ export const UpdatePhotoBox = ({ avatars }: IProps) => {
           <AvatarIcon />
         </div>
       )}
-      <Button onClick={showModalHandler} variant={'outlined'}>
+      <Button onClick={() => setIsShowModalHandler(true)} variant={'outlined'}>
         Add a Profile Photo
       </Button>
     </div>

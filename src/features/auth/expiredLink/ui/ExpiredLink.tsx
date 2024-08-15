@@ -3,45 +3,54 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { useResendEmailMutation } from '@/src/features/auth/service/auth.service'
+import { ServerError } from '@/src/features/auth/service/auth.types'
+import { TimeRafikiIcon } from '@/src/shared/assets/icons/timeRafiki'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
-import Image from 'next/image'
 
 import s from './expiredLink.module.scss'
 
-import time from '../../../../../public/rafiki.svg'
-
-export type ExpiredLinkProps = {
+type Props = {
   email: string
 }
-export const ExpiredLink = ({ email }: ExpiredLinkProps) => {
+
+export const ExpiredLink = ({ email }: Props) => {
+  //
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [resendEmail, { isLoading, isSuccess }] = useResendEmailMutation()
+  const [resendEmail, { error, isError, isLoading, isSuccess }] = useResendEmailMutation()
+  const serverError = (error as ServerError)?.data?.messages[0]?.message
+
   const closeModal = () => {
     setIsModalOpen(false)
   }
 
-  const handleOnResendLink = async () => {
-    try {
-      await resendEmail({
-        email: email,
-      }).unwrap()
-      if (isSuccess) {
-        setIsModalOpen(true)
-      }
-    } catch (error: any) {
-      // eslint-disable-next-line no-console
-      toast.error(error.data.messages[0].message)
-    }
+  const onResendLink = async () => {
+    await resendEmail({ email })
+    setIsModalOpen(true)
   }
 
   if (isLoading) {
     return <Loader />
   }
 
+  if (isError) {
+    toast.error(serverError)
+  }
+
   return (
     <>
-      {isModalOpen && <Modal email={email} onOpenStateChange={closeModal} open={isModalOpen} />}
+      {isSuccess && (
+        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={'Email sent'}>
+          <div className={s.card}>
+            <Typography as={'p'} variant={'body1'}>
+              {`We have sent a link to confirm your email to ${email}`}
+            </Typography>
+            <Button className={s.buttonRight} onClick={closeModal} variant={'primary'}>
+              OK
+            </Button>
+          </div>
+        </ModalWindow>
+      )}
       <div className={s.wrapper}>
         <div className={s.card}>
           <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
@@ -50,35 +59,12 @@ export const ExpiredLink = ({ email }: ExpiredLinkProps) => {
           <Typography as={'p'} className={s.accentColor} variant={'body1'}>
             Looks like the verification link has expired. Not to worry, we can send the link again
           </Typography>
-          <Button fullWidth onClick={handleOnResendLink} variant={'primary'}>
+          <Button fullWidth onClick={onResendLink} variant={'primary'}>
             Resend link
           </Button>
         </div>
-        <div>
-          <Image alt={'time-management'} height={352} src={time} width={474} />
-        </div>
+        <TimeRafikiIcon />
       </div>
     </>
-  )
-}
-
-type ModalProps = {
-  email: string
-  onOpenStateChange: () => void
-  open: boolean
-}
-
-const Modal = ({ email, onOpenStateChange, open }: ModalProps) => {
-  return (
-    <ModalWindow onOpenChange={onOpenStateChange} open={open} title={'Email sent'}>
-      <div className={s.card}>
-        <Typography as={'p'} variant={'body1'}>
-          {`We have sent a link to confirm your email to ${email}`}
-        </Typography>
-        <Button className={s.buttonRight} onClick={onOpenStateChange} variant={'primary'}>
-          OK
-        </Button>
-      </div>
-    </ModalWindow>
   )
 }

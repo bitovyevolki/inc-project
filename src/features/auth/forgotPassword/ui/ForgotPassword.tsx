@@ -3,9 +3,10 @@ import { useState } from 'react'
 // eslint-disable-next-line import/no-named-as-default
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { useSendResetPasswordEmailMutation } from '@/src/features/auth/service/auth.service'
-import { ErrorResponse } from '@/src/features/auth/service/auth.types'
+import { ServerError } from '@/src/features/auth/service/auth.types'
 import { Nullable } from '@/src/shared/types/globalTypes'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, Card, FormInput, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
@@ -25,64 +26,63 @@ const schema = z.object({
 type Fields = z.infer<typeof schema>
 
 export const ForgotPassword = () => {
-  //
-
   const {
     control,
     formState: { errors, isValid },
     getValues,
     handleSubmit,
-    setError,
   } = useForm<Fields>({ defaultValues: { email: '' }, resolver: zodResolver(schema) })
 
   const [captchaToken, setCaptchaToken] = useState<Nullable<string>>()
-
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [sendResetPassword, { isLoading }] = useSendResetPasswordEmailMutation()
+  const [sendResetPassword, { error, isError, isLoading, isSuccess }] =
+    useSendResetPasswordEmailMutation()
+  const serverError = (error as ServerError)?.data?.messages[0]?.message
 
-  const onSubmit = handleSubmit(({ email }) => {
+  const onSubmit = handleSubmit(async ({ email }) => {
     if (!captchaToken) {
       return
     }
-
-    sendResetPassword({ email, recaptcha: captchaToken })
-      .unwrap()
-      .then(() => setIsModalOpen(true))
-      .catch((error: ErrorResponse) => {
-        const errorField = error?.data?.messages?.[0]?.field
-
-        if (errorField !== 'email') {
-          return
-        }
-
-        const message = error?.data?.messages?.[0]?.message
-
-        setError(errorField, { message })
-      })
+    await sendResetPassword({ email, recaptcha: captchaToken })
+    setIsModalOpen(true)
   })
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
 
   const captchaHandler = (token: null | string) => {
     setCaptchaToken(token)
   }
+
   const reCaptchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY_ID
 
   if (!reCaptchaKey) {
     throw new Error('We are not getting reCaptcha here')
   }
 
-  const closeModal = () => {
-    setIsModalOpen(false)
-  }
-
   if (isLoading) {
     return <Loader />
   }
 
+  if (isError) {
+    toast.error(serverError)
+  }
+
   return (
     <>
-      {isModalOpen && (
-        <Modal closeModal={closeModal} email={getValues('email')} open={isModalOpen} />
+      {isSuccess && (
+        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={'Email sent'}>
+          <div className={s.card}>
+            <Typography as={'p'} variant={'body1'}>
+              {`The link has been sent by email to ${getValues('email')}. If you don’t receive an email send link again.`}
+            </Typography>
+            <Button className={s.buttonRight} onClick={closeModal} variant={'primary'}>
+              OK
+            </Button>
+          </div>
+        </ModalWindow>
       )}
       <div className={s.wrapper}>
         <Card as={'div'} className={s.card}>
@@ -123,26 +123,5 @@ export const ForgotPassword = () => {
         </Card>
       </div>
     </>
-  )
-}
-
-type ModalProps = {
-  closeModal: () => void
-  email: string
-  open: boolean
-}
-
-const Modal = ({ closeModal, email, open }: ModalProps) => {
-  return (
-    <ModalWindow onOpenChange={closeModal} open={open} title={'Email sent'}>
-      <div className={s.card}>
-        <Typography as={'p'} variant={'body1'}>
-          {`The link has been sent by email to ${email}. If you don’t receive an email send link again.`}
-        </Typography>
-        <Button className={s.buttonRight} onClick={closeModal} variant={'primary'}>
-          OK
-        </Button>
-      </div>
-    </ModalWindow>
   )
 }

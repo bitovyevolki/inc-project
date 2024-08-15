@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { useCreateNewPasswordMutation } from '@/src/features/auth/service/auth.service'
+import { ServerError } from '@/src/features/auth/service/auth.types'
 import { SignInForm } from '@/src/features/auth/signIn'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
@@ -32,10 +34,7 @@ const schema = z
   )
 
 type Fields = z.infer<typeof schema>
-
-type Props = {
-  recoveryCode: string
-}
+type Props = { recoveryCode: string }
 
 export const CreateNewPassword = ({ recoveryCode }: Props) => {
   const {
@@ -46,6 +45,7 @@ export const CreateNewPassword = ({ recoveryCode }: Props) => {
 
   const [createNewPassword, { error, isError, isLoading, isSuccess }] =
     useCreateNewPasswordMutation()
+  const serverError = (error as ServerError)?.data?.messages[0]?.message
 
   const onSubmit = handleSubmit(data => {
     const newPassword = data.newPassword
@@ -61,39 +61,41 @@ export const CreateNewPassword = ({ recoveryCode }: Props) => {
     return <SignInForm />
   }
 
+  if (isError) {
+    toast.error(serverError)
+  }
+
   return (
-    <>
-      <div className={s.wrapper}>
-        <Card as={'div'} className={s.card}>
-          <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
-            Create new password
+    <div className={s.wrapper}>
+      <Card as={'div'} className={s.card}>
+        <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
+          Create new password
+        </Typography>
+        <form className={s.form} onSubmit={onSubmit}>
+          <FormInput
+            control={control}
+            errorMessage={errors.newPassword?.message}
+            inputMode={'text'}
+            label={'New password'}
+            name={'newPassword'}
+            type={'password'}
+          />
+          <FormInput
+            control={control}
+            errorMessage={errors.confirmPassword?.message}
+            inputMode={'text'}
+            label={'Password confirmation'}
+            name={'confirmPassword'}
+            type={'password'}
+          />
+          <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
+            Your password must be between 6 and 20 characters
           </Typography>
-          <form className={s.form} onSubmit={onSubmit}>
-            <FormInput
-              control={control}
-              errorMessage={errors.newPassword?.message}
-              inputMode={'text'}
-              label={'New password'}
-              name={'newPassword'}
-              type={'password'}
-            />
-            <FormInput
-              control={control}
-              errorMessage={errors.confirmPassword?.message}
-              inputMode={'text'}
-              label={'Password confirmation'}
-              name={'confirmPassword'}
-              type={'password'}
-            />
-            <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
-              Your password must be between 6 and 20 characters
-            </Typography>
-            <Button fullWidth type={'submit'} variant={'primary'}>
-              Create new password
-            </Button>
-          </form>
-        </Card>
-      </div>
-    </>
+          <Button fullWidth type={'submit'} variant={'primary'}>
+            Create new password
+          </Button>
+        </form>
+      </Card>
+    </div>
   )
 }

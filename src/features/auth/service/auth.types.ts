@@ -16,6 +16,13 @@ export type SendResetPasswordArgs = {
   email: string
   recaptcha: Nullable<string>
 }
+export type RecoverPasswordCodeArgs = {
+  recoveryCode: string
+}
+export type CreateNewPasswordArgs = {
+  newPassword: string
+  recoveryCode: string
+}
 
 export type ServerError = {
   data: {
@@ -43,8 +50,11 @@ export type SocialLoginType = {
 }
 
 export type GoogleLoginArgs = {
-  email: string
-  token: string
+  code: string
+}
+export type GoogleLoginResponse = {
+  accessToken: string
+  // email: string
 }
 
 export interface ErrorMessage {

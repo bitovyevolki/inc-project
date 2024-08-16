@@ -1,8 +1,9 @@
-import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 
 import s from './GeneralInformation.module.scss'
 
@@ -11,20 +12,15 @@ import {
   GeneralProfileFormValue,
   generalProfileSchema,
 } from '../../model/schema/general-profile.schema'
-import { Alert, IAlert } from '../Alert/Alert'
 import { Loader } from '../Loader/Loader'
 import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformationForm'
 import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 
 export const GeneralInformation = () => {
+  const t = useTranslations('GeneralProfile')
+
   const { data, isFetching, isLoading } = useGetProfileQuery()
   const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
-
-  const [alert, setAlert] = useState<IAlert>({ isShow: false, text: '', variant: 'success' })
-
-  const closeAlertHandler = () => {
-    setAlert({ ...alert, isShow: false })
-  }
 
   const {
     control,
@@ -48,9 +44,9 @@ export const GeneralInformation = () => {
     try {
       await updateProfile(data).unwrap()
 
-      setAlert({ ...alert, isShow: true, text: 'Your settings are saved!', variant: 'success' })
+      toast.success('Your settings are saved!', { position: 'top-right' })
     } catch (error) {
-      setAlert({ ...alert, isShow: true, text: 'Server is not available!', variant: 'error' })
+      toast.error('Error! Server is not available!', { position: 'top-right' })
     }
   }
 
@@ -64,13 +60,6 @@ export const GeneralInformation = () => {
 
   return (
     <>
-      {alert.isShow && (
-        <Alert
-          {...alert}
-          close={closeAlertHandler}
-          style={{ position: 'fixed', right: '60px', top: '60px' }}
-        />
-      )}
       <div className={s.generalInformation}>
         <UpdatePhotoBox avatars={data?.avatars as []} />
         <GeneralInformationForm control={control} handleSubmit={handleSubmit} onSubmit={onSubmit} />
@@ -88,7 +77,7 @@ export const GeneralInformation = () => {
               <Loader variant={'small'} />
             </div>
           ) : (
-            'Save Changes'
+            t('save-changes')
           )}
         </Button>
       </div>

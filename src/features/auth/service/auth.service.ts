@@ -4,6 +4,7 @@ import {
   ConfirmEmailArgs,
   CreateNewPasswordArgs,
   GoogleLoginArgs,
+  GoogleLoginResponse,
   RecoverPasswordCodeArgs,
   SendResetPasswordArgs,
   SignInArgs,
@@ -42,11 +43,18 @@ export const AuthService = inctagramService.injectEndpoints({
           }
         },
       }),
-      googleLogin: builder.mutation<void, GoogleLoginArgs>({
+      googleLogin: builder.mutation<GoogleLoginResponse, GoogleLoginArgs>({
+        async onQueryStarted(_, { queryFulfilled }) {
+          const { data } = await queryFulfilled
+
+          if (data.accessToken) {
+            localStorage.setItem('token', data.accessToken)
+          }
+        },
         query: data => ({
           body: { ...data },
           method: 'POST',
-          url: '/auth/google/login',
+          url: '/v1/auth/google/login',
         }),
       }),
       logOut: builder.query<void, void>({

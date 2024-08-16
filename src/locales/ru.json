@@ -15,7 +15,19 @@
     "have-account": "Ещё нет аккаунта?",
     "email": "Почта",
     "password": "Пароль",
-    "registration": "Регистрация"
+    "registration": "Регистрация",
+     "User Name": "Имя Пользователя",
+    "Sign-In": "Войти",
+    "Sign-Up": "Регистсрация",
+    "Sign Up": "Зарегистрироваться",
+    "Do You have an account ?": "У Вас есть аккаунт ?",
+    "Email": "Электронная почта",
+    "Password": "Пароль",
+    "Confirm Password": "Подтвердите пароль",
+    "I agree to the": "Я согласен с",
+    "Terms of Service": "Условиями использования",
+    "Privacy Policy": "Политикой конфиденциальности",
+    "and": "и"
   },
   "GeneralProfile": {
     "general": "Главная информация",

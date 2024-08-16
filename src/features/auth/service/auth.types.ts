@@ -36,13 +36,13 @@ export type ErrorResponse = {
     statusCode: number
   }
 }
-export type SocialLoginType = {
-  accessToken?: string
-}
 
 export type GoogleLoginArgs = {
-  email: string
-  token: string
+  code: string
+}
+export type GoogleLoginResponse = {
+  accessToken: string
+  // email: string
 }
 
 export interface ErrorMessage {

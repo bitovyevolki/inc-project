@@ -1,9 +1,6 @@
-import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { SocialsRegisterLogin } from '@/src/features/auth/socialsRegisterLogin/SocialsRegisterLogin'
-import { GitHubIcon } from '@/src/shared/assets/icons/github'
-import { GoogleIcon } from '@/src/shared/assets/icons/google'
 import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'

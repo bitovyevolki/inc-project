@@ -1,5 +1,5 @@
 {
-	"Signin": {
+  "Signin": {
     "title": "Sign in",
     "forgot": "Forgot Password",
     "signin": "Sign in",
@@ -7,5 +7,18 @@
     "email": "Email",
     "password": "Password",
     "registration": "Sign up"
+  },
+  "PasswordRecovery": {
+    "formTitle": "Forgot password",
+    "email": "Email",
+    "sendLink": "Send link",
+    "backToSignIn": "Back to sign in",
+    "instructions": "Enter your email address and we will send you further instructions.",
+    "sentLinkConfirmationMessage1": "The link has been sent by email to ",
+    "sentLinkConfirmationMessage2": ". If you don’t receive an email send link again.",
+    "OK": "OK",
+    "noRecaptchaError": "We are not getting reCaptcha here",
+    "emailRequiredMessage": "Email is absolutely necessary!",
+    "emailMistakeMessage": "Hello, that's not a way to write email."
   }
 }

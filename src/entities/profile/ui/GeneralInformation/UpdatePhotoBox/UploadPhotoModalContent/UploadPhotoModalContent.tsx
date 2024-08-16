@@ -1,5 +1,6 @@
 import { Button } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import s from './UploadPhotoModalContent.module.scss'
 
@@ -12,6 +13,8 @@ interface IProps {
 }
 
 export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) => {
+  const t = useTranslations('GeneralProfile')
+
   return (
     <div className={s.modalContent}>
       <div className={s.photoBox}>
@@ -26,7 +29,7 @@ export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) =>
               <Loader variant={'small'} />
             </div>
           ) : (
-            'Save'
+            t('save')
           )}
         </Button>
       </div>

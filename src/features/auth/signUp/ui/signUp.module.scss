@@ -13,9 +13,9 @@
   align-items: center;
   justify-content: center;
 
-  width: 432px;
+  max-width: 432px;
   min-height: 648px;
-  max-height: 744px;
+  max-height: 780px;
   padding: 1.5rem;
 }
 
@@ -54,6 +54,12 @@
   align-items: center;
 
   width: 100%;
+}
+.russianLang {
+  flex-wrap: wrap;
+  a:last-child {
+    padding-left: 1.9rem;
+  }
 }
 
 .loginLink {

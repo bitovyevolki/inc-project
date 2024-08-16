@@ -20,7 +20,7 @@ export const SocialsRegisterLogin = () => {
     onSuccess: async tokenResponse => {
       try {
         await googleLogin({ code: tokenResponse.code }).unwrap()
-        toast.success('Login successful:')
+        toast.success('Login successful')
         router.push(RouterPaths.PERSONAL_INFO)
       } catch (error: any) {
         toast.error(error.data.messages[0].message)

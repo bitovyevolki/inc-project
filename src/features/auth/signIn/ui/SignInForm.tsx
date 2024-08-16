@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { SocialsRegisterLogin } from '@/src/features/auth/socialsRegisterLogin/SocialsRegisterLogin'
 import { GitHubIcon } from '@/src/shared/assets/icons/github'
 import { GoogleIcon } from '@/src/shared/assets/icons/google'
 import { RouterPaths } from '@/src/shared/config/router.paths'
@@ -44,10 +45,7 @@ export const SignInForm = () => {
     <div className={s.wrapper}>
       <Card className={s.card}>
         <Typography variant={'h2'}>Sign In</Typography>
-        <div className={s.blockWithIcons}>
-          <GoogleIcon height={36} width={36} />
-          <GitHubIcon height={36} width={36} />
-        </div>
+        <SocialsRegisterLogin />
         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={s.input}>
             <FormInput control={control} label={'Email'} name={'email'} />

@@ -40,7 +40,6 @@ export const SignUpForm = () => {
       setIsModalOpen(true)
       reset()
     } catch (error: any) {
-      // eslint-disable-next-line no-console
       toast.error(error.data.messages[0].message)
     }
   }

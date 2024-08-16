@@ -38,7 +38,7 @@ export const SignUpForm = () => {
       setIsModalOpen(true)
       reset()
     } catch (error: any) {
-      alert(JSON.stringify(error))
+      toast.error(error.data.messages[0].message)
     }
   }
 

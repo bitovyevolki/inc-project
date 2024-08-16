@@ -21,5 +21,15 @@
     "Terms of Service": "Условиями использования",
     "Privacy Policy": "Политикой конфиденциальности",
     "and": "и"
+  },
+  "Sidebar": {
+    "home": "Главная",
+    "create": "Создать",
+    "my-profile": "Мой профиль",
+    "messenger": "Мессенджер",
+    "search": "Поиск",
+    "statistics": "Статистика",
+    "favorites": "Избранное",
+    "logout": "Выйти из аккаунта"
   }
 }

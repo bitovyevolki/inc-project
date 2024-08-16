@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { SocialsRegisterLogin } from '@/src/features/auth/socialsRegisterLogin/SocialsRegisterLogin'
@@ -8,6 +9,7 @@ import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 
 import s from './signInForm.module.scss'
 
@@ -17,7 +19,7 @@ import { SignInFormData, signInSchema } from '../model/schema/signInSchema'
 
 export const SignInForm = () => {
   const [signIn, { isLoading }] = useSignInMutation()
-
+  const t = useTranslations('Signin')
   const router = useRouter()
 
   const {
@@ -48,29 +50,34 @@ export const SignInForm = () => {
         <SocialsRegisterLogin />
         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={s.input}>
-            <FormInput control={control} label={'Email'} name={'email'} />
+            <FormInput control={control} label={`${t('email')}`} name={'email'} />
           </div>
           <div className={s.input}>
-            <FormInput control={control} label={'Password'} name={'password'} type={'password'} />
+            <FormInput
+              control={control}
+              label={`${t('password')}`}
+              name={'password'}
+              type={'password'}
+            />
             {errors.root && (
               <Typography className={s.error} variant={'caption'}>
                 {errors.root.message}
               </Typography>
             )}
             <Link className={s.link} href={'forgot-password'}>
-              <Typography variant={'body2'}>Forgot Password</Typography>
+              <Typography variant={'body2'}>{t('forgot')}</Typography>
             </Link>
           </div>
           <div className={s.buttons}>
             <Button as={'button'} fullWidth variant={'primary'}>
-              Sign In
+              {t('signin')}
             </Button>
             <Typography className={s.text} variant={'body2'}>
-              Don’t have an account?
+              {t('have-account')}
             </Typography>
             <Link className={s.link} href={'signup'}>
               <Button as={'button'} disabled={isLoading} fullWidth variant={'ghost'}>
-                Sign Up
+                {t('registration')}
               </Button>
             </Link>
           </div>

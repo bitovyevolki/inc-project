@@ -1,29 +1,28 @@
 import { ChangeEvent } from 'react'
+import { toast } from 'react-toastify'
 
 interface FormatImageProps {
   event: ChangeEvent<HTMLInputElement>
   onChangeFile: (file: FormData) => void
   onChangeTempPhoto: (value: string) => void
-  showAlert?: (text: string) => void
 }
 
-export const formatImage = ({
-  event,
-  onChangeFile,
-  onChangeTempPhoto,
-  showAlert,
-}: FormatImageProps) => {
+export const formatImage = ({ event, onChangeFile, onChangeTempPhoto }: FormatImageProps) => {
   if (event.target.files) {
     const file = event?.target?.files[0]
 
     if (checkFileSize(file.size)) {
-      showAlert && showAlert('Photo size must be less 10 MB!')
+      toast.error('Photo size must be less 10 MB!', {
+        containerId: 'select-avatar',
+      })
 
       return
     }
 
     if (!checkFileFormat(file.type)) {
-      showAlert && showAlert('The format of the uploaded photo must be PNG and JPEG')
+      toast.error('The format of the uploaded photo must be PNG and JPEG', {
+        containerId: 'select-avatar',
+      })
 
       return
     }

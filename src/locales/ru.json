@@ -1,5 +1,5 @@
 {
-	"Signin": {
+  "Signin": {
     "title": "Вход",
     "forgot": "Забыли пароль?",
     "signin": "Войти",
@@ -8,7 +8,7 @@
     "password": "Пароль",
     "registration": "Регистрация"
   },
-	"Signup": {
+  "Signup": {
     "title": "Вход",
     "forgot": "Забыли пароль?",
     "signin": "Войти",
@@ -16,5 +16,25 @@
     "email": "Почта",
     "password": "Пароль",
     "registration": "Регистрация"
+  },
+  "GeneralProfile": {
+    "general": "Главная информация",
+    "devices": "Устройства",
+    "account-management": "Управление учетными записями",
+    "my-payments": "Мои платежи",
+    "save-changes": "Сохранить Изменения",
+    "user-name": "Никнейм",
+    "first-name": "Имя",
+    "last-name": "Фамилия",
+    "date-of-birth": "Дата рождения",
+    "select-country": "Выберите свою страну",
+    "select-city": "Выберите свой город",
+    "about-me": "Обо мне",
+    "country": "Страна",
+    "city": "Город",
+    "add-photo": "Добавить фото",
+    "update-photo": "Обновить фото",
+    "select-photo": "Выберите с компьютера",
+    "save": "Сохранить"
   }
 }

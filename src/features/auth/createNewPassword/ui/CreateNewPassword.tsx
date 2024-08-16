@@ -8,11 +8,13 @@ import { SignInForm } from '@/src/features/auth/signIn'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
+import i18n from 'i18next'
+import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 import s from './createNewPassword.module.scss'
 
-const schema = z
+const schemaEn = z
   .object({
     confirmPassword: z
       .string({ required_error: 'Password is absolutely necessary!' })
@@ -32,11 +34,36 @@ const schema = z
       path: ['confirmPassword'],
     }
   )
+const schemaRu = z
+  .object({
+    confirmPassword: z
+      .string({ required_error: 'Обязательное поле' })
+      .min(6, 'Пароль должен содержать не меньше 6 знаков')
+      .max(20, 'Пароль должен содержать не больше 20 знаков'),
+    newPassword: z
+      .string({ required_error: 'Обязательное поле' })
+      .min(6, 'Пароль должен содержать не меньше 6 знаков')
+      .max(20, 'Пароль должен содержать не больше 20 знаков'),
+  })
+  .refine(
+    values => {
+      return values.newPassword === values.confirmPassword
+    },
+    {
+      message: 'Пароли должны совпадать',
+      path: ['confirmPassword'],
+    }
+  )
 
-type Fields = z.infer<typeof schema>
+type Fields = z.infer<typeof schemaEn>
 type Props = { recoveryCode: string }
 
 export const CreateNewPassword = ({ recoveryCode }: Props) => {
+  const t = useTranslations('CreateNewPassword')
+  const locale = i18n.language
+
+  const schema = locale === 'en' ? schemaEn : schemaRu
+
   const {
     control,
     formState: { errors },
@@ -69,14 +96,14 @@ export const CreateNewPassword = ({ recoveryCode }: Props) => {
     <div className={s.wrapper}>
       <Card as={'div'} className={s.card}>
         <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
-          Create new password
+          {t('FormTitle')}
         </Typography>
         <form className={s.form} onSubmit={onSubmit}>
           <FormInput
             control={control}
             errorMessage={errors.newPassword?.message}
             inputMode={'text'}
-            label={'New password'}
+            label={t('NewPasswordLabel')}
             name={'newPassword'}
             type={'password'}
           />
@@ -84,15 +111,15 @@ export const CreateNewPassword = ({ recoveryCode }: Props) => {
             control={control}
             errorMessage={errors.confirmPassword?.message}
             inputMode={'text'}
-            label={'Password confirmation'}
+            label={t('PasswordConfirmationLabel')}
             name={'confirmPassword'}
             type={'password'}
           />
           <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
-            Your password must be between 6 and 20 characters
+            {t('Instructions')}
           </Typography>
           <Button fullWidth type={'submit'} variant={'primary'}>
-            Create new password
+            {t('ButtonCreatePassword')}
           </Button>
         </form>
       </Card>

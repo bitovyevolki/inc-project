@@ -86,7 +86,7 @@ export const ForgotPassword = () => {
   return (
     <>
       {isSuccess && (
-        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={'Email sent'}>
+        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={t('ModalTitle')}>
           <div className={s.card}>
             <Typography as={'p'} variant={'body1'}>
               {`${t('sentLinkConfirmationMessage1')} ${getValues('email')}${t('sentLinkConfirmationMessage2')}`}

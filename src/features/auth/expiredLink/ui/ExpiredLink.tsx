@@ -7,6 +7,7 @@ import { ServerError } from '@/src/features/auth/service/auth.types'
 import { TimeRafikiIcon } from '@/src/shared/assets/icons/timeRafiki'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
+import { useTranslations } from 'next-intl'
 
 import s from './expiredLink.module.scss'
 
@@ -19,6 +20,8 @@ export const ExpiredLink = ({ email }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [resendEmail, { error, isError, isLoading, isSuccess }] = useResendEmailMutation()
   const serverError = (error as ServerError)?.data?.messages[0]?.message
+
+  const t = useTranslations('ExpiredLink')
 
   const closeModal = () => {
     setIsModalOpen(false)
@@ -40,13 +43,13 @@ export const ExpiredLink = ({ email }: Props) => {
   return (
     <>
       {isSuccess && (
-        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={'Email sent'}>
+        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={t('ModalTitle')}>
           <div className={s.card}>
             <Typography as={'p'} variant={'body1'}>
-              {`We have sent a link to confirm your email to ${email}`}
+              {`${t('sentLinkConfirmationMessage')} ${email}`}
             </Typography>
             <Button className={s.buttonRight} onClick={closeModal} variant={'primary'}>
-              OK
+              {t('OK')}
             </Button>
           </div>
         </ModalWindow>
@@ -54,13 +57,13 @@ export const ExpiredLink = ({ email }: Props) => {
       <div className={s.wrapper}>
         <div className={s.card}>
           <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
-            Email verification link expired
+            {t('ExpiredLinkTitle')}
           </Typography>
           <Typography as={'p'} className={s.accentColor} variant={'body1'}>
-            Looks like the verification link has expired. Not to worry, we can send the link again
+            {t('ExpiredLinkMessage')}
           </Typography>
           <Button fullWidth onClick={onResendLink} variant={'primary'}>
-            Resend link
+            {t('ResendLinkButton')}
           </Button>
         </div>
         <TimeRafikiIcon />

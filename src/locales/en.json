@@ -9,6 +9,7 @@
     "registration": "Sign up"
   },
   "PasswordRecovery": {
+    "ModalTitle": "Email sent",
     "formTitle": "Forgot password",
     "email": "Email",
     "sendLink": "Send link",
@@ -20,5 +21,20 @@
     "noRecaptchaError": "We are not getting reCaptcha here",
     "emailRequiredMessage": "Email is absolutely necessary!",
     "emailMistakeMessage": "Hello, that's not a way to write email."
+  },
+  "ExpiredLink": {
+    "ModalTitle": "Email sent",
+    "sentLinkConfirmationMessage": "We have sent a link to confirm your email to ",
+    "ОК": "ОК",
+    "ExpiredLinkTitle": "Email verification link expired",
+    "ExpiredLinkMessage": "Looks like the verification link has expired. Not to worry, we can send the link again",
+    "ResendLinkButton": "Resend Link"
+  },
+  "CreateNewPassword": {
+    "FormTitle": "Create new password",
+    "NewPasswordLabel": "New password",
+    "PasswordConfirmationLabel": "Password confirmation",
+    "Instructions": "Your password must be between 6 and 20 characters",
+    "ButtonCreatePassword": "Create new password"
   }
 }

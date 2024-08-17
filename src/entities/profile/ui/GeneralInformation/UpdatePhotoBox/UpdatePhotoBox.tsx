@@ -2,6 +2,7 @@ import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { RemovePhotoIcon } from '@/src/shared/assets/icons/remove-photo'
 import { Button, ModalWindow } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import s from './UpdatePhotoBox.module.scss'
 
@@ -26,13 +27,11 @@ export const UpdatePhotoBox = ({ avatars }: IProps) => {
     uploadImage,
   } = useUpdatePhoto()
 
+  const t = useTranslations('GeneralProfile')
+
   return (
     <div className={s.photoBox}>
-      <ModalWindow
-        onOpenChange={setIsShowModalHandler}
-        open={isShowModal}
-        title={'Add a Profile Photo'}
-      >
+      <ModalWindow onOpenChange={setIsShowModalHandler} open={isShowModal} title={t('add-photo')}>
         {tempPhoto ? (
           <UploadPhotoModalContent
             isLoading={isLoadingCreateAvatar}
@@ -67,8 +66,12 @@ export const UpdatePhotoBox = ({ avatars }: IProps) => {
           <AvatarIcon />
         </div>
       )}
-      <Button onClick={() => setIsShowModalHandler(true)} variant={'outlined'}>
-        Add a Profile Photo
+      <Button
+        onClick={() => setIsShowModalHandler(true)}
+        style={{ textAlign: 'center' }}
+        variant={'outlined'}
+      >
+        {avatars.length > 0 ? t('update-photo') : t('add-photo')}
       </Button>
     </div>
   )

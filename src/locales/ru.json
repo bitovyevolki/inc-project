@@ -20,14 +20,7 @@
     "I agree to the": "Я согласен с",
     "Terms of Service": "Условиями использования",
     "Privacy Policy": "Политикой конфиденциальности",
-    "and": "и",
-    "title": "Вход",
-    "forgot": "Забыли пароль?",
-    "signin": "Войти",
-    "have-account": "Ещё нет аккаунта?",
-    "email": "Почта",
-    "password": "Пароль",
-    "registration": "Регистрация"
+    "and": "и"
   },
   "PasswordRecovery": {
     "ModalTitle": "Подтверждение отправки",
@@ -55,5 +48,35 @@
     "PasswordConfirmationLabel": "Подтверждение пароля",
     "Instructions": "Пароль должен содержать от 6 до 20 знаков",
     "ButtonCreatePassword": "Создать"
+  },
+  "Sidebar": {
+    "home": "Главная",
+    "create": "Создать",
+    "my-profile": "Мой профиль",
+    "messenger": "Мессенджер",
+    "search": "Поиск",
+    "statistics": "Статистика",
+    "favorites": "Избранное",
+    "logout": "Выйти из аккаунта"
+   },
+  "GeneralProfile": {
+    "general": "Главная информация",
+    "devices": "Устройства",
+    "account-management": "Управление учетными записями",
+    "my-payments": "Мои платежи",
+    "save-changes": "Сохранить Изменения",
+    "user-name": "Никнейм",
+    "first-name": "Имя",
+    "last-name": "Фамилия",
+    "date-of-birth": "Дата рождения",
+    "select-country": "Выберите свою страну",
+    "select-city": "Выберите свой город",
+    "about-me": "Обо мне",
+    "country": "Страна",
+    "city": "Город",
+    "add-photo": "Добавить фото",
+    "update-photo": "Обновить фото",
+    "select-photo": "Выберите с компьютера",
+    "save": "Сохранить"
   }
 }

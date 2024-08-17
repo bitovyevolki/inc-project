@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 
 import s from './GeneralInformation.module.scss'
 
@@ -16,7 +17,9 @@ import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformat
 import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 
 export const GeneralInformation = () => {
-  const { data, isFetching, isLoading } = useGetProfileQuery()
+  const t = useTranslations('GeneralProfile')
+
+  const { data, isError, isFetching, isLoading } = useGetProfileQuery()
   const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
 
   const {
@@ -54,6 +57,9 @@ export const GeneralInformation = () => {
       </div>
     )
   }
+  if (isError) {
+    return
+  }
 
   return (
     <>
@@ -74,7 +80,7 @@ export const GeneralInformation = () => {
               <Loader variant={'small'} />
             </div>
           ) : (
-            'Save Changes'
+            t('save-changes')
           )}
         </Button>
       </div>

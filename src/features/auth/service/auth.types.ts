@@ -8,6 +8,16 @@ export type SignUpArgs = {
 export type ConfirmEmailArgs = {
   confirmationCode: string
 }
+
+export type CreateNewPasswordArgs = {
+  newPassword: string
+  recoveryCode: string
+}
+
+export type RecoverPasswordCodeArgs = {
+  recoveryCode: string
+}
+
 export type SignUpResendEmailType = {
   email: string
 }
@@ -16,15 +26,8 @@ export type SendResetPasswordArgs = {
   email: string
   recaptcha: Nullable<string>
 }
-export type RecoverPasswordCodeArgs = {
-  recoveryCode: string
-}
-export type CreateNewPasswordArgs = {
-  newPassword: string
-  recoveryCode: string
-}
 
-export type ErrorResponse = {
+export type ServerError = {
   data: {
     error: string
     messages: [

@@ -19,7 +19,7 @@ import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 export const GeneralInformation = () => {
   const t = useTranslations('GeneralProfile')
 
-  const { data, isFetching, isLoading } = useGetProfileQuery()
+  const { data, isError, isFetching, isLoading } = useGetProfileQuery()
   const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
 
   const {
@@ -56,6 +56,9 @@ export const GeneralInformation = () => {
         <Loader variant={'large'} />
       </div>
     )
+  }
+  if (isError) {
+    return
   }
 
   return (

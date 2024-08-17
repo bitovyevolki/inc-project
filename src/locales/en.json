@@ -41,6 +41,35 @@
     "Terms of Service": "Terms of Service",
     "Privacy Policy": "Privacy Policy",
     "and": "and"
+},
+  "PasswordRecovery": {
+    "ModalTitle": "Email sent",
+    "formTitle": "Forgot password",
+    "email": "Email",
+    "sendLink": "Send link",
+    "backToSignIn": "Back to sign in",
+    "instructions": "Enter your email address and we will send you further instructions.",
+    "sentLinkConfirmationMessage1": "The link has been sent by email to ",
+    "sentLinkConfirmationMessage2": ". If you don’t receive an email send link again.",
+    "OK": "OK",
+    "noRecaptchaError": "We are not getting reCaptcha here",
+    "emailRequiredMessage": "Email is absolutely necessary!",
+    "emailMistakeMessage": "Hello, that's not a way to write email."
+  },
+  "ExpiredLink": {
+    "ModalTitle": "Email sent",
+    "sentLinkConfirmationMessage": "We have sent a link to confirm your email to ",
+    "ОК": "ОК",
+    "ExpiredLinkTitle": "Email verification link expired",
+    "ExpiredLinkMessage": "Looks like the verification link has expired. Not to worry, we can send the link again",
+    "ResendLinkButton": "Resend Link"
+  },
+  "CreateNewPassword": {
+    "FormTitle": "Create new password",
+    "NewPasswordLabel": "New password",
+    "PasswordConfirmationLabel": "Password confirmation",
+    "Instructions": "Your password must be between 6 and 20 characters",
+    "ButtonCreatePassword": "Create new password"
   },
   "Sidebar": {
     "home": "Home",

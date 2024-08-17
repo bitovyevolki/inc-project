@@ -43,7 +43,7 @@ export const SignInForm = () => {
   return (
     <div className={s.wrapper}>
       <Card className={s.card}>
-        <Typography variant={'h2'}>Sign In</Typography>
+        <Typography variant={'h2'}>{t('title')}</Typography>
         <SocialsRegisterLogin />
         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={s.input}>
@@ -72,7 +72,7 @@ export const SignInForm = () => {
             <Typography className={s.text} variant={'body2'}>
               {t('have-account')}
             </Typography>
-            <Link className={s.link} href={'signup'}>
+            <Link className={s.link} href={'sign-up'}>
               <Button as={'button'} disabled={isLoading} fullWidth variant={'ghost'}>
                 {t('registration')}
               </Button>

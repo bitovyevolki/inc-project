@@ -16,6 +16,10 @@ type SignUpFormProps = {
   messages: any
 }
 export const SignUpForm = ({ locale }: SignUpFormProps) => {
+
+import { SocialsRegisterLogin } from '../../socialsRegisterLogin/SocialsRegisterLogin'
+
+export const SignUpForm = () => {
   const {
     control,
     formState: { errors },

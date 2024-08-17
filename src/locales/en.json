@@ -9,7 +9,7 @@
     "registration": "Sign up"
   },
   "PasswordRecovery": {
-    "ModalTitle": "Email sentt",
+    "ModalTitle": "Email sent",
     "formTitle": "Forgot password",
     "email": "Email",
     "sendLink": "Send link",

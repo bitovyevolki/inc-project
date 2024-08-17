@@ -1,5 +1,5 @@
 {
-	"Signin": {
+  "Signin": {
     "title": "Вход",
     "forgot": "Забыли пароль?",
     "signin": "Войти",
@@ -8,7 +8,7 @@
     "password": "Пароль",
     "registration": "Регистрация"
   },
-	"Signup": {
+  "Signup": {
     "title": "Вход",
     "forgot": "Забыли пароль?",
     "signin": "Войти",
@@ -16,5 +16,32 @@
     "email": "Почта",
     "password": "Пароль",
     "registration": "Регистрация"
+  },
+  "PasswordRecovery": {
+    "ModalTitle": "Подтверждение отправки",
+    "formTitle": "Восстановление пароля",
+    "email": "Email",
+    "sendLink": "Отправить ссылку",
+    "backToSignIn": "Вернуться к регистрации",
+    "instructions": "Введите адрес электронной почты и мы отправим дальнейшие интсрукции.",
+    "sentLinkConfirmationMessage1": "Ссылка была оптравлена на указанную электронную почту ",
+    "sentLinkConfirmationMessage2": ". Если подтверждающее письмо не было получено, запросите отправку ссылки повторно.",
+    "OK": "OK",
+    "noRecaptchaError": "Не пройдена проверка 'Я не робот'"
+  },
+  "ExpiredLink": {
+    "ModalTitle": "Подтверждение отправки",
+    "sentLinkConfirmationMessage": "Мы отправили ссылку для подтверждения на указанный адрес электронной почты ",
+    "ОК": "ОК",
+    "ExpiredLinkTitle": "Ссылка не работает",
+    "ExpiredLinkMessage": "Похоже, что у отправленной ссылки на подтверждение истек срок действия. Не волнуйтесь, мы можем отправить ссылку еще раз.",
+    "ResendLinkButton": "Отправить ссылку"
+  },
+  "CreateNewPassword": {
+    "FormTitle": "Создание нового пароля",
+    "NewPasswordLabel": "Новый пароль",
+    "PasswordConfirmationLabel": "Подтверждение пароля",
+    "Instructions": "Пароль должен содержать от 6 до 20 знаков",
+    "ButtonCreatePassword": "Создать"
   }
 }

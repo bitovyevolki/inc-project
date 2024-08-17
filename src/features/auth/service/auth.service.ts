@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import {
   ConfirmEmailArgs,
   CreateNewPasswordArgs,
@@ -55,6 +57,22 @@ export const AuthService = inctagramService.injectEndpoints({
           url: '/v1/auth/google/login',
         }),
       }),
+      logOut: builder.query<void, void>({
+        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled
+            localStorage.removeItem('token')
+            dispatch(AuthService.util.resetApiState())
+          } catch (error: any) {
+            toast.error(error)
+          }
+        },
+        query: () => ({
+          body: { baseUrl: 'http://localhost:3000' },
+          method: 'POST',
+          url: `/v1/auth/logout`,
+        }),
+      }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
           body: { ...data, baseUrl: process.env.NEXT_PUBLIC_BASE_URL },
@@ -102,6 +120,7 @@ export const {
   useConfirmEmailQuery,
   useCreateNewPasswordMutation,
   useGoogleLoginMutation,
+  useLazyLogOutQuery,
   useResendEmailMutation,
   useSendResetPasswordEmailMutation,
   useSignInMutation,

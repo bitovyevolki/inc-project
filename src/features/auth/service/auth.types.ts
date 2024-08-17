@@ -8,6 +8,12 @@ export type SignUpArgs = {
 export type ConfirmEmailArgs = {
   confirmationCode: string
 }
+
+export type CreateNewPasswordArgs = {
+  newPassword: string
+  recoveryCode: string
+}
+
 export type SignUpResendEmailType = {
   email: string
 }

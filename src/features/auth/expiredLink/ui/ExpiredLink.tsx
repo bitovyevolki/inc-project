@@ -16,7 +16,6 @@ type Props = {
 }
 
 export const ExpiredLink = ({ email }: Props) => {
-  //
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [resendEmail, { error, isError, isLoading, isSuccess }] = useResendEmailMutation()
   const serverError = (error as ServerError)?.data?.messages[0]?.message

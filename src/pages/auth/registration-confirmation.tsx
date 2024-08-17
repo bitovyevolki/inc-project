@@ -3,6 +3,7 @@ import { ExpiredLink } from '@/src/features/auth/expiredLink'
 import { useConfirmEmailQuery } from '@/src/features/auth/service/auth.service'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -37,5 +38,16 @@ export default function RegistrationConfirmation() {
         <EmailVerifySuccess />
       </>
     )
+  }
+}
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const locale = context.req.cookies['next-language'] || 'en'
+  const messages = (await import(`../../locales/${locale}.json`)).default
+
+  return {
+    props: {
+      messages,
+    },
   }
 }

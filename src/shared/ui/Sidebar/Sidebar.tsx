@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { useLazyLogOutQuery } from '@/src/features/auth/service/auth.service'
 import { SignInForm } from '@/src/features/auth/signIn'
@@ -6,13 +6,28 @@ import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import s from './Sidebar.module.scss'
 
-import { sidebarLinks } from './links'
+import { RouterPaths } from '../../config/router.paths'
+import {
+  CreateIcon,
+  FavoritesIcon,
+  HomeIcon,
+  MessengerIcon,
+  MyProfileIcon,
+  SearchIcon,
+  StatisticsIcon,
+} from './Icons'
+
+interface ILink {
+  path: string
+  svg: () => React.JSX.Element
+  title: string
+}
 
 export const Sidebar = () => {
-  //
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [logOutQuery, { isLoading, isSuccess }] = useLazyLogOutQuery()
@@ -20,6 +35,7 @@ export const Sidebar = () => {
   const onLogout = () => {
     logOutQuery()
   }
+  const t = useTranslations('Sidebar')
 
   if (isLoading) {
     return <Loader />
@@ -28,6 +44,16 @@ export const Sidebar = () => {
   if (isSuccess) {
     return <SignInForm />
   }
+
+  const sidebarLinks: ILink[] = [
+    { path: RouterPaths.HOME, svg: HomeIcon, title: t('home') },
+    { path: RouterPaths.HOME, svg: CreateIcon, title: t('create') },
+    { path: RouterPaths.HOME, svg: MyProfileIcon, title: t('my-profile') },
+    { path: RouterPaths.HOME, svg: MessengerIcon, title: t('messenger') },
+    { path: RouterPaths.HOME, svg: SearchIcon, title: t('search') },
+    { path: RouterPaths.HOME, svg: StatisticsIcon, title: t('statistics') },
+    { path: RouterPaths.HOME, svg: FavoritesIcon, title: t('favorites') },
+  ]
 
   return (
     <>

@@ -12,7 +12,7 @@ export const EmailVerifySuccess = () => {
         <Typography variant={'h1'}>{'Congratulations!'}</Typography>
         <Typography variant={'body1'}>{'Your email has been confirmed.'}</Typography>
       </div>
-      <Button as={Link} className={s.button} href={'/signin'} variant={'primary'}>
+      <Button as={Link} className={s.button} href={'/sign-in'} variant={'primary'}>
         <Typography variant={'h3'}>{'Sign in'}</Typography>
       </Button>
       <Image alt={'Sign up is success'} className={s.img} src={emailConfirmed} />

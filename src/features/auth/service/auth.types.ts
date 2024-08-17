@@ -14,6 +14,10 @@ export type CreateNewPasswordArgs = {
   recoveryCode: string
 }
 
+export type RecoverPasswordCodeArgs = {
+  recoveryCode: string
+}
+
 export type SignUpResendEmailType = {
   email: string
 }

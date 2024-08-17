@@ -10,6 +10,8 @@ import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki
 
 import s from './signUp.module.scss'
 
+import { SocialsRegisterLogin } from '../../socialsRegisterLogin/SocialsRegisterLogin'
+
 export const SignUpForm = () => {
   const {
     control,
@@ -43,16 +45,13 @@ export const SignUpForm = () => {
   }
 
   return (
-    <>
+    <div className={s.wrapper}>
       {!isModalOpen && (
         <Card className={s.card}>
           <Typography as={'h1'} variant={'h1'}>
             {'Sing-Up'}
           </Typography>
-          <div className={s.socialIcons}>
-            <GoogleIcon height={36} width={36} />
-            <GitHubIcon height={36} width={36} />
-          </div>
+          <SocialsRegisterLogin />
           <form className={s.form} onSubmit={handleSubmit(sendHandler)}>
             <div className={s.inputWrapper}>
               <FormInput
@@ -123,6 +122,6 @@ export const SignUpForm = () => {
       {isModalOpen && (
         <SignUpModal onClose={onModalClose} open={isModalOpen} userEmail={userEmail ?? ''} />
       )}
-    </>
+    </div>
   )
 }

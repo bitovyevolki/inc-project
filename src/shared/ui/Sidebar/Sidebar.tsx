@@ -75,8 +75,8 @@ export const Sidebar = () => {
         </ModalWindow>
       )}
       <nav className={s.sidebar}>
-        {sidebarLinks.map(l => (
-          <Link className={s.link} href={l.path} key={l.path}>
+        {sidebarLinks.map((l, ind) => (
+          <Link className={s.link} href={l.path} key={l.path + '-' + ind}>
             <l.svg />
             <Typography variant={'h4'}>{l.title}</Typography>
           </Link>

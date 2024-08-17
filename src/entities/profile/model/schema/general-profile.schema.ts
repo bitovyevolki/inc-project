@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { checkAge } from '../utils/date'
+import { checkAge } from '../../lib/utils/date'
 
 export const generalProfileSchema = z.object({
   aboutMe: z.string().max(200),

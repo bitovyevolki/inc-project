@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 
 import s from './SelectPhotoModalContent.module.scss'
 
-import { useSelectPhoto } from './useSelectPhoto'
+import { useSelectPhoto } from '../../../../lib/hooks/useSelectPhoto'
 
 interface IProps {
   onChangeFile: (file: FormData) => void

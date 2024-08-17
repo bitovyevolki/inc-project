@@ -41,5 +41,15 @@
     "Terms of Service": "Terms of Service",
     "Privacy Policy": "Privacy Policy",
     "and": "and"
+  },
+  "Sidebar": {
+    "home": "Home",
+    "create": "Create",
+    "my-profile": "My Profile",
+    "messenger": "Messenger",
+    "search": "Search",
+    "statistics": "Statistics",
+    "favorites": "Favorites",
+    "logout": "Logout"
   }
 }

@@ -5,21 +5,18 @@ import { toast } from 'react-toastify'
 import { useSignUpMutation } from '@/src/features/auth/service/auth.service'
 import { SignUpFormValues, useSignUpForm } from '@/src/features/auth/signUp/model/signUpSchema'
 import { SignUpModal } from '@/src/features/auth/signUp/ui/signUp/sign-up-modal/SignUpModal'
-import { SocialsRegisterLogin } from '@/src/features/auth/socialsRegisterLogin/SocialsRegisterLogin'
 import { Button, Card, FormCheckbox, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 
 import s from './signUp.module.scss'
+
+import { SocialsRegisterLogin } from '../../socialsRegisterLogin/SocialsRegisterLogin'
 type SignUpFormProps = {
   locale: string
   messages: any
 }
 export const SignUpForm = ({ locale }: SignUpFormProps) => {
-
-import { SocialsRegisterLogin } from '../../socialsRegisterLogin/SocialsRegisterLogin'
-
-export const SignUpForm = () => {
   const {
     control,
     formState: { errors },

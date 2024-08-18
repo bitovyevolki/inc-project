@@ -17,22 +17,23 @@ type SignUpFormProps = {
   messages: any
 }
 export const SignUpForm = ({ locale }: SignUpFormProps) => {
+  const t = useTranslations('Signup')
+  const isRussian = locale === 'ru'
   const {
     control,
     formState: { errors },
+    getValues,
     handleSubmit,
     reset,
   } = useSignUpForm(locale === 'ru' ? 'ru' : 'en')
 
-  const t = useTranslations('Signup')
-  const isRussian = locale === 'ru'
+  const userEmail = getValues('email')
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [userEmail, setUserEmail] = useState<string>('')
   const [signUp, isLoading] = useSignUpMutation()
   const onModalClose = () => {
     setIsModalOpen(prev => !prev)
-    setUserEmail('')
+    reset()
   }
 
   const sendHandler: SubmitHandler<SignUpFormValues> = async data => {
@@ -43,9 +44,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
         userName: data.userName,
       }).unwrap()
 
-      setUserEmail(data.email)
       setIsModalOpen(true)
-      reset()
     } catch (error: any) {
       toast.error(error.data.messages[0].message)
     }

@@ -37,14 +37,6 @@ export type ServerError = {
   }
 }
 
-export type RecoverPasswordCodeArgs = {
-  recoveryCode: string
-}
-export type CreateNewPasswordArgs = {
-  newPassword: string
-  recoveryCode: string
-}
-
 export type SocialLoginType = {
   accessToken?: string
 }

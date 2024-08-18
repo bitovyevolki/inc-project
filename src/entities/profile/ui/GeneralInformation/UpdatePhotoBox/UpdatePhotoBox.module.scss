@@ -50,3 +50,20 @@
     border-radius: 50%;
   }
 }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+
+  width: 378px;
+  padding: 1.5rem;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+}

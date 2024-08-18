@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef } from 'react'
 
-import { formatImage } from '@/src/entities/profile/model/utils/image'
+import { formatImage } from '@/src/entities/profile/lib/utils/image'
 
 interface IProps {
   onChangeFile: (file: FormData) => void

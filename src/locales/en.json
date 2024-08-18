@@ -26,6 +26,8 @@
     "add-photo": "Add a Profile Photo",
     "update-photo": "Update the Photo",
     "select-photo": "Select from computer",
+    "delete-photo": "Delete a photo",
+    "delete-photo-confirm": "Do you really want to delete your profile photo?",
     "save": "Save"
   },
   "Signup": {
@@ -41,7 +43,7 @@
     "Terms of Service": "Terms of Service",
     "Privacy Policy": "Privacy Policy",
     "and": "and"
-},
+  },
   "PasswordRecovery": {
     "ModalTitle": "Email sent",
     "formTitle": "Forgot password",

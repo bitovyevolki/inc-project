@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
@@ -12,14 +13,13 @@ import {
   GeneralProfileFormValue,
   generalProfileSchema,
 } from '../../model/schema/general-profile.schema'
-import { Loader } from '../Loader/Loader'
 import { GeneralInformationForm } from './GeneralInformationForm/GeneralInformationForm'
 import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 
 export const GeneralInformation = () => {
   const t = useTranslations('GeneralProfile')
 
-  const { data, isError, isFetching, isLoading } = useGetProfileQuery()
+  const { data, isFetching, isLoading } = useGetProfileQuery()
   const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
 
   const {
@@ -50,21 +50,26 @@ export const GeneralInformation = () => {
     }
   }
 
+  const btnChildren = isLoadingUpdate ? (
+    <div className={s.btnLoaderWrapper}>
+      <RoundLoader variant={'small'} />
+    </div>
+  ) : (
+    t('save-changes')
+  )
+
   if (isLoading) {
     return (
       <div className={s.loader}>
-        <Loader variant={'large'} />
+        <RoundLoader variant={'large'} />
       </div>
     )
-  }
-  if (isError) {
-    return
   }
 
   return (
     <>
       <div className={s.generalInformation}>
-        <UpdatePhotoBox avatars={data?.avatars as []} />
+        <UpdatePhotoBox avatars={data?.avatars || []} />
         <GeneralInformationForm control={control} handleSubmit={handleSubmit} onSubmit={onSubmit} />
       </div>
       <div className={s.border} />
@@ -75,13 +80,7 @@ export const GeneralInformation = () => {
           type={'submit'}
           variant={'primary'}
         >
-          {isLoadingUpdate ? (
-            <div className={s.btnLoaderWrapper}>
-              <Loader variant={'small'} />
-            </div>
-          ) : (
-            t('save-changes')
-          )}
+          {btnChildren}
         </Button>
       </div>
     </>

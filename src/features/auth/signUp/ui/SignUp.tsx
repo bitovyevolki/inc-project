@@ -22,7 +22,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useSignUpForm()
+  } = useSignUpForm(locale === 'ru' ? 'ru' : 'en')
 
   const t = useTranslations('Signup')
   const isRussian = locale === 'ru'

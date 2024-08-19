@@ -66,3 +66,11 @@ export interface SignInResponseError {
   }
   status: number
 }
+
+export type RecoverPasswordCodeArgs = {
+  recoveryCode: string
+}
+export type CreateNewPasswordArgs = {
+  newPassword: string
+  recoveryCode: string
+}

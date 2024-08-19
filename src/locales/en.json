@@ -42,7 +42,13 @@
     "I agree to the": "I agree to the",
     "Terms of Service": "Terms of Service",
     "Privacy Policy": "Privacy Policy",
-    "and": "and"
+    "and": "and",
+    "Email sent": "Email sent",
+    "signUpModalMessage": "We have send a link to confirm your email to"
+  },
+  "EmailVerify": {
+    "Congratulations!": "Congratulations!",
+    "confirmMessage": "Your email has been confirmed."
   },
   "PasswordRecovery": {
     "ModalTitle": "Email sent",

@@ -20,7 +20,13 @@
     "I agree to the": "Я согласен с",
     "Terms of Service": "Условиями использования",
     "Privacy Policy": "Политикой конфиденциальности",
-    "and": "и"
+    "and": "и",
+    "Email sent": "Письмо отправленно",
+    "signUpModalMessage": "Мы отправили ссылку для подтверждения вашей электронной почты на"
+  },
+  "EmailVerify": {
+    "Congratulations!": "Поздравляем!",
+    "confirmMessage": "Ваш электронный адрес подтвержден."
   },
   "PasswordRecovery": {
     "ModalTitle": "Подтверждение отправки",

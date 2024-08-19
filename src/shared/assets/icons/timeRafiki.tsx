@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Ref, SVGProps, forwardRef } from 'react'
 
 const TimeRafikiIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => {

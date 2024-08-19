@@ -11,21 +11,33 @@ import { Nullable } from '@/src/shared/types/globalTypes'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, Card, FormInput, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
+import i18n from 'i18next'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 import s from './forgotPassword.module.scss'
 
-const schema = z.object({
+const schemaEn = z.object({
   email: z
     .string({ required_error: 'Email is absolutely necessary!' })
-    .email({ message: "Hello, that's not a way to write email" })
-    .trim(),
+    .email({ message: "Hello, that's not a way to write email" }),
 })
 
-type Fields = z.infer<typeof schema>
+const schemaRu = z.object({
+  email: z
+    .string({ required_error: 'Обязательное поле' })
+    .email({ message: 'Проверьте правильность написания адреса' }),
+})
+
+type Fields = z.infer<typeof schemaEn>
 
 export const ForgotPassword = () => {
+  const t = useTranslations('PasswordRecovery')
+  const locale = i18n.language
+
+  const schema = locale === 'en' ? schemaEn : schemaRu
+
   const {
     control,
     formState: { errors, isValid },
@@ -60,7 +72,7 @@ export const ForgotPassword = () => {
   const reCaptchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY_ID
 
   if (!reCaptchaKey) {
-    throw new Error('We are not getting reCaptcha here')
+    throw new Error(`${t('noRecaptchaError')}`)
   }
 
   if (isLoading) {
@@ -74,13 +86,13 @@ export const ForgotPassword = () => {
   return (
     <>
       {isSuccess && (
-        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={'Email sent'}>
+        <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={t('ModalTitle')}>
           <div className={s.card}>
             <Typography as={'p'} variant={'body1'}>
-              {`The link has been sent by email to ${getValues('email')}. If you don’t receive an email send link again.`}
+              {`${t('sentLinkConfirmationMessage1')} ${getValues('email')}${t('sentLinkConfirmationMessage2')}`}
             </Typography>
             <Button className={s.buttonRight} onClick={closeModal} variant={'primary'}>
-              OK
+              {t('OK')}
             </Button>
           </div>
         </ModalWindow>
@@ -88,19 +100,19 @@ export const ForgotPassword = () => {
       <div className={s.wrapper}>
         <Card as={'div'} className={s.card}>
           <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
-            Forgot password
+            {t('formTitle')}
           </Typography>
           <form className={s.form} onSubmit={onSubmit}>
             <FormInput
               control={control}
               errorMessage={errors.email?.message}
               inputMode={'email'}
-              label={'Email'}
+              label={`${t('email')}`}
               name={'email'}
               placeholder={'Epam@epam.com'}
             />
             <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
-              Enter your email address and we will send you further instructions.
+              {t('instructions')}
             </Typography>
             <Button
               disabled={!isValid || !captchaToken}
@@ -108,14 +120,14 @@ export const ForgotPassword = () => {
               type={'submit'}
               variant={'primary'}
             >
-              Send link
+              {t('sendLink')}
             </Button>
             <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
-              Back to sign in
+              {t('backToSignIn')}
             </Button>
             <ReCAPTCHA
               className={s.capture}
-              hl={'en'}
+              hl={locale}
               onChange={captchaHandler}
               sitekey={reCaptchaKey}
               theme={'dark'}

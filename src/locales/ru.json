@@ -9,16 +9,9 @@
     "registration": "Регистрация"
   },
   "Signup": {
-    "title": "Вход",
-    "forgot": "Забыли пароль?",
-    "signin": "Войти",
-    "have-account": "Ещё нет аккаунта?",
-    "email": "Почта",
-    "password": "Пароль",
-    "registration": "Регистрация",
-     "User Name": "Имя Пользователя",
+    "User Name": "Имя Пользователя",
     "Sign-In": "Войти",
-    "Sign-Up": "Регистсрация",
+    "Sign-Up": "Регистрация",
     "Sign Up": "Зарегистрироваться",
     "Do You have an account ?": "У Вас есть аккаунт ?",
     "Email": "Электронная почта",
@@ -27,7 +20,50 @@
     "I agree to the": "Я согласен с",
     "Terms of Service": "Условиями использования",
     "Privacy Policy": "Политикой конфиденциальности",
-    "and": "и"
+    "and": "и",
+    "Email sent": "Письмо отправленно",
+    "signUpModalMessage": "Мы отправили ссылку для подтверждения вашей электронной почты на"
+  },
+  "EmailVerify": {
+    "Congratulations!": "Поздравляем!",
+    "confirmMessage": "Ваш электронный адрес подтвержден."
+  },
+  "PasswordRecovery": {
+    "ModalTitle": "Подтверждение отправки",
+    "formTitle": "Восстановление пароля",
+    "email": "Email",
+    "sendLink": "Отправить ссылку",
+    "backToSignIn": "Вернуться к регистрации",
+    "instructions": "Введите адрес электронной почты и мы отправим дальнейшие интсрукции.",
+    "sentLinkConfirmationMessage1": "Ссылка была оптравлена на указанную электронную почту ",
+    "sentLinkConfirmationMessage2": ". Если подтверждающее письмо не было получено, запросите отправку ссылки повторно.",
+    "OK": "OK",
+    "noRecaptchaError": "Не пройдена проверка 'Я не робот'"
+  },
+  "ExpiredLink": {
+    "ModalTitle": "Подтверждение отправки",
+    "sentLinkConfirmationMessage": "Мы отправили ссылку для подтверждения на указанный адрес электронной почты ",
+    "ОК": "ОК",
+    "ExpiredLinkTitle": "Ссылка не работает",
+    "ExpiredLinkMessage": "Похоже, что у отправленной ссылки на подтверждение истек срок действия. Не волнуйтесь, мы можем отправить ссылку еще раз.",
+    "ResendLinkButton": "Отправить ссылку"
+  },
+  "CreateNewPassword": {
+    "FormTitle": "Создание нового пароля",
+    "NewPasswordLabel": "Новый пароль",
+    "PasswordConfirmationLabel": "Подтверждение пароля",
+    "Instructions": "Пароль должен содержать от 6 до 20 знаков",
+    "ButtonCreatePassword": "Создать"
+  },
+  "Sidebar": {
+    "home": "Главная",
+    "create": "Создать",
+    "my-profile": "Мой профиль",
+    "messenger": "Мессенджер",
+    "search": "Поиск",
+    "statistics": "Статистика",
+    "favorites": "Избранное",
+    "logout": "Выйти из аккаунта"
   },
   "GeneralProfile": {
     "general": "Главная информация",
@@ -47,6 +83,8 @@
     "add-photo": "Добавить фото",
     "update-photo": "Обновить фото",
     "select-photo": "Выберите с компьютера",
+    "delete-photo": "Удалить фото",
+    "delete-photo-confirm": "Вы действительно хотите удалить фотографию профиля?",
     "save": "Сохранить"
   }
 }

@@ -1,8 +1,6 @@
-import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { GitHubIcon } from '@/src/shared/assets/icons/github'
-import { GoogleIcon } from '@/src/shared/assets/icons/google'
+import { SocialsRegisterLogin } from '@/src/features/auth/socialsRegisterLogin/SocialsRegisterLogin'
 import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -46,10 +44,7 @@ export const SignInForm = () => {
     <div className={s.wrapper}>
       <Card className={s.card}>
         <Typography variant={'h2'}>{t('title')}</Typography>
-        <div className={s.blockWithIcons}>
-          <GoogleIcon height={36} width={36} />
-          <GitHubIcon height={36} width={36} />
-        </div>
+        <SocialsRegisterLogin />
         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={s.input}>
             <FormInput control={control} label={`${t('email')}`} name={'email'} />
@@ -77,7 +72,7 @@ export const SignInForm = () => {
             <Typography className={s.text} variant={'body2'}>
               {t('have-account')}
             </Typography>
-            <Link className={s.link} href={'signup'}>
+            <Link className={s.link} href={'sign-up'}>
               <Button as={'button'} disabled={isLoading} fullWidth variant={'ghost'}>
                 {t('registration')}
               </Button>

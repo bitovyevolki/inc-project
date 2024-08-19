@@ -8,6 +8,48 @@
     "password": "Password",
     "registration": "Sign up"
   },
+  "GeneralProfile": {
+    "general": "General",
+    "devices": "Devices",
+    "account-management": "Account Management",
+    "my-payments": "My Payments",
+    "save-changes": "Save Changes",
+    "user-name": "User name",
+    "first-name": "First name",
+    "last-name": "Last name",
+    "date-of-birth": "Date of birth",
+    "select-country": "Select your country",
+    "select-city": "Select your city",
+    "about-me": "About me",
+    "country": "Country",
+    "city": "City",
+    "add-photo": "Add a Profile Photo",
+    "update-photo": "Update the Photo",
+    "select-photo": "Select from computer",
+    "delete-photo": "Delete a photo",
+    "delete-photo-confirm": "Do you really want to delete your profile photo?",
+    "save": "Save"
+  },
+  "Signup": {
+    "User Name": "User Name",
+    "Sign-In": "Sign-In",
+    "Sign-Up": "Sign-Up",
+    "Sign Up": "Sign Up",
+    "Do You have an account ?": "Do You have an account ?",
+    "Email": "Email",
+    "Password": "Password",
+    "Confirm Password": "Confirm Password",
+    "I agree to the": "I agree to the",
+    "Terms of Service": "Terms of Service",
+    "Privacy Policy": "Privacy Policy",
+    "and": "and",
+    "Email sent": "Email sent",
+    "signUpModalMessage": "We have send a link to confirm your email to"
+  },
+  "EmailVerify": {
+    "Congratulations!": "Congratulations!",
+    "confirmMessage": "Your email has been confirmed."
+  },
   "PasswordRecovery": {
     "ModalTitle": "Email sent",
     "formTitle": "Forgot password",
@@ -36,5 +78,15 @@
     "PasswordConfirmationLabel": "Password confirmation",
     "Instructions": "Your password must be between 6 and 20 characters",
     "ButtonCreatePassword": "Create new password"
+  },
+  "Sidebar": {
+    "home": "Home",
+    "create": "Create",
+    "my-profile": "My Profile",
+    "messenger": "Messenger",
+    "search": "Search",
+    "statistics": "Statistics",
+    "favorites": "Favorites",
+    "logout": "Logout"
   }
 }

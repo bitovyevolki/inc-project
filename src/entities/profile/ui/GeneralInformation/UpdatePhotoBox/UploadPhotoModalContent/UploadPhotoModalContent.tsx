@@ -1,9 +1,9 @@
+import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import s from './UploadPhotoModalContent.module.scss'
-
-import { Loader } from '../../../Loader/Loader'
 
 interface IProps {
   isLoading: boolean
@@ -12,6 +12,16 @@ interface IProps {
 }
 
 export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) => {
+  const t = useTranslations('GeneralProfile')
+
+  const btnChildren = isLoading ? (
+    <div className={s.loader}>
+      <RoundLoader variant={'small'} />
+    </div>
+  ) : (
+    t('save')
+  )
+
   return (
     <div className={s.modalContent}>
       <div className={s.photoBox}>
@@ -21,13 +31,7 @@ export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) =>
       </div>
       <div className={s.btnBox}>
         <Button disabled={isLoading} onClick={upload}>
-          {isLoading ? (
-            <div className={s.loader}>
-              <Loader variant={'small'} />
-            </div>
-          ) : (
-            'Save'
-          )}
+          {btnChildren}
         </Button>
       </div>
     </div>

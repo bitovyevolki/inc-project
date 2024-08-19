@@ -4,13 +4,14 @@ import { toast } from 'react-toastify'
 import {
   useCreateProfileAvatarMutation,
   useDeleteProfileAvatarMutation,
-} from '../../../api/profile.service'
+} from '../../api/profile.service'
 
 export const useUpdatePhoto = () => {
   const [createAvatar, { isLoading: isLoadingCreateAvatar }] = useCreateProfileAvatarMutation()
   const [deleteAvatar] = useDeleteProfileAvatarMutation()
 
   const [isShowModal, setIsShowModal] = useState(false)
+  const [isShowDeletePhotoModal, setIsShowDeletePhotoModal] = useState(false)
   const [file, setFile] = useState<FormData>()
   const [tempPhoto, setTempPhoto] = useState<string>('')
 
@@ -20,6 +21,10 @@ export const useUpdatePhoto = () => {
 
   const setIsShowModalHandler = (value: boolean) => {
     setIsShowModal(value)
+  }
+
+  const setIsShowDeletePhotoModalHandler = (value: boolean) => {
+    setIsShowDeletePhotoModal(value)
   }
 
   const changeTempPhotoHandler = (photo: string) => {
@@ -41,9 +46,9 @@ export const useUpdatePhoto = () => {
 
   const removePhotoHandler = async () => {
     try {
-      const confirmed = confirm('Do you really want to delete your profile photo?')
+      setIsShowDeletePhotoModalHandler(false)
 
-      confirmed && (await deleteAvatar().unwrap())
+      await deleteAvatar().unwrap()
     } catch (error) {
       toast.error('Error! Server is not available!')
     }
@@ -53,8 +58,10 @@ export const useUpdatePhoto = () => {
     changeFileHandler,
     changeTempPhotoHandler,
     isLoadingCreateAvatar,
+    isShowDeletePhotoModal,
     isShowModal,
     removePhotoHandler,
+    setIsShowDeletePhotoModalHandler,
     setIsShowModalHandler,
     tempPhoto,
     uploadImage,

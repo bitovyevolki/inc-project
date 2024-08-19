@@ -1,4 +1,5 @@
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
+import { useTranslations } from 'next-intl'
 
 import s from './signupmodal.module.scss'
 export type SignUpModalProps = {
@@ -7,10 +8,12 @@ export type SignUpModalProps = {
   userEmail: string
 }
 export const SignUpModal = ({ onClose, open, userEmail }: SignUpModalProps) => {
+  const t = useTranslations('Signup')
+
   return (
-    <ModalWindow onOpenChange={onClose} open={open} title={'Email sent'}>
+    <ModalWindow onOpenChange={onClose} open={open} title={`${t('Email sent')}`}>
       <div className={s.content}>
-        <Typography variant={'body1'}>{'We have send a link to confirm your email to'}</Typography>
+        <Typography variant={'body1'}>{`${t('signUpModalMessage')}`}</Typography>
         <Typography variant={'body1'}>{userEmail}</Typography>
         <div className={s.buttonWrapper}>
           <Button onClick={onClose} variant={'primary'}>

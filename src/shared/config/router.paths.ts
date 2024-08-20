@@ -1,6 +1,7 @@
 export enum RouterPaths {
   AUTH = '/auth',
   CREATE_NEW_PASSWORD = '/auth/create-new-password',
+  CREATE_POST = '/posts',
   EXPIRED_LINK = '/auth/expired-link',
   FORGOT_PASSWORD = '/auth/forgot-password',
   HOME = '/',

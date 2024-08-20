@@ -47,7 +47,7 @@ export const Sidebar = () => {
 
   const sidebarLinks: ILink[] = [
     { path: RouterPaths.HOME, svg: HomeIcon, title: t('home') },
-    { path: RouterPaths.HOME, svg: CreateIcon, title: t('create') },
+    { path: RouterPaths.CREATE_POST, svg: CreateIcon, title: t('create') },
     { path: RouterPaths.HOME, svg: MyProfileIcon, title: t('my-profile') },
     { path: RouterPaths.HOME, svg: MessengerIcon, title: t('messenger') },
     { path: RouterPaths.HOME, svg: SearchIcon, title: t('search') },

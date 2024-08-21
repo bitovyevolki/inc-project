@@ -66,17 +66,22 @@ export const SignInForm = () => {
             </Link>
           </div>
           <div className={s.buttons}>
-            <Button as={'button'} fullWidth variant={'primary'}>
+            <Button fullWidth type={'submit'} variant={'primary'}>
               {t('signin')}
             </Button>
             <Typography className={s.text} variant={'body2'}>
               {t('have-account')}
             </Typography>
-            <Link className={s.link} href={'sign-up'}>
-              <Button as={'button'} disabled={isLoading} fullWidth variant={'ghost'}>
-                {t('registration')}
-              </Button>
-            </Link>
+            <Button
+              as={Link}
+              className={s.link}
+              disabled={isLoading}
+              fullWidth
+              href={'sign-up'}
+              variant={'ghost'}
+            >
+              {t('registration')}
+            </Button>
           </div>
         </form>
       </Card>

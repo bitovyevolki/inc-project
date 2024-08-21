@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { useLazyLogOutQuery } from '@/src/features/auth/service/auth.service'
 import { SignInForm } from '@/src/features/auth/signIn'
@@ -6,6 +7,7 @@ import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 
 import s from './Sidebar.module.scss'
@@ -29,20 +31,25 @@ interface ILink {
 
 export const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const router = useRouter()
 
-  const [logOutQuery, { isLoading, isSuccess }] = useLazyLogOutQuery()
+  const [logOutQuery, { isLoading }] = useLazyLogOutQuery()
 
   const onLogout = () => {
     logOutQuery()
+      .unwrap()
+      .then(() => {
+        setIsModalOpen(false)
+        router.push('/auth/sign-in')
+      })
+      .catch((err: Error) => {
+        toast.error(err.message)
+      })
   }
   const t = useTranslations('Sidebar')
 
   if (isLoading) {
     return <Loader />
-  }
-
-  if (isSuccess) {
-    return <SignInForm />
   }
 
   const sidebarLinks: ILink[] = [

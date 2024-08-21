@@ -122,7 +122,7 @@ export const ForgotPassword = () => {
             >
               {t('sendLink')}
             </Button>
-            <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'text'}>
+            <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
               {t('backToSignIn')}
             </Button>
 

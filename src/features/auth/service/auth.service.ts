@@ -5,6 +5,7 @@ import {
   CreateNewPasswordArgs,
   GoogleLoginArgs,
   GoogleLoginResponse,
+  MeResponse,
   RecoverPasswordCodeArgs,
   SendResetPasswordArgs,
   SignInArgs,
@@ -73,6 +74,10 @@ export const AuthService = inctagramService.injectEndpoints({
           url: `/v1/auth/logout`,
         }),
       }),
+      me: builder.query<MeResponse, void>({
+        providesTags: ['Me'],
+        query: () => '/v1/auth/me',
+      }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
           body: { ...data, baseUrl: process.env.NEXT_PUBLIC_BASE_URL },
@@ -121,6 +126,7 @@ export const {
   useCreateNewPasswordMutation,
   useGoogleLoginMutation,
   useLazyLogOutQuery,
+  useMeQuery,
   useResendEmailMutation,
   useSendResetPasswordEmailMutation,
   useSignInMutation,

@@ -9,6 +9,13 @@ export type ConfirmEmailArgs = {
   confirmationCode: string
 }
 
+export type MeResponse = {
+  email: string
+  isBlocked: boolean
+  userId: number
+  userName: string
+}
+
 export type CreateNewPasswordArgs = {
   newPassword: string
   recoveryCode: string

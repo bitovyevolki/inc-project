@@ -1,1 +1,1 @@
-export { RegistrationConfirmation } from './ui/registrationConfirmation'
+export * from './ui/RegistrationConfirmation'

@@ -25,18 +25,18 @@ export function RegistrationConfirmation() {
     (error as any).data?.messages?.[0]?.message === 'Confirmation code is invalid'
   ) {
     return (
-      <>
+      <div>
         <Link href={'/'}>back</Link>
         <ExpiredLink email={email as string} />
-      </>
+      </div>
     )
   }
   if (isSuccess) {
     return (
-      <>
+      <div>
         <Link href={'/'}>back</Link>
         <EmailVerifySuccess />
-      </>
+      </div>
     )
   }
 }

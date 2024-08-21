@@ -122,9 +122,10 @@ export const ForgotPassword = () => {
             >
               {t('sendLink')}
             </Button>
-            <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
+            <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'text'}>
               {t('backToSignIn')}
             </Button>
+
             <ReCAPTCHA
               className={s.capture}
               hl={locale}

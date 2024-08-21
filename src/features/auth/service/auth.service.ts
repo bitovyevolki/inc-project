@@ -1,10 +1,9 @@
-import { toast } from 'react-toastify'
-
 import {
   ConfirmEmailArgs,
   CreateNewPasswordArgs,
   GoogleLoginArgs,
   GoogleLoginResponse,
+  MeResponse,
   RecoverPasswordCodeArgs,
   SendResetPasswordArgs,
   SignInArgs,
@@ -58,20 +57,15 @@ export const AuthService = inctagramService.injectEndpoints({
         }),
       }),
       logOut: builder.query<void, void>({
-        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-          try {
-            await queryFulfilled
-            localStorage.removeItem('token')
-            dispatch(AuthService.util.resetApiState())
-          } catch (error: any) {
-            toast.error(error)
-          }
-        },
         query: () => ({
           body: { baseUrl: 'http://localhost:3000' },
           method: 'POST',
           url: `/v1/auth/logout`,
         }),
+      }),
+      me: builder.query<MeResponse, void>({
+        providesTags: ['Me'],
+        query: () => '/v1/auth/me',
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
@@ -121,6 +115,7 @@ export const {
   useCreateNewPasswordMutation,
   useGoogleLoginMutation,
   useLazyLogOutQuery,
+  useMeQuery,
   useResendEmailMutation,
   useSendResetPasswordEmailMutation,
   useSignInMutation,

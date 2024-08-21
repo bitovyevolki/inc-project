@@ -1,0 +1,31 @@
+.modalWindow {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 792px;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 490px;
+  background-color: #3a2181;
+  margin: 72px auto 60px;
+}
+
+.userAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #780a75;
+}
+
+.textArea::after {
+  content: '0/500';
+}

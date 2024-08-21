@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 
-import { CreatePost } from '@/src/features/post/createPost'
+import { CreatePost } from '@/src/features/post/ui/createPost/CreatePost'
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Button, ModalWindow } from '@bitovyevolki/ui-kit-int'
 
@@ -10,13 +10,17 @@ import s from './addPhoto.module.scss'
 type Props = {}
 export const AddPhoto = (props: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(true)
+  const [showCreatePost, setShowCreatePost] = useState(false)
+
   const onCreatePost = () => {
-    return <CreatePost />
+    setIsModalOpen(false)
+    setShowCreatePost(true)
   }
 
   return (
     <div>
       <ModalWindow
+        className={s.modalWindow}
         onOpenChange={() => setIsModalOpen(false)}
         open={isModalOpen}
         title={'Add photo'}
@@ -26,15 +30,16 @@ export const AddPhoto = (props: Props) => {
             <AvatarIcon />
           </div>
           <div className={s.buttonsContainer}>
-            <Button fullwidth variant={'primary'}>
+            <Button fullWidth variant={'primary'}>
               Select from Computer
             </Button>
-            <Button fullwidth onClick={onCreatePost} variant={'outlined'}>
+            <Button fullWidth onClick={onCreatePost} variant={'outlined'}>
               Create Post
             </Button>
           </div>
         </div>
       </ModalWindow>
+      {showCreatePost && <CreatePost />}
     </div>
   )
 }

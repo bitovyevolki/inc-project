@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 
-import { useLazyLogOutQuery } from '@/src/features/auth/service/auth.service'
-import { SignInForm } from '@/src/features/auth/signIn'
+import { useLazyLogOutQuery, useMeQuery } from '@/src/features/auth/service/auth.service'
+import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
-import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 
 import s from './Sidebar.module.scss'
@@ -30,20 +31,25 @@ interface ILink {
 export const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [logOutQuery, { isLoading, isSuccess }] = useLazyLogOutQuery()
+  const router = useRouter()
+
+  const { data, isError, isLoading: meLoading } = useMeQuery()
+  const [logOutQuery, { isLoading }] = useLazyLogOutQuery()
+
+  console.log(data?.userId, data?.userName, data?.email)
 
   const onLogout = () => {
     logOutQuery()
+      .unwrap()
+      .then(() => {
+        setIsModalOpen(false)
+        router.push('/auth/sign-in')
+      })
+      .catch((err: Error) => {
+        toast.error(err.message)
+      })
   }
   const t = useTranslations('Sidebar')
-
-  if (isLoading) {
-    return <Loader />
-  }
-
-  if (isSuccess) {
-    return <SignInForm />
-  }
 
   const sidebarLinks: ILink[] = [
     { path: RouterPaths.HOME, svg: HomeIcon, title: t('home') },
@@ -54,6 +60,10 @@ export const Sidebar = () => {
     { path: RouterPaths.HOME, svg: StatisticsIcon, title: t('statistics') },
     { path: RouterPaths.HOME, svg: FavoritesIcon, title: t('favorites') },
   ]
+
+  if (isLoading) {
+    return <RoundLoader variant={'large'} />
+  }
 
   return (
     <>
@@ -81,7 +91,7 @@ export const Sidebar = () => {
             <Typography variant={'h4'}>{l.title}</Typography>
           </Link>
         ))}
-        <Button className={s.buttonLogout} onClick={() => setIsModalOpen(true)} variant={'ghost'}>
+        <Button className={s.buttonLogout} onClick={() => setIsModalOpen(true)} variant={'text'}>
           <LogoutIcon />
           <Typography as={'p'} variant={'h4'}>
             Log Out

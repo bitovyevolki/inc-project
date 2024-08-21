@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { useLazyLogOutQuery, useMeQuery } from '@/src/features/auth/service/auth.service'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
+import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -30,13 +31,9 @@ interface ILink {
 
 export const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const router = useRouter()
 
-  const { data, isError, isLoading: meLoading } = useMeQuery()
   const [logOutQuery, { isLoading }] = useLazyLogOutQuery()
-
-  console.log(data?.userId, data?.userName, data?.email)
 
   const onLogout = () => {
     logOutQuery()
@@ -91,7 +88,7 @@ export const Sidebar = () => {
             <Typography variant={'h4'}>{l.title}</Typography>
           </Link>
         ))}
-        <Button className={s.buttonLogout} onClick={() => setIsModalOpen(true)} variant={'text'}>
+        <Button className={s.buttonLogout} onClick={() => setIsModalOpen(true)} variant={'ghost'}>
           <LogoutIcon />
           <Typography as={'p'} variant={'h4'}>
             Log Out

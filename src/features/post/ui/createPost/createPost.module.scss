@@ -1,29 +1,38 @@
 .modalWindow {
-  max-height: 100vh;
   overflow: hidden;
+  width: 792px;
 }
 
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 792px;
 }
 
 .imageContainer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 490px;
-  background-color: #3a2181;
+  height: 502px;
+  background-color: #c3f2fa;
   margin: 72px auto 60px;
 }
 
-.userAvatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #780a75;
+.publicationContainer {
+  display: flex;
+  flex-direction: column;
+  width: 490px;
+  height: 502px;
+  padding: 24px;
+}
+
+.postContainer {
+  margin-bottom: 36px;
+  border-bottom: 1px solid #4c4c4c;
+}
+
+.textArea {
+  width: 432px;
+  height: 120px;
 }
 
 .textArea::after {

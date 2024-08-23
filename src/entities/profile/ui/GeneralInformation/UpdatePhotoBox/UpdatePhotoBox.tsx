@@ -31,7 +31,7 @@ export const UpdatePhotoBox = ({ avatars }: IProps) => {
 
   const t = useTranslations('GeneralProfile')
 
-  const modalContent = tempPhoto ? (
+  const modalContent = tempPhoto.src ? (
     <UploadPhotoModalContent
       isLoading={isLoadingCreateAvatar}
       photo={tempPhoto}

@@ -9,7 +9,7 @@ export const generalProfileSchema = z.object({
   dateOfBirth: z.coerce
     .date()
     .refine(date => checkAge(date), {
-      message: 'A user under 13 cannot create a profile. Privacy Policy',
+      message: 'A user under 13 cannot create a profile.',
     })
     .nullable(),
   firstName: z

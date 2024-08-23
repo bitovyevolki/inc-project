@@ -5,6 +5,9 @@ export type SignUpArgs = {
   password: string
   userName: string
 }
+export type ConfirmEmailArgs = {
+  confirmationCode: string
+}
 
 export type MeResponse = {
   email: string
@@ -13,8 +16,13 @@ export type MeResponse = {
   userName: string
 }
 
-export type ConfirmEmailArgs = {
-  confirmationCode: string
+export type CreateNewPasswordArgs = {
+  newPassword: string
+  recoveryCode: string
+}
+
+export type RecoverPasswordCodeArgs = {
+  recoveryCode: string
 }
 
 export type SignUpResendEmailType = {
@@ -74,12 +82,4 @@ export interface SignInResponseError {
     statusCode: number
   }
   status: number
-}
-
-export type RecoverPasswordCodeArgs = {
-  recoveryCode: string
-}
-export type CreateNewPasswordArgs = {
-  newPassword: string
-  recoveryCode: string
 }

@@ -1,19 +1,15 @@
-import { ReactElement, ReactNode, useEffect, useState } from 'react'
-import { Provider } from 'react-redux'
-import { ToastContainer } from 'react-toastify'
+import { ReactElement, ReactNode } from 'react'
 
-import { Header } from '@bitovyevolki/ui-kit-int'
-import { GoogleOAuthProvider } from '@react-oauth/google'
-import Cookies from 'js-cookie'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
-import { useRouter } from 'next/router'
-import { NextIntlClientProvider } from 'next-intl'
 
-import '../styles/globals.scss'
 import 'react-toastify/dist/ReactToastify.css'
+import '../styles/globals.scss'
 
+import { RootProvider } from '../shared/providers/RootProvider'
+import { Layout } from '../shared/ui/Layout/Layout'
 import { wrapper } from './../shared/model/store'
+
 export type NextPageWithLayout<P = {}, IP = P> = {
   getLayout?: (page: ReactElement) => ReactNode
 } & NextPage<P, IP>
@@ -23,50 +19,12 @@ type AppPropsWithLayout = {
 } & AppProps
 
 export default function MyApp({ Component, pageProps, ...rest }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? (page => page)
+  const getLayout = Component.getLayout ?? (page => <Layout>{page}</Layout>)
   const { props, store } = wrapper.useWrappedStore(rest)
-  const router = useRouter()
-
-  const initialLanguage = Cookies.get('next-language') || 'ru'
-  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'ru'>(
-    initialLanguage as 'en' | 'ru'
-  )
-
-  const onLanguageChange = (lang: string) => {
-    if (lang === 'en' || lang === 'ru') {
-      setSelectedLanguage(lang)
-      Cookies.set('next-language', lang)
-      router.reload()
-    }
-  }
 
   return (
-    <NextIntlClientProvider locale={selectedLanguage} messages={pageProps.messages}>
-      <Provider store={store}>
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_ID ?? ''}>
-          <section>
-            <Header
-              isAuth
-              onLanguageChange={onLanguageChange}
-              selectedLanguage={selectedLanguage}
-              title={'Inctagram'}
-            />
-            <main>{getLayout(<Component {...pageProps} />)}</main>
-          </section>
-          <ToastContainer
-            autoClose={5000}
-            closeOnClick
-            draggable
-            hideProgressBar={false}
-            newestOnTop={false}
-            pauseOnFocusLoss
-            pauseOnHover
-            position={'bottom-right'}
-            rtl={false}
-            theme={'dark'}
-          />
-        </GoogleOAuthProvider>
-      </Provider>
-    </NextIntlClientProvider>
+    <RootProvider pageProps={pageProps} store={store}>
+      {getLayout(<Component {...pageProps} />)}
+    </RootProvider>
   )
 }

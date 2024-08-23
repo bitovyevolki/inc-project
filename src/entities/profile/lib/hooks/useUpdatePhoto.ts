@@ -5,6 +5,7 @@ import {
   useCreateProfileAvatarMutation,
   useDeleteProfileAvatarMutation,
 } from '../../api/profile.service'
+import { ITempProfilePhoto } from '../../model/types/profile'
 
 export const useUpdatePhoto = () => {
   const [createAvatar, { isLoading: isLoadingCreateAvatar }] = useCreateProfileAvatarMutation()
@@ -13,13 +14,14 @@ export const useUpdatePhoto = () => {
   const [isShowModal, setIsShowModal] = useState(false)
   const [isShowDeletePhotoModal, setIsShowDeletePhotoModal] = useState(false)
   const [file, setFile] = useState<FormData>()
-  const [tempPhoto, setTempPhoto] = useState<string>('')
+  const [tempPhoto, setTempPhoto] = useState<ITempProfilePhoto>({ height: 0, src: '', width: 0 })
 
   const changeFileHandler = (file: FormData) => {
     setFile(file)
   }
 
   const setIsShowModalHandler = (value: boolean) => {
+    setTempPhoto({ ...tempPhoto, src: '' })
     setIsShowModal(value)
   }
 
@@ -27,7 +29,7 @@ export const useUpdatePhoto = () => {
     setIsShowDeletePhotoModal(value)
   }
 
-  const changeTempPhotoHandler = (photo: string) => {
+  const changeTempPhotoHandler = (photo: ITempProfilePhoto) => {
     setTempPhoto(photo)
   }
 
@@ -40,7 +42,7 @@ export const useUpdatePhoto = () => {
       toast.error('Error! Server is not available!')
     } finally {
       setIsShowModalHandler(false)
-      setTempPhoto('')
+      setTempPhoto({ ...tempPhoto, src: '' })
     }
   }
 

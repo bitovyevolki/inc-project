@@ -10,6 +10,7 @@
 .photoBox {
   position: relative;
 
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,17 +22,21 @@
   .background {
     position: absolute;
     inset: 0;
-    background-color: rgba(#171717, 0.87);
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+    box-shadow: 0 0 0 100px rgba(#171717, 0.87);
   }
 
   .mainPhoto {
-    z-index: 100;
-
-    width: 316px;
-    height: 316px;
-
+    cursor: pointer;
+    position: absolute;
+    overflow: hidden;
     object-fit: cover;
-    border-radius: 50%;
   }
 }
 

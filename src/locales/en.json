@@ -67,7 +67,7 @@
   "ExpiredLink": {
     "ModalTitle": "Email sent",
     "sentLinkConfirmationMessage": "We have sent a link to confirm your email to ",
-    "ОК": "ОК",
+    "OK": "ОК",
     "ExpiredLinkTitle": "Email verification link expired",
     "ExpiredLinkMessage": "Looks like the verification link has expired. Not to worry, we can send the link again",
     "ResendLinkButton": "Resend Link"

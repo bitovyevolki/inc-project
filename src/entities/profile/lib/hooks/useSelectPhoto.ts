@@ -2,9 +2,11 @@ import { ChangeEvent, useRef } from 'react'
 
 import { formatImage } from '@/src/entities/profile/lib/utils/image'
 
+import { ITempProfilePhoto } from '../../model/types/profile'
+
 interface IProps {
   onChangeFile: (file: FormData) => void
-  onChangeTempPhoto: (value: string) => void
+  onChangeTempPhoto: (value: ITempProfilePhoto) => void
 }
 
 export const useSelectPhoto = ({ onChangeFile, onChangeTempPhoto }: IProps) => {

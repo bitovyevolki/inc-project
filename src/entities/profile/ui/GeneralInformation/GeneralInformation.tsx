@@ -2,13 +2,14 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
-import { Button } from '@bitovyevolki/ui-kit-int'
+import { Button, IOption } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 
 import s from './GeneralInformation.module.scss'
 
 import { useGetProfileQuery, useUpdateProfileMutation } from '../../api/profile.service'
+import countriesJson from '../../model/mock/countries.json'
 import {
   GeneralProfileFormValue,
   generalProfileSchema,
@@ -20,7 +21,10 @@ export const GeneralInformation = () => {
   const t = useTranslations('GeneralProfile')
 
   const { data, isFetching, isLoading } = useGetProfileQuery()
+
   const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
+
+  const countries: IOption[] = countriesJson.map(el => ({ label: el.name, value: el.name }))
 
   const {
     control,
@@ -70,7 +74,12 @@ export const GeneralInformation = () => {
     <>
       <div className={s.generalInformation}>
         <UpdatePhotoBox avatars={data?.avatars || []} />
-        <GeneralInformationForm control={control} handleSubmit={handleSubmit} onSubmit={onSubmit} />
+        <GeneralInformationForm
+          control={control}
+          countries={countries || []}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+        />
       </div>
       <div className={s.border} />
       <div className={s.btnBox}>

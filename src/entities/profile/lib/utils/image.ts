@@ -1,10 +1,12 @@
 import { ChangeEvent } from 'react'
 import { toast } from 'react-toastify'
 
+import { ITempProfilePhoto } from '../../model/types/profile'
+
 interface FormatImageProps {
   event: ChangeEvent<HTMLInputElement>
   onChangeFile: (file: FormData) => void
-  onChangeTempPhoto: (value: string) => void
+  onChangeTempPhoto: (value: ITempProfilePhoto) => void
 }
 
 export const formatImage = ({ event, onChangeFile, onChangeTempPhoto }: FormatImageProps) => {
@@ -27,9 +29,30 @@ export const formatImage = ({ event, onChangeFile, onChangeTempPhoto }: FormatIm
       return
     }
 
-    onChangeTempPhoto(URL.createObjectURL(file))
+    setImageParams(file, onChangeTempPhoto)
 
     onChangeFile(getFormData(file))
+  }
+}
+
+const setImageParams = (file: Blob, onChangeTempPhoto: (photo: ITempProfilePhoto) => void) => {
+  const reader = new FileReader()
+
+  reader.readAsDataURL(file)
+
+  reader.onload = function (e: ProgressEvent<FileReader>) {
+    const image = new Image()
+
+    image.src = e.target?.result as string
+
+    image.onload = function () {
+      // @ts-ignore
+      const height = this.height
+      // @ts-ignore
+      const width = this.width
+
+      onChangeTempPhoto({ height, src: image.src, width })
+    }
   }
 }
 

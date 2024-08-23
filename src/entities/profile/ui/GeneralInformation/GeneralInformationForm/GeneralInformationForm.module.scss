@@ -11,9 +11,13 @@
 
 .selectsBox {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 
   & div {
     flex-grow: 1;
   }
+}
+
+.errorLink {
+  margin-left: 4px;
 }

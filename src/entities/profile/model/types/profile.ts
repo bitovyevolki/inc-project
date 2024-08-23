@@ -27,3 +27,9 @@ export interface IProfileAvatar {
 }
 
 export type UpdateGeneralProfileArgs = Omit<IProfile, 'avatars' | 'createdAt' | 'id'>
+
+export interface ITempProfilePhoto {
+  height: number
+  src: string
+  width: number
+}

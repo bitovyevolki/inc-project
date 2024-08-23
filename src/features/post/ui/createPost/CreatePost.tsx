@@ -2,6 +2,8 @@ import * as React from 'react'
 import { ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 
+import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
+import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { useCreatePostMutation } from '@/src/features/post/model/posts.service'
 import { UserCredentials } from '@/src/features/post/ui/userCredentials/UserCredentials'
 import { Loader } from '@/src/shared/ui/loader/Loader'
@@ -14,8 +16,13 @@ type Props = {
   uploadId: string | undefined
 }
 export const CreatePost = ({ imageURL, uploadId }: Props) => {
+  const { data: meData, isLoading: LoadingMe } = useMeQuery()
+  const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery(undefined, {
+    profileId: meData?.userId,
+  })
+  const [createPost, { isLoading: LoadingPost, isSuccess }] = useCreatePostMutation()
+
   const [isModalOpen, setIsModalOpen] = useState(true)
-  const [createPost, { isLoading, isSuccess }] = useCreatePostMutation()
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -47,7 +54,7 @@ export const CreatePost = ({ imageURL, uploadId }: Props) => {
       >
         <div className={s.container}>
           <div className={s.imageContainer}>
-            <img alt={'post image'} height={300} src={imageURL} width={300} />
+            <img alt={'post image'} src={imageURL} width={300} />
           </div>
           <div className={s.publicationContainer}>
             <UserCredentials />

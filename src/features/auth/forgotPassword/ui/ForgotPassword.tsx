@@ -89,7 +89,9 @@ export const ForgotPassword = () => {
         <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={t('ModalTitle')}>
           <div className={s.card}>
             <Typography as={'p'} variant={'body1'}>
-              {`${t('sentLinkConfirmationMessage1')} ${getValues('email')}${t('sentLinkConfirmationMessage2')}`}
+              {`${t('sentLinkConfirmationMessage1')} ${getValues('email')}${t(
+                'sentLinkConfirmationMessage2'
+              )}`}
             </Typography>
             <Button className={s.buttonRight} onClick={closeModal} variant={'primary'}>
               {t('OK')}
@@ -122,7 +124,7 @@ export const ForgotPassword = () => {
             >
               {t('sendLink')}
             </Button>
-            <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
+            <Button component={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
               {t('backToSignIn')}
             </Button>
 

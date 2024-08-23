@@ -65,7 +65,7 @@ export const AuthService = inctagramService.injectEndpoints({
       }),
       me: builder.query<MeResponse, void>({
         providesTags: ['Me'],
-        query: () => '/v1/auth/me',
+        query: _ => '/v1/auth/me',
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({

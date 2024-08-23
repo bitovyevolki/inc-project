@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@bitovyevolki/ui-kit-int':
-        specifier: ^0.1.7
-        version: 0.1.8(mvg55xw3vglzqqnsqi3zwezvme)
+        specifier: ^0.1.9
+        version: 0.1.9(mvg55xw3vglzqqnsqi3zwezvme)
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
@@ -109,10 +109,10 @@ importers:
         specifier: ^20
         version: 20.16.1
       '@types/react':
-        specifier: ^18
+        specifier: ^18.3.3
         version: 18.3.4
       '@types/react-dom':
-        specifier: ^18
+        specifier: ^18.3.0
         version: 18.3.0
       '@types/react-google-recaptcha':
         specifier: ^2.1.9
@@ -806,8 +806,8 @@ packages:
   '@base2/pretty-print-object@1.0.1':
     resolution: {integrity: sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==}
 
-  '@bitovyevolki/ui-kit-int@0.1.8':
-    resolution: {integrity: sha512-s5u8+OYZXvsCek4iJzu8X19NZxcgAhbMoLDEiyEqcVxsqSn/5LJw+sk72eI9uchi99mI+QVB+rT2uLaJFPm+cA==}
+  '@bitovyevolki/ui-kit-int@0.1.9':
+    resolution: {integrity: sha512-goye++c51WJqSbUskAFygyF+RuV/KspOqAaHqQWQKCh+eZdFL1/lYDobXtoXfC0cI0ZOgXBUQBbdWg8N2ZJOkg==}
     peerDependencies:
       react: ^18.3.1
       react-dom: ^18.3.1
@@ -6860,7 +6860,7 @@ snapshots:
 
   '@base2/pretty-print-object@1.0.1': {}
 
-  '@bitovyevolki/ui-kit-int@0.1.8(mvg55xw3vglzqqnsqi3zwezvme)':
+  '@bitovyevolki/ui-kit-int@0.1.9(mvg55xw3vglzqqnsqi3zwezvme)':
     dependencies:
       '@it-incubator/eslint-config': 1.0.3(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.3.3))(eslint@8.57.0)(typescript@5.3.3))(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.3.3))(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.3.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.3.3))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0))(eslint-plugin-perfectionist@2.11.0(eslint@8.57.0)(typescript@5.3.3))(eslint-plugin-prettier@5.2.1(@types/eslint@9.6.0)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.3))(eslint-plugin-react-hooks@4.6.2(eslint@8.57.0))(eslint-plugin-react@7.35.0(eslint@8.57.0))(eslint@8.57.0)
       '@it-incubator/stylelint-config': 2.0.0(stylelint-config-clean-order@6.1.0(stylelint@16.8.2(typescript@5.3.3)))(stylelint-config-standard-scss@13.1.0(postcss@8.4.41)(stylelint@16.8.2(typescript@5.3.3)))(stylelint@16.8.2(typescript@5.3.3))

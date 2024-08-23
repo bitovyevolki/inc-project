@@ -5,6 +5,10 @@ export enum ProfileContentType {
   PAYMENTS = 'PAYMENTS',
 }
 
+export type GetProfileById = {
+  profileId: number
+}
+
 export interface IProfile {
   aboutMe: string
   avatars: IProfileAvatar[]

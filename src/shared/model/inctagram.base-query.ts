@@ -10,7 +10,7 @@ import Router from 'next/router'
 const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://inctagram.work/api',
-  credentials: 'include',
+  //credentials: 'include',
   prepareHeaders: headers => {
     const token = localStorage.getItem('token')
 

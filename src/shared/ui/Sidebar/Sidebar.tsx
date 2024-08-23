@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { useLazyLogOutQuery } from '@/src/features/auth/service/auth.service'
-import { SignInForm } from '@/src/features/auth/signIn'
+import { useLogOutMutation } from '@/src/features/auth/service/auth.service'
+import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
-import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -30,17 +29,17 @@ interface ILink {
 }
 
 export const Sidebar = () => {
+  const [logOut, { isLoading }] = useLogOutMutation()
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
 
-  const [logOutQuery, { isLoading }] = useLazyLogOutQuery()
-
   const onLogout = () => {
-    logOutQuery()
+    logOut()
       .unwrap()
       .then(() => {
         setIsModalOpen(false)
-        router.push('/auth/sign-in')
+        void router.push(RouterPaths.SIGN_IN)
       })
       .catch((err: Error) => {
         toast.error(err.message)
@@ -49,7 +48,7 @@ export const Sidebar = () => {
   const t = useTranslations('Sidebar')
 
   if (isLoading) {
-    return <Loader />
+    return <RoundLoader variant={'large'} />
   }
 
   const sidebarLinks: ILink[] = [

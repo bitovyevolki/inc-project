@@ -58,7 +58,7 @@ export const AuthService = inctagramService.injectEndpoints({
           url: '/v1/auth/google/login',
         }),
       }),
-      logOut: builder.query<void, void>({
+      logOut: builder.mutation<void, void>({
         onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
           try {
             await queryFulfilled
@@ -70,13 +70,17 @@ export const AuthService = inctagramService.injectEndpoints({
         },
         query: () => ({
           body: { baseUrl: 'http://localhost:3000' },
+          credentials: 'include',
           method: 'POST',
           url: `/v1/auth/logout`,
         }),
       }),
       me: builder.query<MeResponse, void>({
         providesTags: ['Me'],
-        query: () => '/v1/auth/me',
+        query: () => ({
+          credentials: 'include',
+          url: '/v1/auth/me',
+        }),
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
@@ -125,7 +129,7 @@ export const {
   useConfirmEmailQuery,
   useCreateNewPasswordMutation,
   useGoogleLoginMutation,
-  useLazyLogOutQuery,
+  useLogOutMutation,
   useMeQuery,
   useResendEmailMutation,
   useSendResetPasswordEmailMutation,

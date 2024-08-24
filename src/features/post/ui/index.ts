@@ -1,1 +1,1 @@
-export * from './addPhoto/AddPhoto'
+export * from './addPhoto/CreatePost'

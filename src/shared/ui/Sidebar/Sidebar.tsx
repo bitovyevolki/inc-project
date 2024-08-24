@@ -4,7 +4,6 @@ import { toast } from 'react-toastify'
 import { useLazyLogOutQuery, useMeQuery } from '@/src/features/auth/service/auth.service'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
-import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -33,6 +32,7 @@ export const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
 
+  const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const [logOutQuery, { isLoading }] = useLazyLogOutQuery()
 
   const onLogout = () => {
@@ -40,7 +40,7 @@ export const Sidebar = () => {
       .unwrap()
       .then(() => {
         setIsModalOpen(false)
-        router.push('/auth/sign-in')
+        void router.push('/auth/sign-in')
       })
       .catch((err: Error) => {
         toast.error(err.message)
@@ -51,7 +51,11 @@ export const Sidebar = () => {
   const sidebarLinks: ILink[] = [
     { path: RouterPaths.HOME, svg: HomeIcon, title: t('home') },
     { path: RouterPaths.CREATE_POST, svg: CreateIcon, title: t('create') },
-    { path: RouterPaths.HOME, svg: MyProfileIcon, title: t('my-profile') },
+    {
+      path: `${RouterPaths.MY_PROFILE}/${meData?.userId}`,
+      svg: MyProfileIcon,
+      title: t('my-profile'),
+    },
     { path: RouterPaths.HOME, svg: MessengerIcon, title: t('messenger') },
     { path: RouterPaths.HOME, svg: SearchIcon, title: t('search') },
     { path: RouterPaths.HOME, svg: StatisticsIcon, title: t('statistics') },

@@ -5,8 +5,8 @@ export enum ProfileContentType {
   PAYMENTS = 'PAYMENTS',
 }
 
-export type GetProfileById = {
-  profileId: number
+export type GetProfileByIdArgs = {
+  profileId: number | undefined
 }
 
 export interface IProfile {

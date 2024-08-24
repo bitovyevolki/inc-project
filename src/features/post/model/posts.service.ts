@@ -1,6 +1,8 @@
 import {
   CreatePostArgs,
   CreatePostResponse,
+  GetPostsByUserArgs,
+  GetPostsByUserResponse,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
@@ -17,7 +19,16 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
-      uploadImage: builder.mutation<UploadImageResponse, { files: FileList }>({
+      getPostsByUserName: builder.query<GetPostsByUserResponse, GetPostsByUserArgs>({
+        query: queryArgs => {
+          return {
+            body: queryArgs,
+            method: 'POST',
+            url: 'v1/posts/{userName}',
+          }
+        },
+      }),
+      uploadImages: builder.mutation<UploadImageResponse, { files: FileList }>({
         query: args => {
           const formData = new FormData()
 
@@ -36,4 +47,5 @@ export const PostsService = inctagramService.injectEndpoints({
   },
 })
 
-export const { useCreatePostMutation, useUploadImageMutation } = PostsService
+export const { useCreatePostMutation, useGetPostsByUserNameQuery, useUploadImagesMutation } =
+  PostsService

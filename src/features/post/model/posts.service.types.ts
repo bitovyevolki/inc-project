@@ -26,6 +26,35 @@ export type UploadImageArgs = {
   images: Image[]
 }
 
+export type GetPostsByUserArgs = {
+  pageNumber?: number
+  pageSize?: number
+  sortBy?: string
+  sortDirection?: 'asc' | 'desc'
+  username: string | undefined
+}
+
+export type GetPostsByUserResponse = {
+  items: Post[]
+  pageSize: number
+  totalCount: number
+}
+
+export type Post = {
+  avatarOwner: string
+  createdAt: string
+  description: string
+  id: number
+  images: Image[]
+  isLiked: boolean
+  likesCount: number
+  location: string
+  owner: Owner
+  ownerId: number
+  updatedAt: string
+  userName: string
+}
+
 export type Owner = {
   firstName: string
   lastName: string
@@ -40,6 +69,6 @@ export type Image = {
   width: number
 }
 
-export interface UploadImageResponse {
+export type UploadImageResponse = {
   images: Image[]
 }

@@ -1,6 +1,11 @@
 import { inctagramService } from '@/src/shared/model/inctagram.service'
 
-import { GetProfileById, IProfile, UpdateGeneralProfileArgs } from '../model/types/profile'
+import {
+  GetProfileById,
+  GetProfileByIdArgs,
+  IProfile,
+  UpdateGeneralProfileArgs,
+} from '../model/types/profile'
 
 export const ProfileService = inctagramService.injectEndpoints({
   endpoints: builder => {
@@ -64,7 +69,7 @@ export const ProfileService = inctagramService.injectEndpoints({
           }
         },
       }),
-      getProfileById: builder.query<IProfile, GetProfileById>({
+      getProfileById: builder.query<IProfile, GetProfileByIdArgs>({
         providesTags: ['Profile'],
         query: ({ profileId }) => {
           return {

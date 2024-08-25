@@ -42,6 +42,11 @@ export type GetPublicPostsByUserArgs = {
   userId: number
 }
 
+export type GetPostByIdArgs = {
+  postId: number
+}
+export type GetPostByIdResponse = Post
+
 export type GetPostsByUserResponse = {
   items: Post[]
   pageSize: number

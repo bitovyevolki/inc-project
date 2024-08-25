@@ -95,18 +95,23 @@ export const ShowPosts = ({ profileId }: Props) => {
       <div className={s.postsGallery}>
         {posts?.map(post => (
           <div>
+            <div className={s.postsGallery} key={post.id} onClick={() => setIsModalOpen(true)}>
+              <img alt={'post image'} src={post?.images?.[0]?.url} width={300} />
+            </div>
             {isModalOpen && (
               <ModalWindow
                 onOpenChange={() => setIsModalOpen(false)}
                 open={isModalOpen}
                 title={'View Post'}
               >
-                <ViewPost postId={post.id} />
+                <ViewPost
+                  avatars={profileData?.avatars}
+                  imageUrl={post?.images[0]?.url}
+                  post={post}
+                  userName={userName}
+                />
               </ModalWindow>
             )}
-            <div className={s.postsGallery} key={post.id} onClick={() => setIsModalOpen(true)}>
-              <img alt={'post image'} src={post?.images?.[0]?.url} width={300} />
-            </div>
           </div>
         ))}
       </div>

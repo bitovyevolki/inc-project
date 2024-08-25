@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import s from './email-verify-success.module.scss'
 
 import emailConfirmed from './../../../../public/image/email-confirmed.png'
+
 export const EmailVerifySuccess = () => {
   const t = useTranslations('EmailVerify')
 
@@ -15,6 +16,7 @@ export const EmailVerifySuccess = () => {
         <Typography variant={'h1'}>{`${t('Congratulations!')}`}</Typography>
         <Typography variant={'body1'}>{`${t('confirmMessage')}`}</Typography>
       </div>
+      {/* @ts-ignore */}
       <Button as={Link} className={s.button} href={'/sign-in'} variant={'primary'}>
         <Typography variant={'h3'}>{'Sign in'}</Typography>
       </Button>

@@ -31,7 +31,15 @@ export type GetPostsByUserArgs = {
   pageSize?: number
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
-  username: string | undefined
+  userName: string
+}
+
+export type GetPublicPostsByUserArgs = {
+  endCursorPostId?: number
+  pageSize?: number
+  sortBy?: string
+  sortDirection?: 'asc' | 'desc'
+  userId: number
 }
 
 export type GetPostsByUserResponse = {

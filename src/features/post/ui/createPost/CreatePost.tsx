@@ -7,7 +7,7 @@ import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow } from '@bitovyevolki/ui-kit-int'
 
-import s from './addPhoto.module.scss'
+import s from './createPost.module.scss'
 
 type Props = {}
 export const CreatePost = (props: Props) => {

@@ -1,11 +1,6 @@
 import { inctagramService } from '@/src/shared/model/inctagram.service'
 
-import {
-  GetProfileById,
-  GetProfileByIdArgs,
-  IProfile,
-  UpdateGeneralProfileArgs,
-} from '../model/types/profile'
+import { GetProfileByIdArgs, IProfile, UpdateGeneralProfileArgs } from '../model/types/profile'
 
 export const ProfileService = inctagramService.injectEndpoints({
   endpoints: builder => {

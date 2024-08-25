@@ -17,14 +17,14 @@
     object-fit: cover;
   }
 
-  & small {
+  & .sizeS {
     width: 36px;
     height: 36px;
   }
 
-  & large {
-    width: 48px;
-    height: 48px;
+  & .sizeL {
+    width: 204px;
+    height: 204px;
   }
 }
 

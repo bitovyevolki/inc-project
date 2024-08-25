@@ -5,11 +5,12 @@ import { toast } from 'react-toastify'
 import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { useCreatePostMutation } from '@/src/features/post/model/posts.service'
-import { ProfileIntro } from '@/src/features/post/ui/userCredentials/ProfileIntro'
+import { ProfileIntro } from '@/src/features/post/ui/profileIntro/ProfileIntro'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, TextArea } from '@bitovyevolki/ui-kit-int'
+import Router from 'next/router'
 
-import s from './createPost.module.scss'
+import s from './addPostDescription.module.scss'
 
 type Props = {
   imageURL: string | undefined
@@ -36,6 +37,10 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
       return
     }
     createPost({ childrenMetadata: [{ uploadId }], description })
+      .unwrap()
+      .then(() => {
+        Router.push(`/my-profile/${meData?.userId}`)
+      })
   }
 
   if (isLoading) {

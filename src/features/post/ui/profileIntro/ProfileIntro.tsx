@@ -4,7 +4,7 @@ import { IProfile } from '@/src/entities/profile/model/types/profile'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
 
-import s from './userCredentials.module.scss'
+import s from './profileIntro.module.scss'
 
 type Props = {
   avatarSize?: 'large' | 'small'
@@ -22,7 +22,7 @@ export const ProfileIntro = ({ avatarSize = 'small', avatars, userName }: Props)
 
   return (
     <div className={s.container}>
-      <div className={clsx(s.userAvatar, avatarSize === 'small' ? s.small : s.large)}>
+      <div className={clsx(s.userAvatar, avatarSize === 'small' ? s.sizeS : s.sizeL)}>
         <img alt={'profile avatar'} src={avatarSelected?.url} />
       </div>
       <div className={s.userName}>

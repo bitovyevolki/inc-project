@@ -3,6 +3,7 @@ import {
   CreatePostResponse,
   GetPostsByUserArgs,
   GetPostsByUserResponse,
+  GetPublicPostsByUserArgs,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
@@ -22,9 +23,18 @@ export const PostsService = inctagramService.injectEndpoints({
       getPostsByUserName: builder.query<GetPostsByUserResponse, GetPostsByUserArgs>({
         query: queryArgs => {
           return {
-            body: queryArgs,
-            method: 'POST',
-            url: 'v1/posts/{userName}',
+            credentials: 'include',
+            params: queryArgs,
+            url: `v1/posts/${queryArgs.userName}`,
+          }
+        },
+      }),
+      getPublicPostsByUserId: builder.query<GetPostsByUserResponse, GetPublicPostsByUserArgs>({
+        query: queryArgs => {
+          return {
+            credentials: 'include',
+            params: queryArgs,
+            url: `v1/public-posts/user/${queryArgs.userId}/${queryArgs.endCursorPostId}`,
           }
         },
       }),
@@ -47,5 +57,9 @@ export const PostsService = inctagramService.injectEndpoints({
   },
 })
 
-export const { useCreatePostMutation, useGetPostsByUserNameQuery, useUploadImagesMutation } =
-  PostsService
+export const {
+  useCreatePostMutation,
+  useGetPostsByUserNameQuery,
+  useGetPublicPostsByUserIdQuery,
+  useUploadImagesMutation,
+} = PostsService

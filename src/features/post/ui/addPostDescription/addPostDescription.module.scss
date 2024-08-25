@@ -1,0 +1,40 @@
+.modalWindow {
+  overflow: hidden;
+  width: 792px;
+}
+
+.container {
+  display: flex;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 490px;
+  height: 502px;
+  background-color: #c3f2fa;
+  margin: 72px auto 60px;
+}
+
+.publicationContainer {
+  display: flex;
+  flex-direction: column;
+  width: 490px;
+  height: 502px;
+  padding: 24px;
+}
+
+.postContainer {
+  margin-bottom: 36px;
+  border-bottom: 1px solid #4c4c4c;
+}
+
+.textArea {
+  width: 432px;
+  height: 120px;
+}
+
+.textArea::after {
+  content: '0/500';
+}

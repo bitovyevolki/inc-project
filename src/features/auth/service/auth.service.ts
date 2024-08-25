@@ -1,5 +1,3 @@
-import { toast } from 'react-toastify'
-
 import {
   ConfirmEmailArgs,
   CreateNewPasswordArgs,
@@ -59,15 +57,6 @@ export const AuthService = inctagramService.injectEndpoints({
         }),
       }),
       logOut: builder.query<void, void>({
-        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-          try {
-            await queryFulfilled
-            localStorage.removeItem('token')
-            dispatch(AuthService.util.resetApiState())
-          } catch (error: any) {
-            toast.error(error)
-          }
-        },
         query: () => ({
           body: { baseUrl: 'http://localhost:3000' },
           method: 'POST',
@@ -76,7 +65,7 @@ export const AuthService = inctagramService.injectEndpoints({
       }),
       me: builder.query<MeResponse, void>({
         providesTags: ['Me'],
-        query: () => '/v1/auth/me',
+        query: _ => '/v1/auth/me',
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({

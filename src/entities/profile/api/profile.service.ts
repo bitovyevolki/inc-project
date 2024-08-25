@@ -1,6 +1,6 @@
 import { inctagramService } from '@/src/shared/model/inctagram.service'
 
-import { IProfile, UpdateGeneralProfileArgs } from '../model/types/profile'
+import { GetProfileByIdArgs, IProfile, UpdateGeneralProfileArgs } from '../model/types/profile'
 
 export const ProfileService = inctagramService.injectEndpoints({
   endpoints: builder => {
@@ -64,6 +64,15 @@ export const ProfileService = inctagramService.injectEndpoints({
           }
         },
       }),
+      getProfileById: builder.query<IProfile, GetProfileByIdArgs>({
+        providesTags: ['Profile'],
+        query: ({ profileId }) => {
+          return {
+            method: 'GET',
+            url: `v1/public-user/profile/${profileId}`,
+          }
+        },
+      }),
       updateProfile: builder.mutation<IProfile, UpdateGeneralProfileArgs>({
         invalidatesTags: ['Profile'],
         query: data => {
@@ -81,6 +90,7 @@ export const ProfileService = inctagramService.injectEndpoints({
 export const {
   useCreateProfileAvatarMutation,
   useDeleteProfileAvatarMutation,
+  useGetProfileByIdQuery,
   useGetProfileQuery,
   useUpdateProfileMutation,
 } = ProfileService

@@ -8,7 +8,8 @@ import {
   useGetPublicPostsByUserIdQuery,
   useLazyGetPublicPostsByUserIdQuery,
 } from '@/src/features/post/model/posts.service'
-import { Button, Typography } from '@bitovyevolki/ui-kit-int'
+import { ViewPost } from '@/src/features/post/ui/'
+import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
 import Link from 'next/link'
 
@@ -33,6 +34,7 @@ export const ShowPosts = ({ profileId }: Props) => {
   const { data: publicPostsData } = useGetPublicPostsByUserIdQuery({ userId })
   const [showNextPosts, { data: nextPostsData }] = useLazyGetPublicPostsByUserIdQuery()
   const [currentPageSize, setCurrentPageSize] = useState<number>(POSTS_INCREMENT)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const showPosts = publicPostsData?.items
   const [posts, setPosts] = useState(showPosts)
@@ -92,8 +94,19 @@ export const ShowPosts = ({ profileId }: Props) => {
       </div>
       <div className={s.postsGallery}>
         {posts?.map(post => (
-          <div key={post.id}>
-            <img alt={'post image'} src={post?.images?.[0]?.url} width={300} />
+          <div>
+            {isModalOpen && (
+              <ModalWindow
+                onOpenChange={() => setIsModalOpen(false)}
+                open={isModalOpen}
+                title={'View Post'}
+              >
+                <ViewPost postId={post.id} />
+              </ModalWindow>
+            )}
+            <div className={s.postsGallery} key={post.id} onClick={() => setIsModalOpen(true)}>
+              <img alt={'post image'} src={post?.images?.[0]?.url} width={300} />
+            </div>
           </div>
         ))}
       </div>

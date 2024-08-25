@@ -14,6 +14,9 @@ import Link from 'next/link'
 
 import s from './showPosts.module.scss'
 
+const SCROLL_OFFSET = 5
+const POSTS_INCREMENT = 8
+
 type Props = {
   profileId?: string
 }
@@ -29,7 +32,7 @@ export const ShowPosts = ({ profileId }: Props) => {
 
   const { data: publicPostsData } = useGetPublicPostsByUserIdQuery({ userId })
   const [showNextPosts, { data: nextPostsData }] = useLazyGetPublicPostsByUserIdQuery()
-  const [currentPageSize, setCurrentPageSize] = useState<number>(8)
+  const [currentPageSize, setCurrentPageSize] = useState<number>(POSTS_INCREMENT)
 
   const showPosts = publicPostsData?.items
   const [posts, setPosts] = useState(showPosts)
@@ -37,9 +40,9 @@ export const ShowPosts = ({ profileId }: Props) => {
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 5
+      document.documentElement.offsetHeight - SCROLL_OFFSET
     ) {
-      setCurrentPageSize(currentPageSize => currentPageSize + 8)
+      setCurrentPageSize(currentPageSize => currentPageSize + POSTS_INCREMENT)
     }
   }
 

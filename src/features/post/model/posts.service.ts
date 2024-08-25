@@ -33,7 +33,7 @@ export const PostsService = inctagramService.injectEndpoints({
         query: queryArgs => {
           return {
             credentials: 'include',
-            params: queryArgs,
+            params: { pageSize: 8, ...queryArgs },
             url: `v1/public-posts/user/${queryArgs.userId}/${queryArgs.endCursorPostId}`,
           }
         },
@@ -61,5 +61,6 @@ export const {
   useCreatePostMutation,
   useGetPostsByUserNameQuery,
   useGetPublicPostsByUserIdQuery,
+  useLazyGetPublicPostsByUserIdQuery,
   useUploadImagesMutation,
 } = PostsService

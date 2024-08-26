@@ -10,7 +10,8 @@ import Router from 'next/router'
 const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://inctagram.work/api',
-  //credentials: 'include',
+  //TODO credentials included locally on logout but don't work unless included here
+  credentials: 'include',
   prepareHeaders: headers => {
     const token = localStorage.getItem('token')
 

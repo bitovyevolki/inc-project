@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import { toast } from 'react-toastify'
 
-import { useLazyLogOutQuery, useMeQuery } from '@/src/features/auth/service/auth.service'
-import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
+import { useLogOutMutation, useMeQuery } from '@/src/features/auth/service/auth.service'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
@@ -33,19 +31,8 @@ export const Sidebar = () => {
   const router = useRouter()
 
   const { data: meData, isLoading: LoadingMe } = useMeQuery()
-  const [logOutQuery, { isLoading }] = useLazyLogOutQuery()
+  const [logOut] = useLogOutMutation()
 
-  const onLogout = () => {
-    logOutQuery()
-      .unwrap()
-      .then(() => {
-        setIsModalOpen(false)
-        void router.push('/auth/sign-in')
-      })
-      .catch((err: Error) => {
-        toast.error(err.message)
-      })
-  }
   const t = useTranslations('Sidebar')
 
   const sidebarLinks: ILink[] = [
@@ -62,10 +49,6 @@ export const Sidebar = () => {
     { path: RouterPaths.HOME, svg: FavoritesIcon, title: t('favorites') },
   ]
 
-  if (isLoading) {
-    return <RoundLoader variant={'large'} />
-  }
-
   return (
     <>
       {isModalOpen && (
@@ -79,7 +62,7 @@ export const Sidebar = () => {
               Do you really want to log out of your account?
             </Typography>
             <div className={s.buttonsContainer}>
-              <Button onClick={onLogout}>Yes</Button>
+              <Button onClick={() => logOut()}>Yes</Button>
               <Button onClick={() => setIsModalOpen(false)}>No</Button>
             </div>
           </div>

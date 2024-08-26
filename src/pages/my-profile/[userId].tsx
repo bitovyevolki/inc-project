@@ -1,20 +1,31 @@
 import * as React from 'react'
-import { ReactElement } from 'react'
+import { PropsWithChildren, ReactElement } from 'react'
 
 import { ShowPosts } from '@/src/features/post/ui/showPosts/ShowPosts'
+import RequireAuth from '@/src/shared/providers/RequireAuth'
 import { Layout } from '@/src/shared/ui/Layout/Layout'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 
-export default function MyProfilePage(props: any) {
+function MyProfilePage(props: any) {
   const router = useRouter()
   const userId = router.query.userId as string
 
   return <ShowPosts profileId={userId} {...props} />
 }
 
-MyProfilePage.getLayout = function getLayout(page: ReactElement) {
+MyProfilePageProtected.getLayout = function getLayout(page: ReactElement) {
   return <Layout withSidebar>{page}</Layout>
+}
+
+export default function MyProfilePageProtected({ children }: PropsWithChildren) {
+  return (
+    <>
+      <RequireAuth>
+        <MyProfilePage />
+      </RequireAuth>
+    </>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {

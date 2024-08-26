@@ -1,5 +1,3 @@
-import { Nullable } from '@vitest/utils'
-
 export type SignUpArgs = {
   email: string
   password: string
@@ -31,7 +29,7 @@ export type SignUpResendEmailType = {
 export type SendResetPasswordArgs = {
   baseUrl?: string
   email: string
-  recaptcha: Nullable<string>
+  recaptcha: null | string
 }
 
 export type ServerError = {

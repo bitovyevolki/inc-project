@@ -14,6 +14,7 @@ import {
   SignUpResendEmailType,
 } from '@/src/features/auth/service/auth.types'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
+import Router from 'next/router'
 
 export const AuthService = inctagramService.injectEndpoints({
   /// ADD Your Endpoints
@@ -58,25 +59,32 @@ export const AuthService = inctagramService.injectEndpoints({
           url: '/v1/auth/google/login',
         }),
       }),
-      logOut: builder.query<void, void>({
+      logOut: builder.mutation<void, void>({
         onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
           try {
             await queryFulfilled
             localStorage.removeItem('token')
-            dispatch(AuthService.util.resetApiState())
+            //TODO should here be local api or baseApi for util methods below? They both work
+            dispatch(inctagramService.util.invalidateTags(['Me']))
+            dispatch(inctagramService.util.resetApiState())
+            void Router.replace('/auth/sign-in')
           } catch (error: any) {
             toast.error(error)
           }
         },
         query: () => ({
           body: { baseUrl: 'http://localhost:3000' },
+          credentials: 'include',
           method: 'POST',
           url: `/v1/auth/logout`,
         }),
       }),
       me: builder.query<MeResponse, void>({
         providesTags: ['Me'],
-        query: () => '/v1/auth/me',
+        query: () => ({
+          credentials: 'include',
+          url: '/v1/auth/me',
+        }),
       }),
       resendEmail: builder.mutation<void, SignUpResendEmailType>({
         query: data => ({
@@ -125,7 +133,7 @@ export const {
   useConfirmEmailQuery,
   useCreateNewPasswordMutation,
   useGoogleLoginMutation,
-  useLazyLogOutQuery,
+  useLogOutMutation,
   useMeQuery,
   useResendEmailMutation,
   useSendResetPasswordEmailMutation,

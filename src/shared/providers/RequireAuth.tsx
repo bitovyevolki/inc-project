@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect } from 'react'
 
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
+import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { useRouter } from 'next/router'
 
@@ -12,7 +13,7 @@ export default function RequireAuth({ children }: PropsWithChildren) {
     if (!isError) {
       return
     }
-    void router.push('/auth/sign-in')
+    void router.push(RouterPaths.SIGN_IN)
   }, [isError, router])
 
   if (isLoading) {

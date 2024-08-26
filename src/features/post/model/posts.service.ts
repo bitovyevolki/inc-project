@@ -1,10 +1,13 @@
 import {
   CreatePostArgs,
   CreatePostResponse,
+  GetCommentAnswersArgs,
+  GetCommentAnswersResponse,
   GetPostByIdArgs,
   GetPostByIdResponse,
   GetPostsByUserArgs,
   GetPostsByUserResponse,
+  GetPostsCommentsArgs,
   GetPublicPostsByUserArgs,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
@@ -22,12 +25,30 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+      getCommentAnswers: builder.query<GetCommentAnswersResponse, GetCommentAnswersArgs>({
+        query: queryArgs => {
+          return {
+            credentials: 'include',
+            params: queryArgs,
+            url: `/api/v1/posts/${queryArgs.postId}/comments/${queryArgs.commentId}/answers`,
+          }
+        },
+      }),
       getPostById: builder.query<GetPostByIdResponse, GetPostByIdArgs>({
         query: queryArgs => {
           return {
             credentials: 'include',
             params: queryArgs,
             url: `/api/v1/public-posts/${queryArgs.postId}`,
+          }
+        },
+      }),
+      getPostComments: builder.query<GetPostsByUserResponse, GetPostsCommentsArgs>({
+        query: queryArgs => {
+          return {
+            credentials: 'include',
+            params: queryArgs,
+            url: `v1/posts/${queryArgs.postId}/comments`,
           }
         },
       }),

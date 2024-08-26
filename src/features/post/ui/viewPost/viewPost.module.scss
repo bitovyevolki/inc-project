@@ -1,0 +1,16 @@
+.modalBox {
+  width: 972px;
+  height: 564px;
+  display: flex;
+  flex-direction: row;
+}
+
+.photoBox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 490px;
+  height: 562px;
+  background-color: #c3f2fa;
+  margin: 72px auto 60px;
+}

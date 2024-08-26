@@ -1,6 +1,8 @@
 import {
   CreatePostArgs,
   CreatePostResponse,
+  GetPostByIdArgs,
+  GetPostByIdResponse,
   GetPostsByUserArgs,
   GetPostsByUserResponse,
   GetPublicPostsByUserArgs,
@@ -17,6 +19,15 @@ export const PostsService = inctagramService.injectEndpoints({
             body: queryArgs,
             method: 'POST',
             url: '/v1/posts',
+          }
+        },
+      }),
+      getPostById: builder.query<GetPostByIdResponse, GetPostByIdArgs>({
+        query: queryArgs => {
+          return {
+            credentials: 'include',
+            params: queryArgs,
+            url: `/api/v1/public-posts/${queryArgs.postId}`,
           }
         },
       }),
@@ -38,6 +49,7 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+
       uploadImages: builder.mutation<UploadImageResponse, { files: FileList }>({
         query: args => {
           const formData = new FormData()
@@ -59,6 +71,7 @@ export const PostsService = inctagramService.injectEndpoints({
 
 export const {
   useCreatePostMutation,
+  useGetPostByIdQuery,
   useGetPostsByUserNameQuery,
   useGetPublicPostsByUserIdQuery,
   useLazyGetPublicPostsByUserIdQuery,

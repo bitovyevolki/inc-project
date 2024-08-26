@@ -9,6 +9,7 @@ import { useSendResetPasswordEmailMutation } from '@/src/features/auth/service/a
 import { ServerError } from '@/src/features/auth/service/auth.types'
 import { Nullable } from '@/src/shared/types/globalTypes'
 import { Loader } from '@/src/shared/ui/loader/Loader'
+import { Button, Card, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import i18n from 'i18next'
 import { useTranslations } from 'next-intl'
@@ -16,7 +17,7 @@ import { z } from 'zod'
 
 import s from './forgotPassword.module.scss'
 
-import { Button, Card, ModalWindow, Typography } from '../../../../../../inc-ui'
+// import { Button, Card, ModalWindow, Typography } from '../../../../../../inc-ui'
 
 const schemaEn = z.object({
   email: z

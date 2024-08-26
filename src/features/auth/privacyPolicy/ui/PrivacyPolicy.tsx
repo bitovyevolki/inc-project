@@ -6,7 +6,8 @@ import s from './privacyPolicy.module.scss'
 export const PrivacyPolicy = () => {
   return (
     <div className={s.wrapper}>
-      <Button as={Link} className={s.buttonLeft} href={'/auth/sign-up'} variant={'ghost'}>
+      {/* @ts-ignore */}
+      <Button as={Link} className={s.buttonLeft} href={'/auth/sign-up'} variant={'outlined'}>
         {'Back to Sign Up'}
       </Button>
       <div className={s.content}>

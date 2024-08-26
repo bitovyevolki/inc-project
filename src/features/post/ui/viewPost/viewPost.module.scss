@@ -1,16 +1,40 @@
 .modalBox {
-  width: 972px;
-  height: 564px;
   display: flex;
-  flex-direction: row;
+  background-color: #333333;
 }
 
-.photoBox {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 490px;
-  height: 562px;
-  background-color: #c3f2fa;
-  margin: 72px auto 60px;
+.textBox {
+  width: 100%;
+  min-height: 300px;
+  padding: 16px;
+}
+
+.postHeader {
+  width: 100%;
+  border-bottom: 1px solid #4c4c4c;
+  margin-bottom: 16px;
+}
+
+.post {
+  height: 100px;
+}
+
+.comments {
+  height: 100px;
+}
+
+.reactToPost {
+  width: 100%;
+  height: 168px;
+  border-top: 1px solid #4c4c4c;
+  align-self: flex-end;
+
+  & input {
+    border: 1px solid #4c4c4c;
+  }
+}
+
+.publishButton {
+  margin-top: 8px;
+  align-self: flex-end;
 }

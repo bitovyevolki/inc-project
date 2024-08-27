@@ -17,7 +17,6 @@ interface IProps {
 
 export const UpdatePhotoBox = ({ avatars }: IProps) => {
   const {
-    changeFileHandler,
     changeTempPhotoHandler,
     isLoadingCreateAvatar,
     isShowDeletePhotoModal,
@@ -38,10 +37,7 @@ export const UpdatePhotoBox = ({ avatars }: IProps) => {
       upload={uploadImage}
     />
   ) : (
-    <SelectPhotoModalContent
-      onChangeFile={changeFileHandler}
-      onChangeTempPhoto={changeTempPhotoHandler}
-    />
+    <SelectPhotoModalContent onChangeTempPhoto={changeTempPhotoHandler} />
   )
 
   const avatarContent =

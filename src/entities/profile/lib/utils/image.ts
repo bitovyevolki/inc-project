@@ -5,11 +5,10 @@ import { ITempProfilePhoto } from '../../model/types/profile'
 
 interface FormatImageProps {
   event: ChangeEvent<HTMLInputElement>
-  onChangeFile: (file: FormData) => void
   onChangeTempPhoto: (value: ITempProfilePhoto) => void
 }
 
-export const formatImage = ({ event, onChangeFile, onChangeTempPhoto }: FormatImageProps) => {
+export const formatImage = ({ event, onChangeTempPhoto }: FormatImageProps) => {
   if (event.target.files) {
     const file = event?.target?.files[0]
 
@@ -30,8 +29,6 @@ export const formatImage = ({ event, onChangeFile, onChangeTempPhoto }: FormatIm
     }
 
     setImageParams(file, onChangeTempPhoto)
-
-    onChangeFile(getFormData(file))
   }
 }
 
@@ -56,7 +53,7 @@ const setImageParams = (file: Blob, onChangeTempPhoto: (photo: ITempProfilePhoto
   }
 }
 
-const getFormData = (file: Blob) => {
+export const getFormData = (file: Blob) => {
   const formData = new FormData()
 
   formData.append('file', file)

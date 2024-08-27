@@ -5,11 +5,10 @@ import { formatImage } from '@/src/entities/profile/lib/utils/image'
 import { ITempProfilePhoto } from '../../model/types/profile'
 
 interface IProps {
-  onChangeFile: (file: FormData) => void
   onChangeTempPhoto: (value: ITempProfilePhoto) => void
 }
 
-export const useSelectPhoto = ({ onChangeFile, onChangeTempPhoto }: IProps) => {
+export const useSelectPhoto = ({ onChangeTempPhoto }: IProps) => {
   const inputFileRef = useRef<HTMLInputElement | null>(null)
 
   const onClickFileInputHandler = () => {
@@ -17,7 +16,7 @@ export const useSelectPhoto = ({ onChangeFile, onChangeTempPhoto }: IProps) => {
   }
 
   const changePhotoHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    formatImage({ event, onChangeFile, onChangeTempPhoto })
+    formatImage({ event, onChangeTempPhoto })
   }
 
   return { changePhotoHandler, inputFileRef, onClickFileInputHandler }

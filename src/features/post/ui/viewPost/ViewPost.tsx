@@ -19,12 +19,12 @@ import s from './viewPost.module.scss'
 type Props = {
   avatars?: IProfile['avatars']
   imageUrl?: string
-  post: Post
+  post?: Post
   userName: string
 }
 export const ViewPost = ({ avatars, imageUrl, post, userName }: Props) => {
   const { data: commentsData, isLoading: loadingComments } = useGetPostCommentsQuery({
-    postId: post.id,
+    postId: post?.id,
   })
   const [updateComments, { data: moreComments }] = useLazyGetPostCommentsQuery()
   const [createComment, { isError, isLoading }] = useCreateCommentToPostMutation()
@@ -56,10 +56,10 @@ export const ViewPost = ({ avatars, imageUrl, post, userName }: Props) => {
     const data = Object.fromEntries(formData)
     const content = JSON.stringify(data.leaveComment)
 
-    createComment({ content, postId: post.id })
+    createComment({ content, postId: post?.id })
       .unwrap()
       .then(comment => {
-        updateComments({ postId: post.id })
+        updateComments({ postId: post?.id })
       })
   }
 

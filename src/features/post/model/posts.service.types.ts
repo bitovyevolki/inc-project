@@ -38,7 +38,7 @@ export type GetPostsByUserArgs = {
 export type GetPostCommentsArgs = {
   pageNumber?: number
   pageSize?: number
-  postId: number
+  postId?: number
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
@@ -66,7 +66,7 @@ export type Post = {
   avatarOwner: string
   createdAt: string
   description: string
-  id: number
+  id?: number
   images: Image[]
   isLiked: boolean
   likesCount: number
@@ -144,6 +144,6 @@ export type Answer = {
 
 export type CreateCommentArgs = {
   content: string
-  postId: number
+  postId?: number
 }
 export type CreateCommentResponse = Comment

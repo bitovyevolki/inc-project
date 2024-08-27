@@ -32,7 +32,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [signUp, isLoading] = useSignUpMutation()
   const onModalClose = () => {
-    setIsModalOpen(prev => !prev)
+    setIsModalOpen(false)
     reset()
   }
 

@@ -1,5 +1,6 @@
 import { ToastContainer } from 'react-toastify'
 
+import { ITempProfilePhoto } from '@/src/entities/profile/model/types/profile'
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { useTranslations } from 'next-intl'
@@ -10,7 +11,7 @@ import { useSelectPhoto } from '../../../../lib/hooks/useSelectPhoto'
 
 interface IProps {
   onChangeFile: (file: FormData) => void
-  onChangeTempPhoto: (value: string) => void
+  onChangeTempPhoto: (value: ITempProfilePhoto) => void
 }
 
 export const SelectPhotoModalContent = ({ onChangeFile, onChangeTempPhoto }: IProps) => {

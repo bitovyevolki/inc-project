@@ -9,14 +9,15 @@ import { useSendResetPasswordEmailMutation } from '@/src/features/auth/service/a
 import { ServerError } from '@/src/features/auth/service/auth.types'
 import { Nullable } from '@/src/shared/types/globalTypes'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Button, Card, FormInput, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import i18n from 'i18next'
-import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 import s from './forgotPassword.module.scss'
+
+// import { Button, Card, ModalWindow, Typography } from '../../../../../../inc-ui'
 
 const schemaEn = z.object({
   email: z
@@ -86,10 +87,13 @@ export const ForgotPassword = () => {
   return (
     <>
       {isSuccess && (
+        // eslint-disable-next-line react/jsx-no-undef,no-undef
         <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={t('ModalTitle')}>
           <div className={s.card}>
             <Typography as={'p'} variant={'body1'}>
-              {`${t('sentLinkConfirmationMessage1')} ${getValues('email')}${t('sentLinkConfirmationMessage2')}`}
+              {`${t('sentLinkConfirmationMessage1')} ${getValues('email')}${t(
+                'sentLinkConfirmationMessage2'
+              )}`}
             </Typography>
             <Button className={s.buttonRight} onClick={closeModal} variant={'primary'}>
               {t('OK')}
@@ -103,14 +107,14 @@ export const ForgotPassword = () => {
             {t('formTitle')}
           </Typography>
           <form className={s.form} onSubmit={onSubmit}>
-            <FormInput
-              control={control}
-              errorMessage={errors.email?.message}
-              inputMode={'email'}
-              label={`${t('email')}`}
-              name={'email'}
-              placeholder={'Epam@epam.com'}
-            />
+            {/*<FormInput*/}
+            {/*  control={control}*/}
+            {/*  errorMessage={errors.email?.message}*/}
+            {/*  inputMode={'email'}*/}
+            {/*  label={`${t('email')}`}*/}
+            {/*  name={'email'}*/}
+            {/*  placeholder={'Epam@epam.com'}*/}
+            {/*/>*/}
             <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
               {t('instructions')}
             </Typography>
@@ -122,9 +126,10 @@ export const ForgotPassword = () => {
             >
               {t('sendLink')}
             </Button>
-            <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
+            {/*         <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
               {t('backToSignIn')}
-            </Button>
+            </Button>*/}
+            {/*<Button as></Button>*/}
             <ReCAPTCHA
               className={s.capture}
               hl={locale}

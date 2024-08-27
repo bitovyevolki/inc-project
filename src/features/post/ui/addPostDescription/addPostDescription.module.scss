@@ -1,0 +1,52 @@
+.modal {
+  width: 100%;
+  max-width: 972px;
+  max-height: unset;
+}
+
+.container {
+  display: flex;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 490px;
+  height: 502px;
+  background-color: #333333;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.publicationContainer {
+  display: flex;
+  flex-direction: column;
+  width: 490px;
+  height: 502px;
+  padding: 24px;
+  background-color: #333333;
+}
+
+.postContainer {
+  margin-bottom: 36px;
+  border-bottom: 1px solid #4c4c4c;
+}
+
+.textArea {
+  width: 432px;
+  height: 120px;
+  margin-bottom: 24px;
+}
+
+.textArea::after {
+  content: '0/500';
+}
+
+.button {
+  place-self: flex-end;
+}

@@ -1,20 +1,32 @@
-import { Control, Controller, SubmitHandler, UseFormHandleSubmit } from 'react-hook-form'
+import { Control, SubmitHandler, UseFormHandleSubmit } from 'react-hook-form'
 
-import { FormDatePicker, FormInput, FormSelect, TextArea } from '@bitovyevolki/ui-kit-int'
+import {
+  FormDatePicker,
+  FormInput,
+  FormSelect,
+  FormTextarea,
+  IOption,
+} from '@bitovyevolki/ui-kit-int'
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
 import s from './GeneralInformationForm.module.scss'
 
-import { cityOptions, countryOptions } from '../../../model/mock/options'
 import { GeneralProfileFormValue } from '../../../model/schema/general-profile.schema'
 
 interface IGeneralFormProps {
   control: Control<GeneralProfileFormValue>
+  countries: IOption[]
   handleSubmit: UseFormHandleSubmit<GeneralProfileFormValue>
   onSubmit: SubmitHandler<GeneralProfileFormValue>
 }
 
-export const GeneralInformationForm = ({ control, handleSubmit, onSubmit }: IGeneralFormProps) => {
+export const GeneralInformationForm = ({
+  control,
+  countries,
+  handleSubmit,
+  onSubmit,
+}: IGeneralFormProps) => {
   const t = useTranslations('GeneralProfile')
 
   return (
@@ -29,38 +41,32 @@ export const GeneralInformationForm = ({ control, handleSubmit, onSubmit }: IGen
         <FormInput control={control} label={t('last-name')} name={'lastName'} />
       </div>
       <div>
-        <FormDatePicker control={control} label={t('date-of-birth')} name={'dateOfBirth'} />
+        <FormDatePicker
+          Link={
+            <Link className={s.errorLink} href={'/auth/privacy-policy'}>
+              Privacy Policy
+            </Link>
+          }
+          control={control}
+          label={t('date-of-birth')}
+          name={'dateOfBirth'}
+        />
       </div>
       <div className={s.selectsBox}>
         <div>
           <FormSelect
             control={control}
             name={'country'}
-            options={countryOptions}
+            options={countries}
             placeholder={t('country')}
             title={t('select-country')}
             variant={'large'}
           />
         </div>
-        <div>
-          <FormSelect
-            control={control}
-            name={'city'}
-            options={cityOptions}
-            placeholder={t('city')}
-            title={t('select-city')}
-            variant={'large'}
-          />
-        </div>
+        <FormInput control={control} label={t('select-city')} name={'city'} />
       </div>
       <div>
-        <Controller
-          control={control}
-          name={'aboutMe'}
-          render={({ field, fieldState: { error } }) => (
-            <TextArea errorMessage={error?.message} label={t('about-me')} {...field} />
-          )}
-        />
+        <FormTextarea control={control} label={t('about-me')} name={'aboutMe'} />
       </div>
     </form>
   )

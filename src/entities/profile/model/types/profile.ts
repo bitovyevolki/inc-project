@@ -5,6 +5,10 @@ export enum ProfileContentType {
   PAYMENTS = 'PAYMENTS',
 }
 
+export type GetProfileByIdArgs = {
+  profileId: number | undefined
+}
+
 export interface IProfile {
   aboutMe: string
   avatars: IProfileAvatar[]
@@ -27,3 +31,9 @@ export interface IProfileAvatar {
 }
 
 export type UpdateGeneralProfileArgs = Omit<IProfile, 'avatars' | 'createdAt' | 'id'>
+
+export interface ITempProfilePhoto {
+  height: number
+  src: string
+  width: number
+}

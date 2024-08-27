@@ -1,3 +1,5 @@
+import { useMoveImage } from '@/src/entities/profile/lib/hooks/useMoveImage'
+import { ITempProfilePhoto } from '@/src/entities/profile/model/types/profile'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
@@ -7,11 +9,24 @@ import s from './UploadPhotoModalContent.module.scss'
 
 interface IProps {
   isLoading: boolean
-  photo: string
+  photo: ITempProfilePhoto
   upload: () => void
 }
 
 export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) => {
+  const {
+    mouseDownHandler,
+    mouseLeaveHandler,
+    mouseMoveHandler,
+    mouseUpHandler,
+    parentRef,
+    position,
+  } = useMoveImage({
+    ...photo,
+    height: photo.height,
+    width: photo.width,
+  })
+
   const t = useTranslations('GeneralProfile')
 
   const btnChildren = isLoading ? (
@@ -24,9 +39,19 @@ export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) =>
 
   return (
     <div className={s.modalContent}>
-      <div className={s.photoBox}>
-        <Image alt={'photo'} className={s.mainPhoto} fill src={photo as string} />
-        <Image alt={'photo'} className={s.background} height={200} src={photo} width={200} />
+      <div className={s.photoBox} ref={parentRef}>
+        <Image
+          alt={'photo'}
+          className={s.mainPhoto}
+          height={Math.floor(photo.height)}
+          onMouseDown={mouseDownHandler}
+          onMouseLeave={mouseLeaveHandler}
+          onMouseMove={mouseMoveHandler}
+          onMouseUp={mouseUpHandler}
+          src={photo.src}
+          style={{ left: position.left, top: position.top }}
+          width={Math.floor(photo.width)}
+        />
         <div className={s.background}></div>
       </div>
       <div className={s.btnBox}>

@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { SocialsRegisterLogin } from '@/src/features/auth/socialsRegisterLogin/SocialsRegisterLogin'
 import { RouterPaths } from '@/src/shared/config/router.paths'
+import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button, Card, FormInput, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
@@ -40,6 +41,10 @@ export const SignInForm = () => {
     }
   }
 
+  if (isLoading) {
+    return <RoundLoader variant={'large'} />
+  }
+
   return (
     <div className={s.wrapper}>
       <Card className={s.card}>
@@ -72,14 +77,8 @@ export const SignInForm = () => {
             <Typography className={s.text} variant={'body2'}>
               {t('have-account')}
             </Typography>
-            <Button
-              as={Link}
-              className={s.link}
-              disabled={isLoading}
-              fullWidth
-              href={'sign-up'}
-              variant={'ghost'}
-            >
+            {/* @ts-ignore */}
+            <Button as={Link} className={s.link} fullWidth href={'sign-up'} variant={'ghost'}>
               {t('registration')}
             </Button>
           </div>

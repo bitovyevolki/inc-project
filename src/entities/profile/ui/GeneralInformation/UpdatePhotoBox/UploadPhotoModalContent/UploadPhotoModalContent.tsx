@@ -2,6 +2,7 @@ import { useMoveImage } from '@/src/entities/profile/lib/hooks/useMoveImage'
 import { ITempProfilePhoto } from '@/src/entities/profile/model/types/profile'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button } from '@bitovyevolki/ui-kit-int'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
@@ -10,24 +11,18 @@ import s from './UploadPhotoModalContent.module.scss'
 interface IProps {
   isLoading: boolean
   photo: ITempProfilePhoto
-  upload: () => void
+  upload: (file: FormData) => void
 }
 
 export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) => {
-  const {
-    mouseDownHandler,
-    mouseLeaveHandler,
-    mouseMoveHandler,
-    mouseUpHandler,
-    parentRef,
-    position,
-  } = useMoveImage({
-    ...photo,
-    height: photo.height,
-    width: photo.width,
-  })
+  const { constraintsRef, dragControls, endDragHandler, file, photoRef, startDragHandler } =
+    useMoveImage(photo)
 
   const t = useTranslations('GeneralProfile')
+
+  const uploadImageHandler = () => {
+    file && upload(file)
+  }
 
   const btnChildren = isLoading ? (
     <div className={s.loader}>
@@ -39,23 +34,28 @@ export const UploadPhotoModalContent = ({ isLoading, photo, upload }: IProps) =>
 
   return (
     <div className={s.modalContent}>
-      <div className={s.photoBox} ref={parentRef}>
-        <Image
-          alt={'photo'}
-          className={s.mainPhoto}
-          height={Math.floor(photo.height)}
-          onMouseDown={mouseDownHandler}
-          onMouseLeave={mouseLeaveHandler}
-          onMouseMove={mouseMoveHandler}
-          onMouseUp={mouseUpHandler}
-          src={photo.src}
-          style={{ left: position.left, top: position.top }}
-          width={Math.floor(photo.width)}
-        />
-        <div className={s.background}></div>
-      </div>
+      <motion.div className={s.photoBox} onPointerDown={startDragHandler} ref={constraintsRef}>
+        <motion.div
+          drag
+          dragConstraints={constraintsRef}
+          dragControls={dragControls}
+          dragElastic={0}
+          onDragEnd={endDragHandler}
+          ref={photoRef}
+          style={{ height: photo.height, width: photo.width }}
+        >
+          <Image
+            alt={'photo'}
+            className={s.mainPhoto}
+            height={photo.height}
+            onMouseDown={e => e.preventDefault()}
+            src={photo.src}
+            width={photo.width}
+          />
+        </motion.div>
+      </motion.div>
       <div className={s.btnBox}>
-        <Button disabled={isLoading} onClick={upload}>
+        <Button disabled={isLoading} onClick={uploadImageHandler}>
           {btnChildren}
         </Button>
       </div>

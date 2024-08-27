@@ -1,57 +1,46 @@
-import { MouseEvent, useEffect, useRef, useState } from 'react'
+import { PointerEvent, useRef, useState } from 'react'
+
+import { useDragControls } from 'framer-motion'
 
 import { ITempProfilePhoto } from '../../model/types/profile'
+import { getCroppedImg } from '../utils/createImage'
 
 export const useMoveImage = (photo: ITempProfilePhoto) => {
-  const parentRef = useRef<HTMLDivElement | null>(null)
+  const dragControls = useDragControls()
 
-  const [position, setPosition] = useState<{ left: number; top: number }>({ left: 0, top: 0 })
+  const [file, setFile] = useState<FormData>()
 
-  const [clicked, setClicked] = useState(false)
+  const constraintsRef = useRef<HTMLDivElement | null>(null)
+  const photoRef = useRef<HTMLDivElement | null>(null)
 
-  const rect = parentRef.current?.getBoundingClientRect()
+  const changeFileHandler = (file: FormData) => {
+    setFile(file)
+  }
 
-  useEffect(() => {
-    if (parentRef.current) {
-      setPosition({
-        left: (0 - photo.width) / 2 + parentRef.current?.getBoundingClientRect().width / 2,
-        top: (0 - photo.height) / 2 + parentRef.current?.getBoundingClientRect().height / 2,
+  const startDragHandler = (event: PointerEvent<HTMLDivElement>) => {
+    dragControls.start(event)
+  }
+
+  const endDragHandler = async () => {
+    if (photoRef?.current) {
+      const coords = photoRef.current.style.transform
+        .split(' ')
+        .map(str => parseInt(str.slice(11, str.length - 3), 10))
+
+      await getCroppedImg({
+        photo,
+        pixelCrop: { height: 332, width: 332, x: coords[0], y: coords[1] },
+        setFile: changeFileHandler,
       })
     }
-  }, [])
-
-  const mouseDownHandler = (event: MouseEvent<HTMLImageElement>) => {
-    event.preventDefault()
-
-    setClicked(true)
-  }
-
-  const mouseUpHandler = (event: MouseEvent<HTMLImageElement>) => {
-    event.preventDefault()
-
-    setClicked(false)
-  }
-
-  const mouseLeaveHandler = () => {
-    setClicked(false)
-  }
-
-  const mouseMoveHandler = (event: MouseEvent<HTMLImageElement>) => {
-    event.preventDefault()
-    //  if (clicked && parentRef.current) {
-    //    setPosition({
-    //      left: position.left - parentRef.current?.getBoundingClientRect().width,
-    //      top: event.pageY / 2,
-    //    })
-    //  }
   }
 
   return {
-    mouseDownHandler,
-    mouseLeaveHandler,
-    mouseMoveHandler,
-    mouseUpHandler,
-    parentRef,
-    position,
+    constraintsRef,
+    dragControls,
+    endDragHandler,
+    file,
+    photoRef,
+    startDragHandler,
   }
 }

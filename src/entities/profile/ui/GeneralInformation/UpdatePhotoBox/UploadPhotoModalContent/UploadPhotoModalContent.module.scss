@@ -16,11 +16,15 @@
   justify-content: center;
 
   width: 332px;
-  height: 340px;
+  height: 332px;
   margin-bottom: 30px;
 
-  .background {
+  &::before {
+    cursor: pointer;
+    content: '';
+
     position: absolute;
+    z-index: 1;
     inset: 0;
 
     display: block;
@@ -34,7 +38,7 @@
 
   .mainPhoto {
     cursor: pointer;
-    position: absolute;
+    z-index: 0;
     overflow: hidden;
     object-fit: cover;
   }

@@ -10,13 +10,11 @@ import s from './SelectPhotoModalContent.module.scss'
 import { useSelectPhoto } from '../../../../lib/hooks/useSelectPhoto'
 
 interface IProps {
-  onChangeFile: (file: FormData) => void
   onChangeTempPhoto: (value: ITempProfilePhoto) => void
 }
 
-export const SelectPhotoModalContent = ({ onChangeFile, onChangeTempPhoto }: IProps) => {
+export const SelectPhotoModalContent = ({ onChangeTempPhoto }: IProps) => {
   const { changePhotoHandler, inputFileRef, onClickFileInputHandler } = useSelectPhoto({
-    onChangeFile,
     onChangeTempPhoto,
   })
 

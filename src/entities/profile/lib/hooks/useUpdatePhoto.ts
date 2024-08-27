@@ -13,12 +13,7 @@ export const useUpdatePhoto = () => {
 
   const [isShowModal, setIsShowModal] = useState(false)
   const [isShowDeletePhotoModal, setIsShowDeletePhotoModal] = useState(false)
-  const [file, setFile] = useState<FormData>()
   const [tempPhoto, setTempPhoto] = useState<ITempProfilePhoto>({ height: 0, src: '', width: 0 })
-
-  const changeFileHandler = (file: FormData) => {
-    setFile(file)
-  }
 
   const setIsShowModalHandler = (value: boolean) => {
     setTempPhoto({ ...tempPhoto, src: '' })
@@ -33,9 +28,9 @@ export const useUpdatePhoto = () => {
     setTempPhoto(photo)
   }
 
-  const uploadImage = async () => {
+  const uploadImage = async (file: FormData) => {
     try {
-      await createAvatar({ file } as { file: FormData }).unwrap()
+      await createAvatar({ file }).unwrap()
 
       toast.success('Your avatar has been updated')
     } catch (error) {
@@ -57,7 +52,6 @@ export const useUpdatePhoto = () => {
   }
 
   return {
-    changeFileHandler,
     changeTempPhotoHandler,
     isLoadingCreateAvatar,
     isShowDeletePhotoModal,

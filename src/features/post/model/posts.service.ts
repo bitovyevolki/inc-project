@@ -1,13 +1,16 @@
 import {
+  CreateCommentArgs,
+  CreateCommentResponse,
   CreatePostArgs,
   CreatePostResponse,
   GetCommentAnswersArgs,
   GetCommentAnswersResponse,
   GetPostByIdArgs,
   GetPostByIdResponse,
+  GetPostCommentsArgs,
+  GetPostCommentsResponse,
   GetPostsByUserArgs,
   GetPostsByUserResponse,
-  GetPostsCommentsArgs,
   GetPublicPostsByUserArgs,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
@@ -16,6 +19,16 @@ import { inctagramService } from '@/src/shared/model/inctagram.service'
 export const PostsService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
+      createCommentToPost: builder.mutation<CreateCommentResponse, CreateCommentArgs>({
+        query: ({ postId, ...queryArgs }) => {
+          return {
+            body: { ...queryArgs },
+            credentials: 'include',
+            method: 'POST',
+            url: `v1/posts/${postId}/comments`,
+          }
+        },
+      }),
       createPost: builder.mutation<CreatePostResponse, CreatePostArgs>({
         query: queryArgs => {
           return {
@@ -43,7 +56,7 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
-      getPostComments: builder.query<GetPostsByUserResponse, GetPostsCommentsArgs>({
+      getPostComments: builder.query<GetPostCommentsResponse, GetPostCommentsArgs>({
         query: queryArgs => {
           return {
             credentials: 'include',
@@ -91,10 +104,13 @@ export const PostsService = inctagramService.injectEndpoints({
 })
 
 export const {
+  useCreateCommentToPostMutation,
   useCreatePostMutation,
   useGetPostByIdQuery,
+  useGetPostCommentsQuery,
   useGetPostsByUserNameQuery,
   useGetPublicPostsByUserIdQuery,
+  useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,
   useUploadImagesMutation,
 } = PostsService

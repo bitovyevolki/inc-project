@@ -131,7 +131,6 @@ export const ShowPosts = ({ profileId }: Props) => {
             post={postForView}
             userName={userName}
           />
-          {/*  <img alt={'post image'} src={post?.images[0]?.url} width={300} />*/}
         </ModalWindow>
       )}
     </>

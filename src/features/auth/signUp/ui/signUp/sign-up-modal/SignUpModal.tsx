@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 
 import s from './signupmodal.module.scss'
 export type SignUpModalProps = {
-  onClose: (open: boolean) => void
+  onClose: () => void
   open: boolean
   userEmail: string
 }

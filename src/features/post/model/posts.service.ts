@@ -1,6 +1,14 @@
 import {
+  CreateCommentArgs,
+  CreateCommentResponse,
   CreatePostArgs,
   CreatePostResponse,
+  GetCommentAnswersArgs,
+  GetCommentAnswersResponse,
+  GetPostByIdArgs,
+  GetPostByIdResponse,
+  GetPostCommentsArgs,
+  GetPostCommentsResponse,
   GetPostsByUserArgs,
   GetPostsByUserResponse,
   GetPublicPostsByUserArgs,
@@ -11,12 +19,49 @@ import { inctagramService } from '@/src/shared/model/inctagram.service'
 export const PostsService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
+      createCommentToPost: builder.mutation<CreateCommentResponse, CreateCommentArgs>({
+        query: ({ postId, ...queryArgs }) => {
+          return {
+            body: { ...queryArgs },
+            credentials: 'include',
+            method: 'POST',
+            url: `v1/posts/${postId}/comments`,
+          }
+        },
+      }),
       createPost: builder.mutation<CreatePostResponse, CreatePostArgs>({
         query: queryArgs => {
           return {
             body: queryArgs,
             method: 'POST',
             url: '/v1/posts',
+          }
+        },
+      }),
+      getCommentAnswers: builder.query<GetCommentAnswersResponse, GetCommentAnswersArgs>({
+        query: queryArgs => {
+          return {
+            credentials: 'include',
+            params: queryArgs,
+            url: `/api/v1/posts/${queryArgs.postId}/comments/${queryArgs.commentId}/answers`,
+          }
+        },
+      }),
+      getPostById: builder.query<GetPostByIdResponse, GetPostByIdArgs>({
+        query: queryArgs => {
+          return {
+            credentials: 'include',
+            params: queryArgs,
+            url: `/api/v1/public-posts/${queryArgs.postId}`,
+          }
+        },
+      }),
+      getPostComments: builder.query<GetPostCommentsResponse, GetPostCommentsArgs>({
+        query: queryArgs => {
+          return {
+            credentials: 'include',
+            params: queryArgs,
+            url: `v1/posts/${queryArgs.postId}/comments`,
           }
         },
       }),
@@ -38,6 +83,7 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+
       uploadImages: builder.mutation<UploadImageResponse, { files: FileList }>({
         query: args => {
           const formData = new FormData()
@@ -58,9 +104,13 @@ export const PostsService = inctagramService.injectEndpoints({
 })
 
 export const {
+  useCreateCommentToPostMutation,
   useCreatePostMutation,
+  useGetPostByIdQuery,
+  useGetPostCommentsQuery,
   useGetPostsByUserNameQuery,
   useGetPublicPostsByUserIdQuery,
+  useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,
   useUploadImagesMutation,
 } = PostsService

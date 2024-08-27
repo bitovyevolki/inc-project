@@ -1,3 +1,5 @@
+import { IProfileAvatar } from '@/src/entities/profile/model/types/profile'
+
 export type CreatePostArgs = {
   childrenMetadata?: ChildrenMetadatum[]
   description: string
@@ -33,6 +35,13 @@ export type GetPostsByUserArgs = {
   sortDirection?: 'asc' | 'desc'
   userName: string
 }
+export type GetPostCommentsArgs = {
+  pageNumber?: number
+  pageSize?: number
+  postId: number
+  sortBy?: string
+  sortDirection?: 'asc' | 'desc'
+}
 
 export type GetPublicPostsByUserArgs = {
   endCursorPostId?: number
@@ -41,6 +50,11 @@ export type GetPublicPostsByUserArgs = {
   sortDirection?: 'asc' | 'desc'
   userId: number
 }
+
+export type GetPostByIdArgs = {
+  postId: number
+}
+export type GetPostByIdResponse = Post
 
 export type GetPostsByUserResponse = {
   items: Post[]
@@ -80,3 +94,56 @@ export type Image = {
 export type UploadImageResponse = {
   images: Image[]
 }
+
+export type GetPostCommentsResponse = {
+  items: Comment[]
+  pageSize: number
+  totalCount: number
+}
+
+export type Comment = {
+  answerCount: number
+  content: string
+  createdAt: string
+  from: From
+  id: number
+  isLiked: boolean
+  likeCount: number
+  postId: number
+}
+
+export type From = {
+  avatars: IProfileAvatar[]
+  id: number
+  username: string
+}
+
+export type GetCommentAnswersArgs = {
+  commentId: number
+  pageNumber?: number
+  pageSize?: number
+  postId: number
+  sortBy?: string
+  sortDirection?: 'asc' | 'desc'
+}
+export type GetCommentAnswersResponse = {
+  items: Answer[]
+  pageSize: number
+  totalCount: number
+}
+
+export type Answer = {
+  commentId: number
+  content: string
+  createdAt: string
+  from: From
+  id: number
+  isLiked: boolean
+  likeCount: number
+}
+
+export type CreateCommentArgs = {
+  content: string
+  postId: number
+}
+export type CreateCommentResponse = Comment

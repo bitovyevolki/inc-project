@@ -51,17 +51,22 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
     toast.success('Successfully created post')
   }
 
+  const closeModal = () => {
+    setIsModalOpen(false)
+    void Router.back()
+  }
+
   return (
     <div>
       <ModalWindow
-        className={s.modalWindow}
-        onOpenChange={() => setIsModalOpen(false)}
+        className={s.modal}
+        onOpenChange={closeModal}
         open={isModalOpen}
         title={'Publication'}
       >
         <div className={s.container}>
           <div className={s.imageContainer}>
-            <img alt={'post image'} src={imageURL} width={300} />
+            <img alt={'post image'} src={imageURL} />
           </div>
           <div className={s.publicationContainer}>
             <ProfileIntro
@@ -77,7 +82,9 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
                   name={'postDescription'}
                   placeholder={'Text-area'}
                 />
-                <Button type={'submit'}>Publish post</Button>
+                <Button className={s.button} type={'submit'}>
+                  Publish post
+                </Button>
               </form>
             </div>
           </div>

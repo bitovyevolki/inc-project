@@ -32,17 +32,16 @@
 .buttonLogout {
   margin-top: 100px;
   display: flex;
-  width: 100%;
   align-items: center;
   justify-content: flex-start;
-
-  button {
-    white-space: nowrap;
-    padding: 0;
-  }
+  white-space: nowrap;
 
   & > svg {
     margin-right: 10px;
+  }
+
+  & button {
+    padding: 0;
   }
 }
 

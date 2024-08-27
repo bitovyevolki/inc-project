@@ -75,12 +75,14 @@ export const Sidebar = () => {
             <Typography variant={'h4'}>{l.title}</Typography>
           </Link>
         ))}
-        <Button className={s.buttonLogout} onClick={() => setIsModalOpen(true)} variant={'ghost'}>
+        <div className={s.buttonLogout}>
           <LogoutIcon />
-          <Typography as={'p'} variant={'h4'}>
-            Log Out
-          </Typography>
-        </Button>
+          <Button onClick={() => setIsModalOpen(true)} variant={'ghost'}>
+            <Typography as={'p'} variant={'h4'}>
+              Log Out
+            </Typography>
+          </Button>
+        </div>
       </nav>
     </>
   )

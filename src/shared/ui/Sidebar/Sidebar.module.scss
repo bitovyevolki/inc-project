@@ -35,10 +35,13 @@
   align-items: center;
   justify-content: flex-start;
   white-space: nowrap;
-  padding: 0;
 
   & > svg {
     margin-right: 10px;
+  }
+
+  & button {
+    padding: 0;
   }
 }
 

@@ -1,3 +1,5 @@
+import { IProfileAvatar } from '@/src/entities/profile/model/types/profile'
+
 export type CreatePostArgs = {
   childrenMetadata?: ChildrenMetadatum[]
   description: string
@@ -33,7 +35,7 @@ export type GetPostsByUserArgs = {
   sortDirection?: 'asc' | 'desc'
   userName: string
 }
-export type GetPostsCommentsArgs = {
+export type GetPostCommentsArgs = {
   pageNumber?: number
   pageSize?: number
   postId: number
@@ -111,7 +113,7 @@ export type Comment = {
 }
 
 export type From = {
-  avatars: Image[]
+  avatars: IProfileAvatar[]
   id: number
   username: string
 }
@@ -139,3 +141,9 @@ export type Answer = {
   isLiked: boolean
   likeCount: number
 }
+
+export type CreateCommentArgs = {
+  content: string
+  postId: number
+}
+export type CreateCommentResponse = Comment

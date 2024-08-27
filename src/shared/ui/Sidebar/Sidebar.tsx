@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
 import { useLogOutMutation, useMeQuery } from '@/src/features/auth/service/auth.service'
-import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -14,6 +13,7 @@ import {
   CreateIcon,
   FavoritesIcon,
   HomeIcon,
+  LogoutIcon,
   MessengerIcon,
   MyProfileIcon,
   SearchIcon,
@@ -75,12 +75,14 @@ export const Sidebar = () => {
             <Typography variant={'h4'}>{l.title}</Typography>
           </Link>
         ))}
-        <Button className={s.buttonLogout} onClick={() => setIsModalOpen(true)} variant={'ghost'}>
+        <div className={s.buttonLogout}>
           <LogoutIcon />
-          <Typography as={'p'} variant={'h4'}>
-            Log Out
-          </Typography>
-        </Button>
+          <Button onClick={() => setIsModalOpen(true)} variant={'ghost'}>
+            <Typography as={'p'} variant={'h4'}>
+              Log Out
+            </Typography>
+          </Button>
+        </div>
       </nav>
     </>
   )

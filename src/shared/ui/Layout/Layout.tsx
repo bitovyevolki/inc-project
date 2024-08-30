@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react'
 
+import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { Header } from '@bitovyevolki/ui-kit-int'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
@@ -14,6 +15,8 @@ type Props = {
 type Language = 'en' | 'ru'
 
 export const Layout = ({ children, withSidebar = false }: Props) => {
+  const { data: me } = useMeQuery()
+  const isAuthenticated = !!me
   const router = useRouter()
   const initialLanguage = Cookies.get('next-language') || 'ru'
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(initialLanguage as Language)
@@ -29,9 +32,11 @@ export const Layout = ({ children, withSidebar = false }: Props) => {
   return (
     <>
       <Header
-        isAuth
+        isAuth={isAuthenticated}
         onLanguageChange={onLanguageChange}
         selectedLanguage={selectedLanguage}
+        signInSrc={'/auth/sign-in'}
+        signUpSrc={'/auth/sign-up'}
         title={'Inctagram'}
       />
       <main>

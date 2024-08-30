@@ -6,7 +6,7 @@ export default function AuthIndex() {
   const router = useRouter()
 
   useEffect(() => {
-    router.push('/auth/sign-in')
+    router.push('/')
   }, [router])
 
   return null

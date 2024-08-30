@@ -67,7 +67,7 @@ export const AuthService = inctagramService.injectEndpoints({
             //TODO should here be local api or baseApi for util methods below? They both work
             dispatch(inctagramService.util.invalidateTags(['Me']))
             dispatch(inctagramService.util.resetApiState())
-            void Router.replace('/auth/sign-in')
+            void Router.replace('/')
           } catch (error: any) {
             toast.error(error)
           }

@@ -53,7 +53,7 @@ export const baseQueryWithReauth: BaseQueryFn<
         } else {
           // eslint-disable-next-line no-console
           console.log('logged out')
-          Router.push('/auth/sign-in')
+          // Router.push('/auth/sign-in')
         }
       } finally {
         release()

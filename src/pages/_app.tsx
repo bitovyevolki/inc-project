@@ -3,8 +3,8 @@ import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 
-import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { RootProvider } from '../shared/providers/RootProvider'
 import { Layout } from '../shared/ui/Layout/Layout'

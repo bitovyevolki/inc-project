@@ -9,6 +9,7 @@ import s from './Profile.module.scss'
 
 import { ProfileContentType } from '../model/types/profile'
 import { GeneralInformation } from './GeneralInformation/GeneralInformation'
+import { Devices } from '../profileDevices'
 
 export const Profile = () => {
   const [contentType, setContentType] = useState<ProfileContentType>(ProfileContentType.GENERAL)
@@ -31,7 +32,7 @@ export const Profile = () => {
         <Tabs onChange={changeContentTypeHandler} options={tabsOptions} value={contentType}></Tabs>
       </div>
       {contentType === ProfileContentType.GENERAL && <GeneralInformation />}
-      {contentType === ProfileContentType.DEVICES && <div>{t('devices')}</div>}
+      {contentType === ProfileContentType.DEVICES && <Devices />}
       {contentType === ProfileContentType.MANAGEMENT && <div>{t('account-management')}</div>}
       {contentType === ProfileContentType.PAYMENTS && <div>{t('my-payments')}</div>}
     </div>

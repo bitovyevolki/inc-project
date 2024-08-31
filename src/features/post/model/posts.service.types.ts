@@ -147,3 +147,11 @@ export type CreateCommentArgs = {
   postId?: number
 }
 export type CreateCommentResponse = Comment
+export type GetLastCreatedPostsArgs = Omit<GetPublicPostsByUserArgs, 'userId'>
+
+export interface GetLastCreatedPostsResponse {
+  items: Post[]
+  pageSize: number
+  totalCount: number
+  totalUsers: number
+}

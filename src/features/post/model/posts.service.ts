@@ -76,15 +76,6 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
-      // getPublicPostsAll: builder.query<GetLastCreatedPostsResponse, GetLastCreatedPostsArgs>({
-      //   query: queryArgs => {
-      //     return {
-      //       credentials: 'include',
-      //       params: { pageSize: 4, ...queryArgs },
-      //       url: `v1/public-posts/all`,
-      //     }
-      //   },
-      // }),
       getPublicPostsAll: builder.query<GetLastCreatedPostsResponse, GetLastCreatedPostsArgs>({
         query: queryArgs => {
           const params = new URLSearchParams({

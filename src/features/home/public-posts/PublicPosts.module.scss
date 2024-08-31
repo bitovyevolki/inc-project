@@ -9,4 +9,6 @@
 .postsWrapper {
   display: flex;
   gap: 1rem;
+  max-width: 972px;
+  overflow: auto;
 }

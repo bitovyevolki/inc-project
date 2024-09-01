@@ -1,4 +1,5 @@
 import { GoogleIcon } from '@/src/shared/assets/icons/google'
+import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
 import s from './device.module.scss'
 
@@ -29,7 +30,14 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({ browserName, ip, lastAct
             <Typography variant={'caption'}>{lastActive}</Typography>
           </div>
         </div>
-        <div>logOut</div>
+        <div className={s.buttonLogout}>
+          <LogoutIcon />
+          <Button variant={'ghost'}>
+            <Typography as={'p'} variant={'h4'}>
+              Log Out
+            </Typography>
+          </Button>
+        </div>
       </div>
     </Card>
   )

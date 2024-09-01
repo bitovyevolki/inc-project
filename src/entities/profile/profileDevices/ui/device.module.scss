@@ -39,7 +39,7 @@
 .activeWrap {
   display: flex;
   flex-direction: column;
-  margin-top: 78px;
+  margin-top: 18px;
   margin-left: 24px;
 }
 
@@ -69,4 +69,19 @@
 
 .activeSession {
   margin-bottom: 18px;
+}
+
+.buttonLogout {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+
+  & > svg {
+    margin-right: 10px;
+  }
+
+  & button {
+    padding: 0;
+  }
 }

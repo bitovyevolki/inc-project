@@ -29,7 +29,7 @@ export const ProfileDevices = inctagramService.injectEndpoints({
         invalidatesTags: ['Profile'],
         query: () => {
           return {
-            method: 'POST',
+            method: 'DELETE',
             url: '/v1/sessions/terminate-all',
           }
         },

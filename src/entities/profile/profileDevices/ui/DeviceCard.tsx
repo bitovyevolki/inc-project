@@ -10,7 +10,22 @@ interface DeviceCardProps {
   lastActive: string
 }
 
-export const DeviceCard: React.FC<DeviceCardProps> = ({ browserName, ip, lastActive }) => {
+export const DeviceCard: React.FC<DeviceCardProps> = ({
+  browserName,
+  ip,
+  lastActive,
+  onTerminate,
+}) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
+
+    return `${day}.${month}.${year}`
+  }
+  const formattedDate = formatDate(lastActive)
+
   return (
     <Card
       style={{
@@ -27,12 +42,14 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({ browserName, ip, lastAct
           <div className={s.textBody}>
             <Typography variant={'body1'}>{browserName}</Typography>
             <Typography variant={'caption'}>{`IP: ${ip}`}</Typography>
-            <Typography variant={'caption'}>{lastActive}</Typography>
+            <Typography variant={'caption'}>
+              <Typography variant={'caption'}>Last visit: {formattedDate}</Typography>
+            </Typography>
           </div>
         </div>
         <div className={s.buttonLogout}>
           <LogoutIcon />
-          <Button variant={'ghost'}>
+          <Button variant={'ghost'} onClick={onTerminate}>
             <Typography as={'p'} variant={'h4'}>
               Log Out
             </Typography>

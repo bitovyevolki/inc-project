@@ -1,21 +1,41 @@
 import { GoogleIcon } from '@/src/shared/assets/icons/google'
 import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
-import { useGetDevicesQuery, useTerminateAllSessionsMutation } from '../api/profile.devices'
+import { toast } from 'react-toastify'
+import {
+  useDeleteDeviceByIdMutation,
+  useGetDevicesQuery,
+  useTerminateAllSessionsMutation,
+} from '../api/profile.devices'
 import s from './device.module.scss'
 import { DeviceCard } from './DeviceCard'
 
 export const Devices = () => {
-  const { data, isLoading, error } = useGetDevicesQuery()
+  const { data, isLoading, error, refetch } = useGetDevicesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  })
   const [terminateAllSessions] = useTerminateAllSessionsMutation()
+  const [deleteDeviceById] = useDeleteDeviceByIdMutation()
 
   const handleTerminateSessions = () => {
     terminateAllSessions()
       .unwrap()
       .then(() => {
-        console.log('All sessions terminated')
+        toast.success('All sessions terminated!', { position: 'top-right' })
+        refetch()
       })
-      .catch(err => {
-        console.error('Failed to terminate all sessions', err)
+      .catch(error => {
+        toast.error('Failed to terminate all sessions!', { position: 'top-right' })
+      })
+  }
+
+  const handleTerminateDevice = (deviceId: number) => {
+    deleteDeviceById({ deviceId })
+      .unwrap()
+      .then(() => {
+        toast.success(`Device with ID ${deviceId} logged out`, { position: 'top-right' })
+      })
+      .catch(error => {
+        toast.error('Failed to log out device!', { position: 'top-right' })
       })
   }
 
@@ -38,12 +58,25 @@ export const Devices = () => {
       <div className={s.card}>
         {currentDevice ? (
           <div className={s.curWrap}>
-            <DeviceCard
-              browserName={currentDevice.browserName}
-              ip={currentDevice.ip}
-              onTerminate={handleTerminateSessions}
-              lastActive={currentDevice.lastActive}
-            />
+            <Card
+              style={{
+                height: '120px',
+                padding: '12px',
+                width: '972px',
+              }}
+            >
+              <div className={s.wrap}>
+                <div className={s.contentWrap}>
+                  <div className={s.icon}>
+                    <GoogleIcon />
+                  </div>
+                  <div className={s.textBody}>
+                    <Typography variant={'body1'}>{data.current.browserName}</Typography>
+                    <Typography variant={'caption'}>{`IP: ${data.current.ip}`}</Typography>
+                  </div>
+                </div>
+              </div>
+            </Card>
             <div className={s.btn}>
               <Button variant={'outlined'} onClick={handleTerminateSessions}>
                 Terminate all other session
@@ -65,7 +98,7 @@ export const Devices = () => {
                 <DeviceCard
                   browserName={device.browserName}
                   ip={device.ip}
-                  onTerminate={handleTerminateSessions}
+                  onTerminate={() => handleTerminateDevice(device.deviceId)}
                   lastActive={device.lastActive}
                 />
               </div>

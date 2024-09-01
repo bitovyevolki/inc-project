@@ -5,6 +5,8 @@ import {
   CreatePostResponse,
   GetCommentAnswersArgs,
   GetCommentAnswersResponse,
+  GetLastCreatedPostsArgs,
+  GetLastCreatedPostsResponse,
   GetPostByIdArgs,
   GetPostByIdResponse,
   GetPostCommentsArgs,
@@ -74,6 +76,24 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+      getPublicPostsAll: builder.query<GetLastCreatedPostsResponse, GetLastCreatedPostsArgs>({
+        query: queryArgs => {
+          const params = new URLSearchParams({
+            pageSize: queryArgs.pageSize?.toString() || '4',
+            sortBy: queryArgs.sortBy || 'createdAt',
+            sortDirection: queryArgs.sortDirection || 'desc',
+          })
+
+          if (queryArgs.endCursorPostId) {
+            params.append('endCursorPostId', queryArgs.endCursorPostId.toString())
+          }
+
+          return {
+            credentials: 'include',
+            url: `v1/public-posts/all?${params.toString()}`,
+          }
+        },
+      }),
       getPublicPostsByUserId: builder.query<GetPostsByUserResponse, GetPublicPostsByUserArgs>({
         query: queryArgs => {
           return {
@@ -109,6 +129,7 @@ export const {
   useGetPostByIdQuery,
   useGetPostCommentsQuery,
   useGetPostsByUserNameQuery,
+  useGetPublicPostsAllQuery,
   useGetPublicPostsByUserIdQuery,
   useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,

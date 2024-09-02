@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import ShowMoreText from 'react-show-more-text'
 
 import { Post } from '@/src/features/post/model/posts.service.types'
+import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import moment from 'moment'
 import Image from 'next/image'
 
-import s from './PublicPostItem.module.scss'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
+import s from './PublicPostItem.module.scss'
 type PublicPostItemProps = {
   post: Post
 }
@@ -20,7 +23,17 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
 
   return (
     <div className={s.root}>
-      <Image alt={'post image'} height={240} src={post.images[0].url} width={234} />
+      {post.images.length > 1 ? (
+        <PhotoSlider>
+          {post.images.map((image, index) => (
+            <div key={image.uploadId}>
+              <Image alt={`post.image ${index}`} height={240} src={image.url} width={234} />
+            </div>
+          ))}
+        </PhotoSlider>
+      ) : (
+        <Image alt={'post image'} height={240} src={post.images[0].url} width={234} />
+      )}
       <div className={s.ownerInfo}>
         <Image
           alt={'avatar owner'}

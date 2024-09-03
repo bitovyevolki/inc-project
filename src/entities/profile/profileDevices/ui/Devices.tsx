@@ -102,7 +102,7 @@ export const Devices = () => {
               <div className={s.deviceCards} key={device.deviceId}>
                 <DeviceCard
                   browserName={device.browserName}
-                  deviceType={device.deviceType as 'desktop' | 'mobile'}
+                  deviceType={(device.deviceType as 'desktop' | 'mobile') || 'desktop'}
                   ip={device.ip}
                   lastActive={device.lastActive}
                   onTerminate={() => handleTerminateDevice(device.deviceId)}

@@ -1,9 +1,10 @@
 .root {
   flex: 0 0 calc(25% - 8px);
   max-width: calc(25% - 8px);
-  transition: all 0.3s ease;
   margin-bottom: 1.25rem;
+  transition: all 0.3s ease;
 }
+
 .ownerInfo {
   cursor: pointer;
 
@@ -13,16 +14,20 @@
 
   margin-bottom: 0.75rem;
 }
+
 .avatar {
   border-radius: 50%;
 }
+
 .time {
   color: var(--color-light-900);
 }
+
 .postDescription {
   word-break: break-word;
   overflow-wrap: break-word;
 }
+
 .showMore {
   cursor: pointer;
   color: var(--color-accent-500);

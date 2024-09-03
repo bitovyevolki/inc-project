@@ -41,7 +41,9 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
       case 'desktop':
         return <DesktopIcon />
       default:
-        return <Phone />
+        console.error(`Unknown deviceType: ${deviceType}. Expected 'desktop' or 'mobile'.`)
+
+        return <p>Eror</p>
     }
   }
 

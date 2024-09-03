@@ -1,19 +1,10 @@
 import { inctagramService } from '@/src/shared/model/inctagram.service'
+
 import { IDevicesResponse } from '../model/types/devices'
 
 export const ProfileDevices = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
-      //Получение списка устройст
-      getDevices: builder.query<IDevicesResponse, void>({
-        providesTags: ['Profile'],
-        query: () => {
-          return {
-            method: 'GET',
-            url: '/v1/sessions',
-          }
-        },
-      }),
       // Удаление устройства по ID
       deleteDeviceById: builder.mutation<void, { deviceId: number }>({
         invalidatesTags: ['Profile'],
@@ -21,6 +12,16 @@ export const ProfileDevices = inctagramService.injectEndpoints({
           return {
             method: 'DELETE',
             url: `/v1/sessions/${deviceId}`,
+          }
+        },
+      }),
+      //Получение списка устройст
+      getDevices: builder.query<IDevicesResponse, void>({
+        providesTags: ['Profile'],
+        query: () => {
+          return {
+            method: 'GET',
+            url: '/v1/sessions',
           }
         },
       }),
@@ -38,5 +39,5 @@ export const ProfileDevices = inctagramService.injectEndpoints({
   },
 })
 
-export const { useGetDevicesQuery, useDeleteDeviceByIdMutation, useTerminateAllSessionsMutation } =
+export const { useDeleteDeviceByIdMutation, useGetDevicesQuery, useTerminateAllSessionsMutation } =
   ProfileDevices

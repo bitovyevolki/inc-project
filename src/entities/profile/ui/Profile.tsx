@@ -8,8 +8,8 @@ import '@bitovyevolki/ui-kit-int/dist/style.css'
 import s from './Profile.module.scss'
 
 import { ProfileContentType } from '../model/types/profile'
-import { GeneralInformation } from './GeneralInformation/GeneralInformation'
 import { Devices } from '../profileDevices'
+import { GeneralInformation } from './GeneralInformation/GeneralInformation'
 
 export const Profile = () => {
   const [contentType, setContentType] = useState<ProfileContentType>(ProfileContentType.GENERAL)

@@ -1,24 +1,27 @@
+import React from 'react'
+
 import { DesktopIcon } from '@/src/shared/assets/icons/desktop'
 import { Phone } from '@/src/shared/assets/icons/phone'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
 import { useTranslations } from 'next-intl'
+
 import s from './device.module.scss'
 
 interface DeviceCardProps {
   browserName: string
+  deviceType: 'desktop' | 'mobile'
   ip: string
-  onTerminate: () => void
   lastActive: string
-  deviceType: 'mobile' | 'desktop'
+  onTerminate: () => void
 }
 
 export const DeviceCard: React.FC<DeviceCardProps> = ({
   browserName,
+  deviceType,
   ip,
   lastActive,
   onTerminate,
-  deviceType,
 }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -31,7 +34,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   const t = useTranslations('Devices')
   const formattedDate = formatDate(lastActive)
 
-  const DeviceIcon = ({ deviceType }: { deviceType: 'mobile' | 'desktop' }) => {
+  const DeviceIcon = ({ deviceType }: { deviceType: 'desktop' | 'mobile' }) => {
     switch (deviceType) {
       case 'mobile':
         return <Phone />
@@ -57,7 +60,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
         </div>
         <div className={s.buttonLogout}>
           <LogoutIcon />
-          <Button variant={'ghost'} onClick={onTerminate}>
+          <Button onClick={onTerminate} variant={'ghost'}>
             <Typography as={'p'} variant={'h4'}>
               {t('logout')}
             </Typography>

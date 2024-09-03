@@ -1,17 +1,20 @@
+import { toast } from 'react-toastify'
+
 import { Chrome } from '@/src/shared/assets/icons/chrome'
 import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
 import { useTranslations } from 'next-intl'
-import { toast } from 'react-toastify'
+
+import s from './device.module.scss'
+
 import {
   useDeleteDeviceByIdMutation,
   useGetDevicesQuery,
   useTerminateAllSessionsMutation,
 } from '../api/profile.devices'
-import s from './device.module.scss'
 import { DeviceCard } from './DeviceCard'
 
 export const Devices = () => {
-  const { data, isLoading, error, refetch } = useGetDevicesQuery(undefined, {
+  const { data, error, isLoading, refetch } = useGetDevicesQuery(undefined, {
     refetchOnMountOrArgChange: true,
   })
   const [terminateAllSessions] = useTerminateAllSessionsMutation()
@@ -42,11 +45,11 @@ export const Devices = () => {
   }
 
   if (isLoading) {
-    return <Typography variant="body1">Loading...</Typography>
+    return <Typography variant={'body1'}>Loading...</Typography>
   }
 
   if (error || !data) {
-    return <Typography variant="body1">Failed to load devices</Typography>
+    return <Typography variant={'body1'}>Failed to load devices</Typography>
   }
 
   const currentDevice = data.current
@@ -80,13 +83,13 @@ export const Devices = () => {
               </div>
             </Card>
             <div className={s.btn}>
-              <Button variant={'outlined'} onClick={handleTerminateSessions}>
+              <Button onClick={handleTerminateSessions} variant={'outlined'}>
                 {t('allsession')}
               </Button>
             </div>
           </div>
         ) : (
-          <Typography variant="body1">No current device data available</Typography>
+          <Typography variant={'body1'}>No current device data available</Typography>
         )}
       </div>
       <div className={s.activeWrap}>
@@ -96,13 +99,13 @@ export const Devices = () => {
         <div>
           {otherDevices.length > 0 ? (
             otherDevices.map(device => (
-              <div key={device.deviceId} className={s.deviceCards}>
+              <div className={s.deviceCards} key={device.deviceId}>
                 <DeviceCard
                   browserName={device.browserName}
+                  deviceType={device.deviceType as 'desktop' | 'mobile'}
                   ip={device.ip}
-                  onTerminate={() => handleTerminateDevice(device.deviceId)}
                   lastActive={device.lastActive}
-                  deviceType={device.deviceType as 'mobile' | 'desktop'}
+                  onTerminate={() => handleTerminateDevice(device.deviceId)}
                 />
               </div>
             ))

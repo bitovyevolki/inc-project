@@ -2,6 +2,7 @@ import { DesktopIcon } from '@/src/shared/assets/icons/desktop'
 import { Phone } from '@/src/shared/assets/icons/phone'
 import { LogoutIcon } from '@/src/shared/ui/Sidebar/Icons'
 import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
+import { useTranslations } from 'next-intl'
 import s from './device.module.scss'
 
 interface DeviceCardProps {
@@ -27,7 +28,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
 
     return `${day}.${month}.${year}`
   }
-
+  const t = useTranslations('Devices')
   const formattedDate = formatDate(lastActive)
 
   const DeviceIcon = ({ deviceType }: { deviceType: 'mobile' | 'desktop' }) => {
@@ -58,7 +59,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
           <LogoutIcon />
           <Button variant={'ghost'} onClick={onTerminate}>
             <Typography as={'p'} variant={'h4'}>
-              Log Out
+              {t('logout')}
             </Typography>
           </Button>
         </div>

@@ -1,5 +1,6 @@
 import { Chrome } from '@/src/shared/assets/icons/chrome'
 import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
+import { useTranslations } from 'next-intl'
 import { toast } from 'react-toastify'
 import {
   useDeleteDeviceByIdMutation,
@@ -16,6 +17,7 @@ export const Devices = () => {
   const [terminateAllSessions] = useTerminateAllSessionsMutation()
   const [deleteDeviceById] = useDeleteDeviceByIdMutation()
 
+  const t = useTranslations('Devices')
   const handleTerminateSessions = () => {
     terminateAllSessions()
       .unwrap()
@@ -53,7 +55,7 @@ export const Devices = () => {
   return (
     <div>
       <div className={s.text}>
-        <Typography variant={'h3'}>{'Current device'}</Typography>
+        <Typography variant={'h3'}>{t('current')}</Typography>
       </div>
       <div className={s.card}>
         {currentDevice ? (
@@ -79,7 +81,7 @@ export const Devices = () => {
             </Card>
             <div className={s.btn}>
               <Button variant={'outlined'} onClick={handleTerminateSessions}>
-                Terminate all other session
+                {t('allsession')}
               </Button>
             </div>
           </div>
@@ -89,7 +91,7 @@ export const Devices = () => {
       </div>
       <div className={s.activeWrap}>
         <div className={s.activeSession}>
-          <Typography variant={'h3'}>{'Active sessions'}</Typography>
+          <Typography variant={'h3'}>{t('sessions')}</Typography>
         </div>
         <div>
           {otherDevices.length > 0 ? (

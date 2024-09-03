@@ -1,4 +1,10 @@
 {
+  "Devices": {
+    "logout": "Log Out",
+    "current": "Current device",
+    "sessions": "Active sessions",
+    "allsession": "Terminate all other session"
+  },
   "Signin": {
     "title": "Sign in",
     "forgot": "Forgot Password",

@@ -1,4 +1,4 @@
-import { GoogleIcon } from '@/src/shared/assets/icons/google'
+import { Chrome } from '@/src/shared/assets/icons/chrome'
 import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
 import { toast } from 'react-toastify'
 import {
@@ -68,7 +68,7 @@ export const Devices = () => {
               <div className={s.wrap}>
                 <div className={s.contentWrap}>
                   <div className={s.icon}>
-                    <GoogleIcon />
+                    <Chrome />
                   </div>
                   <div className={s.textBody}>
                     <Typography variant={'body1'}>{data.current.browserName}</Typography>
@@ -100,6 +100,7 @@ export const Devices = () => {
                   ip={device.ip}
                   onTerminate={() => handleTerminateDevice(device.deviceId)}
                   lastActive={device.lastActive}
+                  deviceType={device.deviceType as 'mobile' | 'desktop'}
                 />
               </div>
             ))

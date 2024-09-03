@@ -11,6 +11,8 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 import s from './PublicPostItem.module.scss'
+
+import postImage from '../../../../../public/image/default-post.png'
 type PublicPostItemProps = {
   post: Post
 }
@@ -32,7 +34,7 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
           ))}
         </PhotoSlider>
       ) : (
-        <Image alt={'post image'} height={240} src={post.images[0].url} width={234} />
+        <Image alt={'no photo'} height={240} src={post?.images[0]?.url || postImage} width={234} />
       )}
       <div className={s.ownerInfo}>
         <Image
@@ -47,7 +49,7 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
       <Typography className={s.time} variant={'caption'}>
         {moment(post.createdAt).fromNow()}
       </Typography>
-      <Typography className={s.postDescription} variant={'body2'}>
+      <div className={s.postDescription}>
         <ShowMoreText
           anchorClass={s.showMore}
           expanded={isCollapsed}
@@ -59,7 +61,7 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
         >
           {post.description}
         </ShowMoreText>
-      </Typography>
+      </div>
     </div>
   )
 }

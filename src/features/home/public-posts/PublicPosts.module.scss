@@ -1,0 +1,14 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 972px;
+  margin: 3rem auto;
+  gap: 3rem;
+}
+.postsWrapper {
+  display: flex;
+  gap: 1rem;
+  max-width: 972px;
+  overflow: auto;
+}

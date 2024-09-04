@@ -94,5 +94,28 @@
     "statistics": "Statistics",
     "favorites": "Favorites",
     "logout": "Logout"
+  },
+	"AccountManagement": {
+    "account-type-title": "Account type",
+    "personal": "Personal",
+    "business": "Business",
+    "subscription-cost": "Your subscription cost",
+    "per": "per",
+    "day": "Day",
+    "days": "Days",
+    "month": "month",
+		"current-subscription": "Current Subscription",
+		"or": "or",
+		"auto-renewal": "Auto-Renewal",
+		"expire-at": "Expire at",
+		"next-payment": "Next payment",
+		"modal": {
+			"title-success": "Success",
+			"text-success": "Payment was successful!",
+			"button-success": "Ok",
+			"title-failed": "Error",
+			"text-failed": "Transaction failed, please try again",
+			"button-failed": "Back to payment"
+		}
   }
 }

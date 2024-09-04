@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { PaypalIcon } from '@/src/shared/assets/icons/paypal'
 import { StripeIcon } from '@/src/shared/assets/icons/stripe'
@@ -63,23 +64,21 @@ const AccountManagement = () => {
   useEffect(() => {
     const { query } = router
 
-    if (query.token || query.success === 'true') {
-      router.push('/personal-info')
+    const openModal = (title: string, text: string, buttonText: string) => {
       setIsOpenModal(true)
       setModalContent({
-        buttonText: t('modal.button-success'),
-        text: t('modal.text-success'),
-        title: t('modal.title-success'),
+        buttonText,
+        text,
+        title,
       })
     }
-    if (query.success === 'false') {
+
+    if (query.PayerID || query.success === 'true') {
       router.push('/personal-info')
-      setIsOpenModal(true)
-      setModalContent({
-        buttonText: t('modal.button-failed'),
-        text: t('modal.text-failed'),
-        title: t('modal.title-failed'),
-      })
+      openModal(t('modal.title-success'), t('modal.text-success'), t('modal.button-success'))
+    } else if (query.success === 'false' || (query.token && !query.PayerID)) {
+      router.push('/personal-info')
+      openModal(t('modal.title-failed'), t('modal.text-failed'), t('modal.button-failed'))
     }
   }, [router, router.query, t])
 
@@ -132,6 +131,10 @@ const AccountManagement = () => {
 
   const havePayments = payments && payments.length > 0
 
+  if (isErrorAutoRenewal || isErrorCreatePayments || isErrorGetCost) {
+    toast.error('Unknowт error')
+  }
+
   return (
     <>
       <div className={s.wrapper}>
@@ -145,6 +148,7 @@ const AccountManagement = () => {
               <Checkbox
                 checked={autoRenewal}
                 className={s.autoRenewal}
+                disabled={isLoadingAutoRenewal}
                 label={t('auto-renewal')}
                 onChange={onClickAutoRenewal}
               />

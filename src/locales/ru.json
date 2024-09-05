@@ -93,7 +93,7 @@
     "delete-photo-confirm": "Вы действительно хотите удалить фотографию профиля?",
     "save": "Сохранить"
   },
-	"AccountManagement": {
+  "AccountManagement": {
     "account-type-title": "Тип аккаунта",
     "personal": "Персональный",
     "business": "Бизнес",
@@ -102,18 +102,26 @@
     "day": "день",
     "days": "дней",
     "month": "месяц",
-		"current-subscription": "Текущая подписка",
-		"or": "или",
-		"auto-renewal": "Автопродление",
-		"expire-at": "Истекает",
-		"next-payment": "Следующий платеж",
-		"modal": {
-			"title-success": "Успешно",
-			"text-success": "Оплата прошла успешно!",
-			"button-success": "ок",
-			"title-failed": "Ошибка",
-			"text-failed": "Транзакция не удалась, попробуйте еще раз",
-			"button-failed": "Вернуться к оплате"	
-		}
+    "current-subscription": "Текущая подписка",
+    "or": "или",
+    "auto-renewal": "Автопродление",
+    "expire-at": "Истекает",
+    "next-payment": "Следующий платеж",
+    "modal": {
+      "title-success": "Успешно",
+      "text-success": "Оплата прошла успешно!",
+      "button-success": "ок",
+      "title-failed": "Ошибка",
+      "text-failed": "Транзакция не удалась, попробуйте еще раз",
+      "button-failed": "Вернуться к оплате"
+    }
+  },
+  "MyPayments": {
+    "date-of-payment": "Дата Платежа",
+    "end-date-of-subscription": "Дата окончания подписки",
+    "price": "Цена",
+    "subscription-type": "Тип Подписки",
+    "payment-type": "Тип Платежа",
+    "no-payments": "У вас еще нет оплат"
   }
 }

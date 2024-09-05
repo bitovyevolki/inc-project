@@ -20,7 +20,7 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
 
   return (
     <div className={s.root}>
-      <Image alt={'post image'} height={240} src={post.images[0].url} width={234} />
+      <Image alt={'post image'} height={240} src={post.images[0]?.url} width={234} />
       <div className={s.ownerInfo}>
         <Image
           alt={'avatar owner'}

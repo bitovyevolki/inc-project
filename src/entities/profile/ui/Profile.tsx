@@ -12,6 +12,7 @@ import { ProfileContentType } from '../model/types/profile'
 import { Devices } from '../profileDevices'
 import AccountManagement from './AccountManagement/AccountManagement'
 import { GeneralInformation } from './GeneralInformation/GeneralInformation'
+import { MyPayments } from './MyPayments/MyPayments'
 
 export const Profile = () => {
   const [contentType, setContentType] = useState<ProfileContentType>(ProfileContentType.GENERAL)
@@ -45,7 +46,7 @@ export const Profile = () => {
       {contentType === ProfileContentType.GENERAL && <GeneralInformation />}
       {contentType === ProfileContentType.DEVICES && <Devices />}
       {contentType === ProfileContentType.MANAGEMENT && <AccountManagement />}
-      {contentType === ProfileContentType.PAYMENTS && <div>{t('my-payments')}</div>}
+      {contentType === ProfileContentType.PAYMENTS && <MyPayments />}
     </div>
   )
 }

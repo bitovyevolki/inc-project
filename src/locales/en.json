@@ -95,7 +95,7 @@
     "favorites": "Favorites",
     "logout": "Logout"
   },
-	"AccountManagement": {
+  "AccountManagement": {
     "account-type-title": "Account type",
     "personal": "Personal",
     "business": "Business",
@@ -104,18 +104,26 @@
     "day": "Day",
     "days": "Days",
     "month": "month",
-		"current-subscription": "Current Subscription",
-		"or": "or",
-		"auto-renewal": "Auto-Renewal",
-		"expire-at": "Expire at",
-		"next-payment": "Next payment",
-		"modal": {
-			"title-success": "Success",
-			"text-success": "Payment was successful!",
-			"button-success": "Ok",
-			"title-failed": "Error",
-			"text-failed": "Transaction failed, please try again",
-			"button-failed": "Back to payment"
-		}
+    "current-subscription": "Current Subscription",
+    "or": "or",
+    "auto-renewal": "Auto-Renewal",
+    "expire-at": "Expire at",
+    "next-payment": "Next payment",
+    "modal": {
+      "title-success": "Success",
+      "text-success": "Payment was successful!",
+      "button-success": "Ok",
+      "title-failed": "Error",
+      "text-failed": "Transaction failed, please try again",
+      "button-failed": "Back to payment"
+    }
+  },
+  "MyPayments": {
+    "date-of-payment": "Date of Payment",
+    "end-date-of-subscription": "End date of subscription",
+    "price": "Price",
+    "subscription-type": "Subscription Type",
+    "payment-type": "Payment Type",
+    "no-payments": "You don't have any payments yet"
   }
 }

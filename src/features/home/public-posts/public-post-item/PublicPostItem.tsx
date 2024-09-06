@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { useState } from 'react'
 import ShowMoreText from 'react-show-more-text'
 
 import { Post } from '@/src/features/post/model/posts.service.types'
@@ -6,6 +6,7 @@ import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import moment from 'moment'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -13,14 +14,21 @@ import 'slick-carousel/slick/slick-theme.css'
 import s from './PublicPostItem.module.scss'
 
 import postImage from '../../../../../public/image/default-post.png'
+
 type PublicPostItemProps = {
   post: Post
 }
 
 export const PublicPostItem = ({ post }: PublicPostItemProps) => {
+  const router = useRouter()
   const [isCollapsed, setIsCollapsed] = useState(false)
   const handleOnCollapse = () => {
     setIsCollapsed(!isCollapsed)
+  }
+
+  const handleOnPostClick = () => {
+    // тут будет сслыка на странцу с публичным постом
+    return
   }
 
   return (
@@ -28,13 +36,19 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
       {post.images.length > 1 ? (
         <PhotoSlider>
           {post.images.map((image, index) => (
-            <div key={image.uploadId}>
+            <div key={image.uploadId} onClick={handleOnPostClick}>
               <Image alt={`post.image ${index}`} height={240} src={image.url} width={234} />
             </div>
           ))}
         </PhotoSlider>
       ) : (
-        <Image alt={'no photo'} height={240} src={post?.images[0]?.url || postImage} width={234} />
+        <Image
+          alt={'no photo'}
+          height={240}
+          onClick={handleOnPostClick}
+          src={post?.images[0]?.url || postImage}
+          width={234}
+        />
       )}
       <div className={s.ownerInfo}>
         <Image

@@ -16,5 +16,3 @@ export const HomePage = ({ posts }: HomePageProps) => {
 
   return <PublicPosts posts={posts} />
 }
-
-export default HomePage

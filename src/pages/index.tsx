@@ -1,4 +1,4 @@
-import HomePage from '@/src/features/home/HomePage'
+import { HomePage } from '@/src/features/home/HomePage'
 import { GetLastCreatedPostsResponse } from '@/src/features/post/model/posts.service.types'
 import { NextPageWithLayout } from '@/src/pages/_app'
 import { InferGetStaticPropsType } from 'next'

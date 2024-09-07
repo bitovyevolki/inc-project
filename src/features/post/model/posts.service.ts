@@ -54,7 +54,7 @@ export const PostsService = inctagramService.injectEndpoints({
           return {
             credentials: 'include',
             params: queryArgs,
-            url: `/api/v1/public-posts/${queryArgs.postId}`,
+            url: `/v1/public-posts/${queryArgs.postId}`,
           }
         },
       }),

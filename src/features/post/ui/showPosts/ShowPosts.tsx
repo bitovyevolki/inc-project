@@ -8,12 +8,13 @@ import {
   useGetPublicPostsByUserIdQuery,
   useLazyGetPublicPostsByUserIdQuery,
 } from '@/src/features/post/model/posts.service'
-import { Post } from '@/src/features/post/model/posts.service.types'
 import { ViewPost } from '@/src/features/post/ui'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
 import Link from 'next/link'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 import s from './showPosts.module.scss'
 
@@ -24,6 +25,12 @@ type Props = {
   profileId?: string
 }
 export const ShowPosts = ({ profileId }: Props) => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const postIdQuery = searchParams.get('postId')
+
   const { data: meData, isLoading: isLoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
     profileId,
@@ -39,7 +46,7 @@ export const ShowPosts = ({ profileId }: Props) => {
   const [showNextPosts, { data: nextPostsData }] = useLazyGetPublicPostsByUserIdQuery()
   const [currentPageSize, setCurrentPageSize] = useState<number>(POSTS_INCREMENT)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [postForView, setPostForView] = useState<Post>()
+  const [postIdForView, setPostIdForView] = useState<number>()
 
   const showPosts = publicPostsData?.items
   const [posts, setPosts] = useState(showPosts)
@@ -52,6 +59,12 @@ export const ShowPosts = ({ profileId }: Props) => {
       setCurrentPageSize(currentPageSize => currentPageSize + POSTS_INCREMENT)
     }
   }
+
+  useEffect(() => {
+    if (postIdQuery) {
+      onOpenPost(Number(postIdQuery))
+    }
+  }, [])
 
   useEffect(() => {
     showNextPosts({ pageSize: currentPageSize, userId })
@@ -71,10 +84,25 @@ export const ShowPosts = ({ profileId }: Props) => {
 
   const showSettingsButton = meData?.userId === profileData?.id
 
-  const onOpenPost = (post: Post) => {
+  const createQueryStringHandler = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+
+    params.set(name, value)
+
+    return params.toString()
+  }
+
+  const removeQueryParamhandler = (param: string) => {
+    const params = new URLSearchParams(searchParams)
+
+    params.delete(param)
+    router.replace({ pathname, query: params.toString() }, undefined, { shallow: true })
+  }
+
+  const onOpenPost = (postId: number) => {
     setIsModalOpen(true)
-    setPostForView(post)
-    console.log('current post: ', post)
+    setPostIdForView(postId)
+    router.push(pathname + '?' + createQueryStringHandler('postId', String(postId)))
   }
 
   if (isLoading) {
@@ -111,7 +139,7 @@ export const ShowPosts = ({ profileId }: Props) => {
         <div className={s.postsGallery}>
           {posts?.map(post => (
             <div key={post.id}>
-              <div onClick={() => onOpenPost(post)}>
+              <div onClick={() => onOpenPost(post?.id as number)}>
                 <img alt={'post image'} src={post?.images?.[0]?.url} width={300} />
               </div>
             </div>
@@ -127,8 +155,8 @@ export const ShowPosts = ({ profileId }: Props) => {
         >
           <ViewPost
             avatars={profileData?.avatars}
-            imageUrl={postForView?.images[0]?.url}
-            post={postForView}
+            postId={postIdForView as number}
+            removeQuery={removeQueryParamhandler}
             userName={userName}
           />
         </ModalWindow>

@@ -7,24 +7,22 @@ import { Layout } from '@/src/shared/ui/Layout/Layout'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 
-function MyProfilePage(props: any) {
+function ProfilePage(props: any) {
   const router = useRouter()
   const userId = router.query.userId as string
 
   return <ShowPosts profileId={userId} {...props} />
 }
 
-MyProfilePageProtected.getLayout = function getLayout(page: ReactElement) {
+ProfilePageProtected.getLayout = function getLayout(page: ReactElement) {
   return <Layout withSidebar>{page}</Layout>
 }
 
-export default function MyProfilePageProtected({ children }: PropsWithChildren) {
+export default function ProfilePageProtected({ children }: PropsWithChildren) {
   return (
-    <>
-      <RequireAuth>
-        <MyProfilePage />
-      </RequireAuth>
-    </>
+    <RequireAuth>
+      <ProfilePage />
+    </RequireAuth>
   )
 }
 

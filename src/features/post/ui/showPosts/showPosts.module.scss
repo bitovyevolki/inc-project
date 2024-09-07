@@ -5,18 +5,20 @@
 .postsGallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
   gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+
   margin: 48px auto;
 }
 
 .userPresentation {
-  width: 90%;
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 12px;
+  align-items: center;
+  justify-content: center;
+
+  width: 90%;
 }
 
 .textPresentation {
@@ -26,12 +28,14 @@
 }
 
 .userAvatar {
-  border-radius: 50%;
-  background-color: #780a75;
-  margin-right: 24px;
   overflow: hidden;
+
   min-width: 204px;
   height: 204px;
+  margin-right: 24px;
+
+  background-color: #780a75;
+  border-radius: 50%;
 
   img {
     width: 100%;
@@ -47,5 +51,6 @@
 .modal {
   width: 100%;
   max-width: 972px;
+  min-height: 636px;
   max-height: unset;
 }

@@ -12,6 +12,7 @@ import { ViewPost } from '@/src/features/post/ui'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
@@ -114,7 +115,7 @@ export const ShowPosts = ({ profileId }: Props) => {
       <div className={s.wrapper}>
         <div className={s.userPresentation}>
           <div className={clsx(s.userAvatar)}>
-            <img alt={'avatar'} src={profileData?.avatars[0].url} />
+            <Image alt={'avatar'} fill src={profileData?.avatars[0].url as string} />
           </div>
           <div className={s.textPresentation}>
             <Typography as={'p'} className={s.userName} variant={'h3'}>
@@ -140,7 +141,7 @@ export const ShowPosts = ({ profileId }: Props) => {
           {posts?.map(post => (
             <div key={post.id}>
               <div onClick={() => onOpenPost(post?.id as number)}>
-                <img alt={'post image'} src={post?.images?.[0]?.url} width={300} />
+                <Image alt={'post image'} height={300} src={post?.images?.[0]?.url} width={300} />
               </div>
             </div>
           ))}

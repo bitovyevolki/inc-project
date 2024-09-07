@@ -51,8 +51,16 @@
     height: 80px;
 
     .iconsBox {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+
       height: 36px;
       margin: 12px auto;
+
+      & svg {
+        cursor: pointer;
+      }
     }
   }
 

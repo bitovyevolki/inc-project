@@ -6,6 +6,7 @@ import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/Ad
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow } from '@bitovyevolki/ui-kit-int'
+import Image from 'next/image'
 
 import s from './createPost.module.scss'
 
@@ -63,7 +64,11 @@ export const CreatePost = (props: Props) => {
           <div className={s.uploadContainer}>
             <form onSubmit={handleSubmit}>
               <div className={s.imageContainer}>
-                {previewUrl ? <img alt={'Preview'} src={previewUrl} width={300} /> : <AvatarIcon />}
+                {previewUrl ? (
+                  <Image alt={'Preview'} height={300} src={previewUrl} width={300} />
+                ) : (
+                  <AvatarIcon />
+                )}
               </div>
               <input
                 accept={'image/png, image/jpeg'}

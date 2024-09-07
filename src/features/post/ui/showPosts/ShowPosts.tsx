@@ -19,18 +19,21 @@ import { useRouter } from 'next/router'
 
 import s from './showPosts.module.scss'
 
+import { Post } from '../../model/posts.service.types'
+
 const SCROLL_OFFSET = 5
 const POSTS_INCREMENT = 8
 
 type Props = {
+  post: Post | null
   profileId?: string
 }
-export const ShowPosts = ({ profileId }: Props) => {
+export const ShowPosts = ({ post, profileId }: Props) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
 
-  const postIdQuery = searchParams.get('postId')
+  // const postIdQuery = searchParams.get('postId')
 
   const { data: meData, isLoading: isLoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
@@ -47,7 +50,6 @@ export const ShowPosts = ({ profileId }: Props) => {
   const [showNextPosts, { data: nextPostsData }] = useLazyGetPublicPostsByUserIdQuery()
   const [currentPageSize, setCurrentPageSize] = useState<number>(POSTS_INCREMENT)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [postIdForView, setPostIdForView] = useState<number>()
 
   const showPosts = publicPostsData?.items
   const [posts, setPosts] = useState(showPosts)
@@ -62,10 +64,10 @@ export const ShowPosts = ({ profileId }: Props) => {
   }
 
   useEffect(() => {
-    if (postIdQuery) {
-      onOpenPost(Number(postIdQuery))
+    if (post) {
+      onOpenPost()
     }
-  }, [])
+  }, [post])
 
   useEffect(() => {
     showNextPosts({ pageSize: currentPageSize, userId })
@@ -93,17 +95,19 @@ export const ShowPosts = ({ profileId }: Props) => {
     return params.toString()
   }
 
-  const removeQueryParamhandler = (param: string) => {
+  const removeQueryParamHandler = (param: string) => {
     const params = new URLSearchParams(searchParams)
 
     params.delete(param)
     router.replace({ pathname, query: params.toString() }, undefined, { shallow: true })
   }
 
-  const onOpenPost = (postId: number) => {
+  const onOpenPost = () => {
     setIsModalOpen(true)
-    setPostIdForView(postId)
-    router.push(pathname + '?' + createQueryStringHandler('postId', String(postId)))
+  }
+
+  const changeQueryHandler = (id: number) => {
+    router.push(pathname + '?' + createQueryStringHandler('postId', String(id)))
   }
 
   if (isLoading) {
@@ -140,7 +144,7 @@ export const ShowPosts = ({ profileId }: Props) => {
         <div className={s.postsGallery}>
           {posts?.map(post => (
             <div key={post.id}>
-              <div onClick={() => onOpenPost(post?.id as number)}>
+              <div onClick={() => changeQueryHandler(post.id as number)}>
                 <Image alt={'post image'} height={300} src={post?.images?.[0]?.url} width={300} />
               </div>
             </div>
@@ -156,8 +160,8 @@ export const ShowPosts = ({ profileId }: Props) => {
         >
           <ViewPost
             avatars={profileData?.avatars}
-            postId={postIdForView as number}
-            removeQuery={removeQueryParamhandler}
+            post={post as Post}
+            removeQuery={removeQueryParamHandler}
             userName={userName}
           />
         </ModalWindow>

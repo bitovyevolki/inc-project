@@ -29,6 +29,10 @@ export const ViewPost = ({ avatars, imageUrl, post, userName }: Props) => {
   const [updateComments, { data: moreComments }] = useLazyGetPostCommentsQuery()
   const [createComment, { isError, isLoading }] = useCreateCommentToPostMutation()
 
+  const copyUrlToClipboard = () => {
+    navigator.clipboard.writeText(window.location.toString() + `?postId=${post?.id}`)
+  }
+
   if (!commentsData) {
     return
   }
@@ -84,7 +88,9 @@ export const ViewPost = ({ avatars, imageUrl, post, userName }: Props) => {
             <div className={s.iconsBox}>
               <BookmarkIcon />
               <HeartIcon />
-              <PaperPlaneIcon />
+              <span onClick={copyUrlToClipboard}>
+                <PaperPlaneIcon />
+              </span>
             </div>
           </div>
           <form className={s.leaveComment} onSubmit={handleSubmit}>

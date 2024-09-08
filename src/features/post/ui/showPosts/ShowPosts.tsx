@@ -143,10 +143,12 @@ export const ShowPosts = ({ post, profileId }: Props) => {
         </div>
         <div className={s.postsGallery}>
           {posts?.map(post => (
-            <div key={post.id}>
-              <div onClick={() => changeQueryHandler(post.id as number)}>
-                <Image alt={'post image'} height={300} src={post?.images?.[0]?.url} width={300} />
-              </div>
+            <div
+              className={s.galleryItem}
+              key={post.id}
+              onClick={() => changeQueryHandler(post.id as number)}
+            >
+              <Image alt={'post image'} fill src={post?.images?.[0]?.url} />
             </div>
           ))}
         </div>

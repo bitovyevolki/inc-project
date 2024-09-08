@@ -1,53 +1,46 @@
 import * as React from 'react'
-import { FormEvent } from 'react'
+import { FormEvent, useEffect } from 'react'
 
 import { IProfile } from '@/src/entities/profile/model/types/profile'
 import {
   useCreateCommentToPostMutation,
+  useGetPostByIdQuery,
   useGetPostCommentsQuery,
   useLazyGetPostCommentsQuery,
 } from '@/src/features/post/model/posts.service'
-import { Post } from '@/src/features/post/model/posts.service.types'
 import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { HeartIcon } from '@/src/shared/assets/icons/heart'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
+import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
+import Image from 'next/image'
 
 import s from './viewPost.module.scss'
 
 type Props = {
   avatars?: IProfile['avatars']
-  imageUrl?: string
-  post?: Post
+  postId: number
+  removeQuery: (param: string) => void
   userName: string
 }
-export const ViewPost = ({ avatars, imageUrl, post, userName }: Props) => {
-  const { data: commentsData, isLoading: loadingComments } = useGetPostCommentsQuery({
+export const ViewPost = ({ avatars, postId, removeQuery, userName }: Props) => {
+  const { data: post, isLoading: isLoadingPost } = useGetPostByIdQuery({ postId })
+  const { data: commentsData, isLoading: isLoadingComments } = useGetPostCommentsQuery({
     postId: post?.id,
   })
   const [updateComments, { data: moreComments }] = useLazyGetPostCommentsQuery()
   const [createComment, { isError, isLoading }] = useCreateCommentToPostMutation()
 
-  if (!commentsData) {
-    return
-  }
-  console.log('commentsData', commentsData)
+  useEffect(() => {
+    return () => {
+      removeQuery('postId')
+    }
+  }, [])
 
-  const commentsToShow = commentsData.items.map(comment => {
-    return (
-      <div key={comment.id}>
-        <ProfileIntro
-          avatarSize={'small'}
-          avatars={comment.from.avatars}
-          userName={comment.from.username}
-        />
-        <Typography as={'p'} variant={'body1'}>
-          {comment.content}
-        </Typography>
-      </div>
-    )
-  })
+  const copyUrlToClipboardHandler = () => {
+    navigator.clipboard.writeText(window.location.toString())
+  }
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -63,10 +56,33 @@ export const ViewPost = ({ avatars, imageUrl, post, userName }: Props) => {
       })
   }
 
+  const commentsToShow = commentsData?.items.map(comment => {
+    return (
+      <div key={comment.id}>
+        <ProfileIntro
+          avatarSize={'small'}
+          avatars={comment.from.avatars}
+          userName={comment.from.username}
+        />
+        <Typography as={'p'} variant={'body1'}>
+          {comment.content}
+        </Typography>
+      </div>
+    )
+  })
+
+  if (isLoadingComments || isLoadingPost) {
+    return (
+      <div className={s.loader}>
+        <RoundLoader variant={'large'} />
+      </div>
+    )
+  }
+
   return (
     <Card className={s.modalBox}>
       <div className={s.photoBox}>
-        <img alt={'Post image'} src={imageUrl} />
+        <Image alt={'Post image'} fill src={post?.images[0].url as string} />
       </div>
       <div className={s.textBox}>
         <div className={s.postHeader}>
@@ -84,7 +100,9 @@ export const ViewPost = ({ avatars, imageUrl, post, userName }: Props) => {
             <div className={s.iconsBox}>
               <BookmarkIcon />
               <HeartIcon />
-              <PaperPlaneIcon />
+              <span onClick={copyUrlToClipboardHandler}>
+                <PaperPlaneIcon />
+              </span>
             </div>
           </div>
           <form className={s.leaveComment} onSubmit={handleSubmit}>

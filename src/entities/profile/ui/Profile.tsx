@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { IOption, Tabs } from '@bitovyevolki/ui-kit-int'
+import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 
 import '@bitovyevolki/ui-kit-int/dist/style.css'
@@ -8,11 +9,23 @@ import '@bitovyevolki/ui-kit-int/dist/style.css'
 import s from './Profile.module.scss'
 
 import { ProfileContentType } from '../model/types/profile'
+import { Devices } from '../profileDevices'
+import AccountManagement from './AccountManagement/AccountManagement'
 import { GeneralInformation } from './GeneralInformation/GeneralInformation'
+import { MyPayments } from './MyPayments/MyPayments'
 
 export const Profile = () => {
   const [contentType, setContentType] = useState<ProfileContentType>(ProfileContentType.GENERAL)
   const t = useTranslations('GeneralProfile')
+  const router = useRouter()
+
+  useEffect(() => {
+    const { query } = router
+
+    if (query.token || query.success) {
+      setContentType(ProfileContentType.MANAGEMENT)
+    }
+  }, [router, router.query])
 
   const tabsOptions: ({ disabled: boolean } & IOption)[] = [
     { disabled: false, label: t('general'), value: ProfileContentType.GENERAL },
@@ -31,9 +44,9 @@ export const Profile = () => {
         <Tabs onChange={changeContentTypeHandler} options={tabsOptions} value={contentType}></Tabs>
       </div>
       {contentType === ProfileContentType.GENERAL && <GeneralInformation />}
-      {contentType === ProfileContentType.DEVICES && <div>{t('devices')}</div>}
-      {contentType === ProfileContentType.MANAGEMENT && <div>{t('account-management')}</div>}
-      {contentType === ProfileContentType.PAYMENTS && <div>{t('my-payments')}</div>}
+      {contentType === ProfileContentType.DEVICES && <Devices />}
+      {contentType === ProfileContentType.MANAGEMENT && <AccountManagement />}
+      {contentType === ProfileContentType.PAYMENTS && <MyPayments />}
     </div>
   )
 }

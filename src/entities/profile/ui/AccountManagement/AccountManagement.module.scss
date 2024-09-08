@@ -1,0 +1,65 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+
+	.block {
+		box-sizing: border-box;
+		margin-top: 6px;
+		padding: 6px 12px;
+
+		background: var(--color-dark-500);
+		border: 1px solid var(--color-dark-300);
+
+		div {
+			display: flex;
+			flex-direction: column;
+			align-items: start;
+		}
+	}
+
+}
+
+.wrapperPayments {
+	margin-top: 24px;
+
+	.payments {
+		display: flex;
+		gap: 54px;
+		align-items: center;
+		justify-content: center;
+
+		width: fit-content;
+		margin-left: auto;
+
+		.block {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			
+			width: 96px;
+			height: 64px;
+			margin-top: 0;
+		}
+	}
+}
+
+.autoRenewal {
+	margin-top: 17px;
+}
+
+.modal {
+	display: flex;
+	flex-direction: column;
+	gap: 54px;
+
+	width: 376px;
+	padding: 18px 24px 36px;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 260px);
+}

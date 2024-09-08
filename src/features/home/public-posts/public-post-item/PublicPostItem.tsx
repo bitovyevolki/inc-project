@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import ShowMoreText from 'react-show-more-text'
 
 import { Post } from '@/src/features/post/model/posts.service.types'

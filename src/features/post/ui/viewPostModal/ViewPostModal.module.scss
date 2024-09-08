@@ -1,0 +1,30 @@
+.overlay {
+  position: fixed;
+  z-index: 3;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentWrapper {
+  z-index: 5;
+  position: relative;
+  width: auto;
+  height: auto;
+  max-width: 972px;
+  max-height: 564px;
+  background: var(--color-dark-700);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton {
+  position: absolute;
+  top: -46px;
+  right: -66px;
+  background: transparent;
+  cursor: pointer;
+  z-index: 6;
+}

@@ -1,13 +1,14 @@
 import * as React from 'react'
 import { PropsWithChildren, ReactElement } from 'react'
 
+import { Post } from '@/src/features/post/model/posts.service.types'
 import { ShowPosts } from '@/src/features/post/ui/showPosts/ShowPosts'
 import RequireAuth from '@/src/shared/providers/RequireAuth'
 import { Layout } from '@/src/shared/ui/Layout/Layout'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 
-function ProfilePage(props: any) {
+function ProfilePage(props: { post: Post | null }) {
   const router = useRouter()
   const userId = router.query.userId as string
 
@@ -18,21 +19,32 @@ ProfilePageProtected.getLayout = function getLayout(page: ReactElement) {
   return <Layout withSidebar>{page}</Layout>
 }
 
-export default function ProfilePageProtected({ children }: PropsWithChildren) {
+export default function ProfilePageProtected({ post }: { post: Post | null } & PropsWithChildren) {
   return (
     <RequireAuth>
-      <ProfilePage />
+      <ProfilePage post={post} />
     </RequireAuth>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
+  const query = context.query
+
+  let post = null
+
+  if (query.postId) {
+    const response = await fetch(`https://inctagram.work/api/v1/public-posts/${query.postId}`)
+
+    post = await response.json()
+  }
+
   const locale = context.req.cookies['next-language'] || 'en'
   const messages = (await import(`../../locales/${locale}.json`)).default
 
   return {
     props: {
       messages,
+      post,
     },
   }
 }

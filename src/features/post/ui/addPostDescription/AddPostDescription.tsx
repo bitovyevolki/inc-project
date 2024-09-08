@@ -6,8 +6,10 @@ import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.servi
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { useCreatePostMutation } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui/profileIntro/ProfileIntro'
+import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, TextArea } from '@bitovyevolki/ui-kit-int'
+import Image from 'next/image'
 import Router from 'next/router'
 
 import s from './addPostDescription.module.scss'
@@ -39,7 +41,7 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
     createPost({ childrenMetadata: [{ uploadId }], description })
       .unwrap()
       .then(() => {
-        Router.push(`/my-profile/${meData?.userId}`)
+        Router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
       })
   }
 
@@ -66,7 +68,7 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
       >
         <div className={s.container}>
           <div className={s.imageContainer}>
-            <img alt={'post image'} src={imageURL} />
+            <Image alt={'post image'} fill src={imageURL as string} />
           </div>
           <div className={s.publicationContainer}>
             <ProfileIntro

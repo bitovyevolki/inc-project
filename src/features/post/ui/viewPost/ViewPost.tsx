@@ -4,7 +4,6 @@ import { FormEvent, useEffect } from 'react'
 import { IProfile } from '@/src/entities/profile/model/types/profile'
 import {
   useCreateCommentToPostMutation,
-  useGetPostByIdQuery,
   useGetPostCommentsQuery,
   useLazyGetPostCommentsQuery,
 } from '@/src/features/post/model/posts.service'
@@ -18,14 +17,15 @@ import Image from 'next/image'
 
 import s from './viewPost.module.scss'
 
+import { Post } from '../../model/posts.service.types'
+
 type Props = {
   avatars?: IProfile['avatars']
-  postId: number
+  post: Post
   removeQuery: (param: string) => void
   userName: string
 }
-export const ViewPost = ({ avatars, postId, removeQuery, userName }: Props) => {
-  const { data: post, isLoading: isLoadingPost } = useGetPostByIdQuery({ postId })
+export const ViewPost = ({ avatars, post, removeQuery, userName }: Props) => {
   const { data: commentsData, isLoading: isLoadingComments } = useGetPostCommentsQuery({
     postId: post?.id,
   })
@@ -71,7 +71,7 @@ export const ViewPost = ({ avatars, postId, removeQuery, userName }: Props) => {
     )
   })
 
-  if (isLoadingComments || isLoadingPost) {
+  if (isLoadingComments) {
     return (
       <div className={s.loader}>
         <RoundLoader variant={'large'} />
@@ -82,7 +82,7 @@ export const ViewPost = ({ avatars, postId, removeQuery, userName }: Props) => {
   return (
     <Card className={s.modalBox}>
       <div className={s.photoBox}>
-        <Image alt={'Post image'} fill src={post?.images[0].url as string} />
+        <Image alt={'Post image'} fill priority src={post?.images[0].url as string} />
       </div>
       <div className={s.textBox}>
         <div className={s.postHeader}>

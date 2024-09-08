@@ -7,6 +7,8 @@ import Image from 'next/image'
 
 import s from './profileIntro.module.scss'
 
+import baseUserPhoto from './../../../../../public/image/default-post.png'
+
 type Props = {
   avatarSize?: 'large' | 'small'
   avatars?: IProfile['avatars']
@@ -24,7 +26,7 @@ export const ProfileIntro = ({ avatarSize = 'small', avatars, userName }: Props)
   return (
     <div className={s.container}>
       <div className={clsx(s.userAvatar, avatarSize === 'small' ? s.sizeS : s.sizeL)}>
-        <Image alt={'profile avatar'} fill src={avatarSelected?.url} />
+        <Image alt={'profile avatar'} fill src={avatarSelected?.url || baseUserPhoto} />
       </div>
       <div className={s.userName}>
         <Typography as={'h6'} variant={'body1'}>

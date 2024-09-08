@@ -9,6 +9,7 @@ import {
   useLazyGetPublicPostsByUserIdQuery,
 } from '@/src/features/post/model/posts.service'
 import { ViewPost } from '@/src/features/post/ui'
+import { ViewPostModal } from '@/src/features/post/ui/viewPostModal/ViewPostModal'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
@@ -20,6 +21,7 @@ import { useRouter } from 'next/router'
 import s from './showPosts.module.scss'
 
 import { Post } from '../../model/posts.service.types'
+import baseUserPhoto from './../../../../../public/image/default-post.png'
 
 const SCROLL_OFFSET = 5
 const POSTS_INCREMENT = 8
@@ -119,7 +121,11 @@ export const ShowPosts = ({ post, profileId }: Props) => {
       <div className={s.wrapper}>
         <div className={s.userPresentation}>
           <div className={clsx(s.userAvatar)}>
-            <Image alt={'avatar'} fill src={profileData?.avatars[0].url as string} />
+            <Image
+              alt={'avatar'}
+              fill
+              src={(profileData?.avatars[0]?.url as string) || baseUserPhoto}
+            />
           </div>
           <div className={s.textPresentation}>
             <Typography as={'p'} className={s.userName} variant={'h3'}>
@@ -154,19 +160,14 @@ export const ShowPosts = ({ post, profileId }: Props) => {
         </div>
       </div>
       {isModalOpen && (
-        <ModalWindow
-          className={s.modal}
-          onOpenChange={() => setIsModalOpen(false)}
-          open={isModalOpen}
-          title={'View Post'}
-        >
+        <ViewPostModal isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
           <ViewPost
             avatars={profileData?.avatars}
             post={post as Post}
             removeQuery={removeQueryParamHandler}
             userName={userName}
           />
-        </ModalWindow>
+        </ViewPostModal>
       )}
     </>
   )

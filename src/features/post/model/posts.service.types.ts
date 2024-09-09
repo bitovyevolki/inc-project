@@ -155,3 +155,8 @@ export interface GetLastCreatedPostsResponse {
   totalCount: number
   totalUsers: number
 }
+
+export interface DeletePostArgs {
+  ownerId: number
+  postId: number
+}

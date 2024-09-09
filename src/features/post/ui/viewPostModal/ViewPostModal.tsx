@@ -9,7 +9,7 @@ import s from './ViewPostModal.module.scss'
 export type ViewPostModalProps = {
   children: ReactNode
   isOpen: boolean
-  onOpenChange: () => void
+  onOpenChange: (value: boolean) => void
 }
 
 export const ViewPostModal: FC<ViewPostModalProps> = ({ children, isOpen, onOpenChange }) => {
@@ -19,7 +19,11 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ children, isOpen, onOpen
         <div className={s.overlay}>
           <Content className={s.contentWrapper}>
             <Close asChild>
-              <Button className={s.closeButton} onClick={onOpenChange} variant={'ghost'}>
+              <Button
+                className={s.closeButton}
+                onClick={() => onOpenChange(false)}
+                variant={'ghost'}
+              >
                 <CloseOutlineIcon height={24} width={24} />
               </Button>
             </Close>

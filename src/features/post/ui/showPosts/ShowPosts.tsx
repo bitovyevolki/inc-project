@@ -35,8 +35,6 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const router = useRouter()
   const pathname = usePathname()
 
-  // const postIdQuery = searchParams.get('postId')
-
   const { data: meData, isLoading: isLoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
     profileId,
@@ -108,6 +106,14 @@ export const ShowPosts = ({ post, profileId }: Props) => {
     setIsModalOpen(true)
   }
 
+  const onClosePost = () => {
+    setIsModalOpen(false)
+  }
+
+  const setIsModalOpenHandler = (value: boolean) => {
+    setIsModalOpen(value)
+  }
+
   const changeQueryHandler = (id: number) => {
     router.push(pathname + '?' + createQueryStringHandler('postId', String(id)))
   }
@@ -148,7 +154,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
           </div>
         </div>
         <div className={s.postsGallery}>
-          {posts?.map(post => (
+          {showPosts?.map(post => (
             <div
               className={s.galleryItem}
               key={post.id}
@@ -160,9 +166,10 @@ export const ShowPosts = ({ post, profileId }: Props) => {
         </div>
       </div>
       {isModalOpen && (
-        <ViewPostModal isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
+        <ViewPostModal isOpen={isModalOpen} onOpenChange={setIsModalOpenHandler}>
           <ViewPost
             avatars={profileData?.avatars}
+            closePostModal={onClosePost}
             post={post as Post}
             removeQuery={removeQueryParamHandler}
             userName={userName}

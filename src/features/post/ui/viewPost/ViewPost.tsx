@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { FormEvent, useEffect } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
 import { IProfile } from '@/src/entities/profile/model/types/profile'
 import {
   useCreateCommentToPostMutation,
+  useDeletePostByIdMutation,
   useGetPostCommentsQuery,
   useLazyGetPostCommentsQuery,
 } from '@/src/features/post/model/posts.service'
@@ -11,7 +12,6 @@ import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { HeartIcon } from '@/src/shared/assets/icons/heart'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
-import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
@@ -21,16 +21,19 @@ import { Post } from '../../model/posts.service.types'
 
 type Props = {
   avatars?: IProfile['avatars']
+  closePostModal: () => void
   post: Post
   removeQuery: (param: string) => void
   userName: string
 }
-export const ViewPost = ({ avatars, post, removeQuery, userName }: Props) => {
+
+export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName }: Props) => {
   const { data: commentsData, isLoading: isLoadingComments } = useGetPostCommentsQuery({
     postId: post?.id,
   })
   const [updateComments, { data: moreComments }] = useLazyGetPostCommentsQuery()
   const [createComment, { isError, isLoading }] = useCreateCommentToPostMutation()
+  const [deletePost] = useDeletePostByIdMutation()
 
   useEffect(() => {
     return () => {
@@ -56,6 +59,15 @@ export const ViewPost = ({ avatars, post, removeQuery, userName }: Props) => {
       })
   }
 
+  const deletePostHandler = () => {
+    deletePost({ ownerId: post.ownerId, postId: post.id as number })
+      .unwrap()
+      .then(() => {
+        closePostModal()
+        setTimeout(() => (document.body.style.pointerEvents = ''), 0)
+      })
+  }
+
   const commentsToShow = commentsData?.items.map(comment => {
     return (
       <div key={comment.id}>
@@ -71,14 +83,6 @@ export const ViewPost = ({ avatars, post, removeQuery, userName }: Props) => {
     )
   })
 
-  if (isLoadingComments) {
-    return (
-      <div className={s.loader}>
-        <RoundLoader variant={'large'} />
-      </div>
-    )
-  }
-
   return (
     <Card className={s.modalBox}>
       <div className={s.photoBox}>
@@ -86,7 +90,12 @@ export const ViewPost = ({ avatars, post, removeQuery, userName }: Props) => {
       </div>
       <div className={s.textBox}>
         <div className={s.postHeader}>
-          <ProfileIntro avatarSize={'small'} avatars={avatars} userName={userName} />
+          <ProfileIntro
+            avatarSize={'small'}
+            avatars={avatars}
+            cb={deletePostHandler}
+            userName={userName}
+          />
         </div>
         <div className={s.post}>
           <span>{post?.userName}</span>

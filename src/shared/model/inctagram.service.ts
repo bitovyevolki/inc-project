@@ -6,5 +6,5 @@ export const inctagramService = createApi({
   endpoints: () => ({}),
   reducerPath: 'inctagramService',
   /// ADD Your Tags
-  tagTypes: ['Profile', 'Me', 'Paymants'],
+  tagTypes: ['Profile', 'Me', 'Paymants', 'Post'],
 })

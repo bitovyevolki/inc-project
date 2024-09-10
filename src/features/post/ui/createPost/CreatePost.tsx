@@ -1,46 +1,77 @@
-import * as React from 'react'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+
+import { randomUUID } from 'crypto'
 
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
-import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Button, ModalWindow } from '@bitovyevolki/ui-kit-int'
-import Image from 'next/image'
+import { ModalWindow } from '@bitovyevolki/ui-kit-int'
+import { v4 as uuidv4 } from 'uuid'
 
 import s from './createPost.module.scss'
+
+import { WithUploadPhoto } from './withUploadPhoto/WithUploadPhoto'
+import { WithoutUploadPhoto } from './withoutUploadPhoto/WithoutUploadPhoto'
+
+export type FileWithId = {
+  file: File
+  id: string
+}
 
 type Props = {}
 export const CreatePost = (props: Props) => {
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
 
   const [showAddPhotos, setShowAddPhotos] = useState(true)
+  const [isUploadPhoto, setIsUploadPhoto] = useState(false)
   const [showAddDescription, setShowAddDescription] = useState(false)
-  const [files, setFiles] = useState<FileList | null>(null)
+  const [files, setFiles] = useState<FileWithId[]>([])
 
   const image = data?.images[0].url
-  let previewUrl
 
-  if (files) {
-    const fileUrl = URL.createObjectURL(files[0])
-
-    previewUrl = fileUrl
-  }
+  useEffect(() => {
+    if (files) {
+      setIsUploadPhoto(true)
+    }
+  }, [files])
 
   const uploadId = data?.images[0].uploadId
 
   const inputUploadFile = useRef<HTMLInputElement>(null)
 
-  const onClickButtonSelectFile = () => {
+  const onSelectFile = () => {
     inputUploadFile.current?.click()
+  }
+
+  const onAddFiles = (e: ChangeEvent<HTMLInputElement>) => {
+    const newFiles = e.currentTarget.files
+      ? Array.from(e.currentTarget.files).map(file => ({ file, id: uuidv4() }))
+      : []
+
+    setFiles(prevFiles => [...prevFiles, ...newFiles])
+  }
+
+  const removeFile = (id: string) => {
+    setFiles(prevFiles => prevFiles.filter(item => item.id !== id))
+  }
+
+  const convertArrayToFileList = (fileArray: FileWithId[]): FileList => {
+    const dataTransfer = new DataTransfer()
+
+    fileArray.forEach(file => dataTransfer.items.add(file.file))
+
+    return dataTransfer.files
   }
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!files || !files.length) {
+    if (files.length === 0) {
       return
     }
-    uploadImages({ files })
+
+    const fileList = convertArrayToFileList(files)
+
+    uploadImages({ files: fileList })
       .unwrap()
       .then(() => {
         setShowAddPhotos(false)
@@ -58,38 +89,22 @@ export const CreatePost = (props: Props) => {
         className={s.modalWindow}
         onOpenChange={() => setShowAddPhotos(false)}
         open={showAddPhotos}
-        title={'Add photo'}
+        title={!isUploadPhoto ? 'Add photo' : 'Crupped'}
       >
-        {showAddPhotos && (
-          <div className={s.uploadContainer}>
-            <form onSubmit={handleSubmit}>
-              <div className={s.imageContainer}>
-                {previewUrl ? (
-                  <Image alt={'Preview'} height={300} src={previewUrl} width={300} />
-                ) : (
-                  <AvatarIcon />
-                )}
-              </div>
-              <input
-                accept={'image/png, image/jpeg'}
-                className={s.fileInp}
-                hidden
-                multiple
-                name={'file'}
-                onChange={e => setFiles(e.currentTarget.files)}
-                ref={inputUploadFile}
-                type={'file'}
-              />
-              <div className={s.buttonsContainer}>
-                <Button fullWidth onClick={onClickButtonSelectFile} variant={'primary'}>
-                  Select from Computer
-                </Button>
-                <Button fullWidth type={'submit'} variant={'outlined'}>
-                  Create Post
-                </Button>
-              </div>
-            </form>
-          </div>
+        {files.length === 0 ? (
+          <WithoutUploadPhoto
+            inputUploadFile={inputUploadFile}
+            onAddFiles={onAddFiles}
+            onSelectFile={onSelectFile}
+          />
+        ) : (
+          <WithUploadPhoto
+            files={files}
+            inputUploadFile={inputUploadFile}
+            onAddFiles={onAddFiles}
+            onSelectFile={onSelectFile}
+            removeFile={removeFile}
+          />
         )}
       </ModalWindow>
       {showAddDescription && <AddPostDescription imageURL={image} uploadId={uploadId} />}

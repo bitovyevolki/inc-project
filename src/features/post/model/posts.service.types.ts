@@ -160,3 +160,9 @@ export interface DeletePostArgs {
   ownerId: number
   postId: number
 }
+
+export type UpdatePostArgs {
+  ownerId: string;
+  postId: string;
+  updatedPostData: Partial<Post>;
+}

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState, useRef } from 'react'
 
 import { IProfile } from '@/src/entities/profile/model/types/profile'
 import {
@@ -7,6 +7,7 @@ import {
   useDeletePostByIdMutation,
   useGetPostCommentsQuery,
   useLazyGetPostCommentsQuery,
+  useUpdatePostByIdMutation,
 } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
@@ -31,9 +32,15 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
   const { data: commentsData, isLoading: isLoadingComments } = useGetPostCommentsQuery({
     postId: post?.id,
   })
+
+  const [description, setDescription] = useState(post?.description || '')
+  const [isEditMode, setIsEditMode] = useState(false)
   const [updateComments, { data: moreComments }] = useLazyGetPostCommentsQuery()
   const [createComment, { isError, isLoading }] = useCreateCommentToPostMutation()
   const [deletePost] = useDeletePostByIdMutation()
+  const [updatePost] = useUpdatePostByIdMutation()
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     return () => {
@@ -56,6 +63,29 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
       .unwrap()
       .then(comment => {
         updateComments({ postId: post?.id })
+      })
+  }
+
+  const startEditMode = () => {
+    setIsEditMode(true)
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 0)
+  }
+
+  const saveDescription = () => {
+    updatePost({
+      ownerId: String(post.ownerId),
+      postId: String(post.id),
+      updatedPostData: { description },
+    })
+      .unwrap()
+      .then(() => {
+        setIsEditMode(false)
+        closePostModal()
+      })
+      .catch(err => {
+        console.error('Error updating post:', err)
       })
   }
 
@@ -95,11 +125,24 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
             avatars={avatars}
             cb={deletePostHandler}
             userName={userName}
+            updatePostHandler={startEditMode}
           />
         </div>
         <div className={s.post}>
           <span>{post?.userName}</span>
-          <span className={s.post}>{post?.description}</span>
+          {isEditMode ? (
+            <div>
+              <Input
+                value={description}
+                ref={inputRef}
+                onChange={e => setDescription(e.target.value)}
+                placeholder={'Edit description...'}
+              />
+              <Button onClick={saveDescription}>Save Changes</Button>
+            </div>
+          ) : (
+            <span className={s.post}>{post?.description}</span>
+          )}
         </div>
         <div>
           <div className={s.comments}>{commentsToShow} </div>

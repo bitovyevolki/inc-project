@@ -131,7 +131,7 @@ export const PostsService = inctagramService.injectEndpoints({
         query: queryArgs => {
           return {
             credentials: 'include',
-            params: { pageSize: 8, ...queryArgs },
+            params: { pageSize: queryArgs.pageSize },
             url: `v1/public-posts/user/${queryArgs.userId}/${queryArgs.endCursorPostId}`,
           }
         },

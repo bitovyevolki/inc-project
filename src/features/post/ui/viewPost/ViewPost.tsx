@@ -13,12 +13,13 @@ import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { HeartIcon } from '@/src/shared/assets/icons/heart'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
-import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, Input, Typography, TextArea } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
 import s from './viewPost.module.scss'
 
 import { Post } from '../../model/posts.service.types'
+import { toast } from 'react-toastify'
 
 type Props = {
   avatars?: IProfile['avatars']
@@ -83,9 +84,10 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
       .then(() => {
         setIsEditMode(false)
         closePostModal()
+        toast.success('Post description updated', { position: 'top-right' })
       })
       .catch(err => {
-        console.error('Error updating post:', err)
+        toast.error(`Error updating post: ${err}`, { position: 'top-right' })
       })
   }
 
@@ -94,6 +96,7 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
       .unwrap()
       .then(() => {
         closePostModal()
+        toast.success('Post deleted', { position: 'top-right' })
         setTimeout(() => (document.body.style.pointerEvents = ''), 0)
       })
   }
@@ -129,40 +132,49 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
           />
         </div>
         <div className={s.post}>
-          <span>{post?.userName}</span>
           {isEditMode ? (
-            <div>
-              <Input
-                value={description}
-                ref={inputRef}
-                onChange={e => setDescription(e.target.value)}
-                placeholder={'Edit description...'}
-              />
-              <Button onClick={saveDescription}>Save Changes</Button>
+            <div className={s.descWrap}>
+              <div>
+                <TextArea
+                  label="Add description"
+                  value={description}
+                  ref={inputRef}
+                  onChange={e => setDescription(e.target.value)}
+                  placeholder={'Edit description...'}
+                />
+              </div>
+              <div>
+                <Button onClick={saveDescription}>Save Changes</Button>
+              </div>
             </div>
           ) : (
-            <span className={s.post}>{post?.description}</span>
+            <div>
+              <span>{post?.userName}</span>
+              <span className={s.post}>{post?.description}</span>
+            </div>
           )}
         </div>
         <div>
-          <div className={s.comments}>{commentsToShow} </div>
-        </div>
-        <div className={s.reactToPost}>
-          <div className={s.reactionsBox}>
-            <div className={s.iconsBox}>
-              <BookmarkIcon />
-              <HeartIcon />
-              <span onClick={copyUrlToClipboardHandler}>
-                <PaperPlaneIcon />
-              </span>
+          {isEditMode ? null : (
+            <div className={s.reactToPost}>
+              <div className={s.reactionsBox}>
+                <div className={s.iconsBox}>
+                  <BookmarkIcon />
+                  <HeartIcon />
+                  <span onClick={copyUrlToClipboardHandler}>
+                    <PaperPlaneIcon />
+                  </span>
+                </div>
+              </div>
+              <form className={s.leaveComment} onSubmit={handleSubmit}>
+                <Input inputMode={'text'} name={'leaveComment'} placeholder={'Add a comment...'} />
+                <Button type={'submit'} variant={'ghost'}>
+                  Publish
+                </Button>
+              </form>
+              <div className={s.comments}>{commentsToShow} </div>
             </div>
-          </div>
-          <form className={s.leaveComment} onSubmit={handleSubmit}>
-            <Input inputMode={'text'} name={'leaveComment'} placeholder={'Add a comment...'} />
-            <Button type={'submit'} variant={'ghost'}>
-              Publish
-            </Button>
-          </form>
+          )}
         </div>
       </div>
     </Card>

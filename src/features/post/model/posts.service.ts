@@ -15,6 +15,7 @@ import {
   GetPostsByUserArgs,
   GetPostsByUserResponse,
   GetPublicPostsByUserArgs,
+  UpdatePostArgs,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
@@ -39,6 +40,39 @@ export const PostsService = inctagramService.injectEndpoints({
             body: queryArgs,
             method: 'POST',
             url: '/v1/posts',
+          }
+        },
+      }),
+      updatePostById: builder.mutation<void, UpdatePostArgs>({
+        invalidatesTags: ['Post'],
+        async onQueryStarted({ ownerId, postId, updatedPostData }, { dispatch, queryFulfilled }) {
+          const numericOwnerId = Number(ownerId)
+          const patchResult = dispatch(
+            PostsService.util.updateQueryData(
+              'getPublicPostsByUserId',
+              { userId: numericOwnerId },
+              draft => {
+                const index = draft.items.findIndex(post => post.id === Number(postId))
+
+                if (index !== -1) {
+                  // Обновляем только измененные данные поста
+                  Object.assign(draft.items[index], updatedPostData)
+                }
+              }
+            )
+          )
+
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
+        query: ({ postId, updatedPostData }) => {
+          return {
+            method: 'PUT',
+            url: `v1/posts/${postId}`,
+            body: updatedPostData,
           }
         },
       }),
@@ -167,4 +201,5 @@ export const {
   useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,
   useUploadImagesMutation,
+  useUpdatePostByIdMutation,
 } = PostsService

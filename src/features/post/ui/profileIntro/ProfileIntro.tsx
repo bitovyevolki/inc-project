@@ -18,10 +18,17 @@ type Props = {
   avatarSize?: 'large' | 'small'
   avatars?: IProfile['avatars']
   cb?: () => void
+  updatePostHandler?: () => void
   userName?: string
 }
 
-export const ProfileIntro = ({ avatarSize = 'small', avatars, cb, userName }: Props) => {
+export const ProfileIntro = ({
+  avatarSize = 'small',
+  avatars,
+  cb,
+  userName,
+  updatePostHandler,
+}: Props) => {
   const [isShowDeletePostModal, setIsShowDeletePostModal] = useState(false)
   const [avatarLarge, avatarSmall] = avatars ?? []
 
@@ -47,7 +54,7 @@ export const ProfileIntro = ({ avatarSize = 'small', avatars, cb, userName }: Pr
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>
-            <div className={s.popoverItem}>
+            <div className={s.popoverItem} onClick={updatePostHandler}>
               <EditIcon />
               <span>Edit Post</span>
             </div>

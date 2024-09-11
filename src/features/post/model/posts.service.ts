@@ -43,39 +43,6 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
-      updatePostById: builder.mutation<void, UpdatePostArgs>({
-        invalidatesTags: ['Post'],
-        async onQueryStarted({ ownerId, postId, updatedPostData }, { dispatch, queryFulfilled }) {
-          const numericOwnerId = Number(ownerId)
-          const patchResult = dispatch(
-            PostsService.util.updateQueryData(
-              'getPublicPostsByUserId',
-              { userId: numericOwnerId },
-              draft => {
-                const index = draft.items.findIndex(post => post.id === Number(postId))
-
-                if (index !== -1) {
-                  // Обновляем только измененные данные поста
-                  Object.assign(draft.items[index], updatedPostData)
-                }
-              }
-            )
-          )
-
-          try {
-            await queryFulfilled
-          } catch {
-            patchResult.undo()
-          }
-        },
-        query: ({ postId, updatedPostData }) => {
-          return {
-            method: 'PUT',
-            url: `v1/posts/${postId}`,
-            body: updatedPostData,
-          }
-        },
-      }),
       deletePostById: builder.mutation<void, DeletePostArgs>({
         invalidatesTags: ['Post'],
         async onQueryStarted({ ownerId, postId }, { dispatch, queryFulfilled }) {
@@ -170,6 +137,38 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+      updatePostById: builder.mutation<void, UpdatePostArgs>({
+        async onQueryStarted({ ownerId, postId, updatedPostData }, { dispatch, queryFulfilled }) {
+          const numericOwnerId = Number(ownerId)
+
+          const patchResult = dispatch(
+            PostsService.util.updateQueryData(
+              'getPublicPostsByUserId',
+              { userId: numericOwnerId },
+              draft => {
+                const index = draft.items.findIndex(post => post.id === Number(postId))
+
+                if (index !== -1) {
+                  Object.assign(draft.items[index], updatedPostData)
+                }
+              }
+            )
+          )
+
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
+        query: ({ postId, updatedPostData }) => {
+          return {
+            body: updatedPostData,
+            method: 'PUT',
+            url: `v1/posts/${postId}`,
+          }
+        },
+      }),
       uploadImages: builder.mutation<UploadImageResponse, { files: FileList }>({
         query: args => {
           const formData = new FormData()
@@ -200,6 +199,6 @@ export const {
   useGetPublicPostsByUserIdQuery,
   useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,
-  useUploadImagesMutation,
   useUpdatePostByIdMutation,
+  useUploadImagesMutation,
 } = PostsService

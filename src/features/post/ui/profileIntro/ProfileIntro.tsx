@@ -17,7 +17,7 @@ import baseUserPhoto from './../../../../../public/image/default-post.png'
 type Props = {
   avatarSize?: 'large' | 'small'
   avatars?: IProfile['avatars']
-  cb?: () => void
+  deletePost?: () => void
   updatePostHandler?: () => void
   userName?: string
 }
@@ -25,9 +25,9 @@ type Props = {
 export const ProfileIntro = ({
   avatarSize = 'small',
   avatars,
-  cb,
-  userName,
+  deletePost,
   updatePostHandler,
+  userName,
 }: Props) => {
   const [isShowDeletePostModal, setIsShowDeletePostModal] = useState(false)
   const [avatarLarge, avatarSmall] = avatars ?? []
@@ -76,7 +76,7 @@ export const ProfileIntro = ({
             Are you sure you want to delete this post
           </Typography>
           <div className={s.buttonsContainer}>
-            <Button onClick={cb}>Yes</Button>
+            <Button onClick={deletePost}>Yes</Button>
             <Button onClick={() => setIsShowDeletePostModalHandler(false)}>No</Button>
           </div>
         </div>

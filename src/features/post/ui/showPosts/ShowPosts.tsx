@@ -42,7 +42,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
       setIsModalOpenHandler(true)
     }
   }, [post])
-  console.log(combinedPosts)
+
   const showSettingsButton = meData?.userId === profileData?.id
 
   const onClosePostHandler = () => {

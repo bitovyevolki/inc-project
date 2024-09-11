@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { FormEvent, useEffect, useState, useRef } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { IProfile } from '@/src/entities/profile/model/types/profile'
 import {
@@ -13,13 +14,12 @@ import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { HeartIcon } from '@/src/shared/assets/icons/heart'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
-import { Button, Card, Input, Typography, TextArea } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, Input, TextArea, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
 import s from './viewPost.module.scss'
 
 import { Post } from '../../model/posts.service.types'
-import { toast } from 'react-toastify'
 
 type Props = {
   avatars?: IProfile['avatars']
@@ -41,7 +41,7 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
   const [deletePost] = useDeletePostByIdMutation()
   const [updatePost] = useUpdatePostByIdMutation()
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   useEffect(() => {
     return () => {
@@ -99,6 +99,9 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
         toast.success('Post deleted', { position: 'top-right' })
         setTimeout(() => (document.body.style.pointerEvents = ''), 0)
       })
+      .catch(err => {
+        toast.error(`Error deleting post: ${err}`, { position: 'top-right' })
+      })
   }
 
   const commentsToShow = commentsData?.items.map(comment => {
@@ -126,9 +129,9 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
           <ProfileIntro
             avatarSize={'small'}
             avatars={avatars}
-            cb={deletePostHandler}
-            userName={userName}
+            deletePost={deletePostHandler}
             updatePostHandler={startEditMode}
+            userName={userName}
           />
         </div>
         <div className={s.post}>
@@ -136,11 +139,11 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
             <div className={s.descWrap}>
               <div>
                 <TextArea
-                  label="Add description"
-                  value={description}
-                  ref={inputRef}
+                  label={'Add description'}
                   onChange={e => setDescription(e.target.value)}
                   placeholder={'Edit description...'}
+                  ref={inputRef}
+                  value={description}
                 />
               </div>
               <div>

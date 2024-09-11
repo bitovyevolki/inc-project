@@ -161,8 +161,8 @@ export interface DeletePostArgs {
   postId: number
 }
 
-export type UpdatePostArgs {
-  ownerId: string;
-  postId: string;
-  updatedPostData: Partial<Post>;
+export interface UpdatePostArgs {
+  ownerId: string
+  postId: string
+  updatedPostData: Pick<Post, 'description'>
 }

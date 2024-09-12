@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import ShowMoreText from 'react-show-more-text'
 
+import { usePostsParams } from '@/src/features/post/lib/hooks/usePostsParams'
 import { Post } from '@/src/features/post/model/posts.service.types'
+import { ViewPost } from '@/src/features/post/ui'
+import { ViewPostModal } from '@/src/features/post/ui/viewPostModal'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import moment from 'moment'
@@ -26,10 +29,15 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
     setIsCollapsed(!isCollapsed)
   }
 
+  const [viewMode, setViewMode] = useState(false)
+
   const handleOnPostClick = () => {
-    // тут будет сслыка на странцу с публичным постом
-    return
+    setViewMode(true)
   }
+  const handlePostClose = () => {
+    setViewMode(false)
+  }
+  const { removeQueryParamHandler } = usePostsParams()
 
   return (
     <div className={s.root}>
@@ -55,7 +63,7 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
           alt={'avatar owner'}
           className={s.avatar}
           height={36}
-          src={post.avatarOwner}
+          src={post.avatarOwner || postImage}
           width={36}
         />
         <Typography variant={'h4'}>{post.userName}</Typography>
@@ -76,6 +84,16 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
           {post.description}
         </ShowMoreText>
       </div>
+      {viewMode && (
+        <ViewPostModal isOpen={viewMode} onOpenChange={handlePostClose}>
+          <ViewPost
+            closePostModal={handlePostClose}
+            post={post}
+            removeQuery={removeQueryParamHandler}
+            userName={post.userName}
+          />
+        </ViewPostModal>
+      )}
     </div>
   )
 }

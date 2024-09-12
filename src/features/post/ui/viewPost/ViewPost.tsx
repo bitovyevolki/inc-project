@@ -23,21 +23,27 @@ import { Post } from '../../model/posts.service.types'
 
 type Props = {
   avatars?: IProfile['avatars']
-  closePostModal: () => void
+  closePostModal?: () => void
+  deletePostFromCombinedPostsArray?: (postId: number) => void
   post: Post
   removeQuery: (param: string) => void
   userName: string
 }
 
-export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName }: Props) => {
-  const { data: commentsData, isLoading: isLoadingComments } = useGetPostCommentsQuery({
-    postId: post?.id,
-  })
+export const ViewPost = ({
+  avatars,
+  closePostModal,
+  deletePostFromCombinedPostsArray,
+  post,
+  removeQuery,
+  userName,
+}: Props) => {
+  const { data: commentsData } = useGetPostCommentsQuery({ postId: post?.id })
 
   const [description, setDescription] = useState(post?.description || '')
   const [isEditMode, setIsEditMode] = useState(false)
-  const [updateComments, { data: moreComments }] = useLazyGetPostCommentsQuery()
-  const [createComment, { isError, isLoading }] = useCreateCommentToPostMutation()
+  const [updateComments] = useLazyGetPostCommentsQuery()
+  const [createComment] = useCreateCommentToPostMutation()
   const [deletePost] = useDeletePostByIdMutation()
   const [updatePost] = useUpdatePostByIdMutation()
 
@@ -83,7 +89,7 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
       .unwrap()
       .then(() => {
         setIsEditMode(false)
-        closePostModal()
+        closePostModal && closePostModal()
         toast.success('Post description updated', { position: 'top-right' })
       })
       .catch(err => {
@@ -95,7 +101,8 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
     deletePost({ ownerId: post.ownerId, postId: post.id as number })
       .unwrap()
       .then(() => {
-        closePostModal()
+        deletePostFromCombinedPostsArray && deletePostFromCombinedPostsArray(post?.id as number)
+        closePostModal && closePostModal()
         toast.success('Post deleted', { position: 'top-right' })
         setTimeout(() => (document.body.style.pointerEvents = ''), 0)
       })

@@ -44,28 +44,6 @@ export const PostsService = inctagramService.injectEndpoints({
         },
       }),
       deletePostById: builder.mutation<void, DeletePostArgs>({
-        invalidatesTags: ['Post'],
-        async onQueryStarted({ ownerId, postId }, { dispatch, queryFulfilled }) {
-          const patchResult = dispatch(
-            PostsService.util.updateQueryData(
-              'getPublicPostsByUserId',
-              { userId: ownerId },
-              draft => {
-                const index = draft.items.findIndex(post => post.id === postId)
-
-                if (index !== -1) {
-                  draft.items.splice(index, 1)
-                }
-              }
-            )
-          )
-
-          try {
-            await queryFulfilled
-          } catch {
-            patchResult.undo()
-          }
-        },
         query: ({ postId }) => {
           return {
             method: 'DELETE',

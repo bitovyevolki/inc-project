@@ -3,6 +3,7 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { IProfile } from '@/src/entities/profile/model/types/profile'
+import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
@@ -40,6 +41,8 @@ export const ViewPost = ({
 }: Props) => {
   const { data: commentsData } = useGetPostCommentsQuery({ postId: post?.id })
 
+  const { data: me } = useMeQuery()
+  const postOwner = post.ownerId === me?.userId
   const [description, setDescription] = useState(post?.description || '')
   const [isEditMode, setIsEditMode] = useState(false)
   const [updateComments] = useLazyGetPostCommentsQuery()
@@ -117,6 +120,7 @@ export const ViewPost = ({
         <ProfileIntro
           avatarSize={'small'}
           avatars={comment.from.avatars}
+          postOwner={postOwner}
           userName={comment.from.username}
         />
         <Typography as={'p'} variant={'body1'}>
@@ -137,8 +141,10 @@ export const ViewPost = ({
             avatarSize={'small'}
             avatars={avatars}
             deletePost={deletePostHandler}
+            postOwner={postOwner}
             updatePostHandler={startEditMode}
             userName={userName}
+            withMenu
           />
         </div>
         <div className={s.post}>
@@ -176,12 +182,18 @@ export const ViewPost = ({
                   </span>
                 </div>
               </div>
-              <form className={s.leaveComment} onSubmit={handleSubmit}>
-                <Input inputMode={'text'} name={'leaveComment'} placeholder={'Add a comment...'} />
-                <Button type={'submit'} variant={'ghost'}>
-                  Publish
-                </Button>
-              </form>
+              {me && (
+                <form className={s.leaveComment} onSubmit={handleSubmit}>
+                  <Input
+                    inputMode={'text'}
+                    name={'leaveComment'}
+                    placeholder={'Add a comment...'}
+                  />
+                  <Button type={'submit'} variant={'ghost'}>
+                    Publish
+                  </Button>
+                </form>
+              )}
               <div className={s.comments}>{commentsToShow} </div>
             </div>
           )}

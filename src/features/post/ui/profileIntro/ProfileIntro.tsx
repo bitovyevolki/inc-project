@@ -18,16 +18,20 @@ type Props = {
   avatarSize?: 'large' | 'small'
   avatars?: IProfile['avatars']
   deletePost?: () => void
+  postOwner: boolean
   updatePostHandler?: () => void
   userName?: string
+  withMenu?: boolean
 }
 
 export const ProfileIntro = ({
   avatarSize = 'small',
   avatars,
   deletePost,
+  postOwner,
   updatePostHandler,
   userName,
+  withMenu,
 }: Props) => {
   const [isShowDeletePostModal, setIsShowDeletePostModal] = useState(false)
   const [avatarLarge, avatarSmall] = avatars ?? []
@@ -48,23 +52,26 @@ export const ProfileIntro = ({
           {userName}
         </Typography>
       </div>
-      <Popover.Root>
-        <Popover.Trigger asChild>
-          <EllipsisIcon className={s.ellipsisIcon} />
-        </Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>
-            <div className={s.popoverItem} onClick={updatePostHandler}>
-              <EditIcon />
-              <span>Edit Post</span>
-            </div>
-            <div className={s.popoverItem} onClick={() => setIsShowDeletePostModalHandler(true)}>
-              <DeleteIcon />
-              <span>Delete Post</span>
-            </div>
-          </Popover.Content>
-        </Popover.Portal>
-      </Popover.Root>
+      {postOwner && withMenu && (
+        <Popover.Root>
+          <Popover.Trigger asChild>
+            <EllipsisIcon className={s.ellipsisIcon} />
+          </Popover.Trigger>
+          <Popover.Portal>
+            <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>
+              <div className={s.popoverItem} onClick={updatePostHandler}>
+                <EditIcon />
+                <span>Edit Post</span>
+              </div>
+              <div className={s.popoverItem} onClick={() => setIsShowDeletePostModalHandler(true)}>
+                <DeleteIcon />
+                <span>Delete Post</span>
+              </div>
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover.Root>
+      )}
+
       <ModalWindow
         className={s.deletePostModal}
         onOpenChange={setIsShowDeletePostModalHandler}

@@ -3,6 +3,7 @@ import {
   CreateCommentResponse,
   CreatePostArgs,
   CreatePostResponse,
+  DeletePostArgs,
   GetCommentAnswersArgs,
   GetCommentAnswersResponse,
   GetLastCreatedPostsArgs,
@@ -14,6 +15,7 @@ import {
   GetPostsByUserArgs,
   GetPostsByUserResponse,
   GetPublicPostsByUserArgs,
+  UpdatePostArgs,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
@@ -32,11 +34,20 @@ export const PostsService = inctagramService.injectEndpoints({
         },
       }),
       createPost: builder.mutation<CreatePostResponse, CreatePostArgs>({
+        invalidatesTags: ['Post'],
         query: queryArgs => {
           return {
             body: queryArgs,
             method: 'POST',
             url: '/v1/posts',
+          }
+        },
+      }),
+      deletePostById: builder.mutation<void, DeletePostArgs>({
+        query: ({ postId }) => {
+          return {
+            method: 'DELETE',
+            url: `v1/posts/${postId}`,
           }
         },
       }),
@@ -95,15 +106,47 @@ export const PostsService = inctagramService.injectEndpoints({
         },
       }),
       getPublicPostsByUserId: builder.query<GetPostsByUserResponse, GetPublicPostsByUserArgs>({
+        providesTags: ['Post'],
         query: queryArgs => {
           return {
             credentials: 'include',
-            params: { pageSize: 8, ...queryArgs },
+            params: { pageSize: queryArgs.pageSize },
             url: `v1/public-posts/user/${queryArgs.userId}/${queryArgs.endCursorPostId}`,
           }
         },
       }),
+      updatePostById: builder.mutation<void, UpdatePostArgs>({
+        async onQueryStarted({ ownerId, postId, updatedPostData }, { dispatch, queryFulfilled }) {
+          const numericOwnerId = Number(ownerId)
 
+          const patchResult = dispatch(
+            PostsService.util.updateQueryData(
+              'getPublicPostsByUserId',
+              { userId: numericOwnerId },
+              draft => {
+                const index = draft.items.findIndex(post => post.id === Number(postId))
+
+                if (index !== -1) {
+                  Object.assign(draft.items[index], updatedPostData)
+                }
+              }
+            )
+          )
+
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
+        query: ({ postId, updatedPostData }) => {
+          return {
+            body: updatedPostData,
+            method: 'PUT',
+            url: `v1/posts/${postId}`,
+          }
+        },
+      }),
       uploadImages: builder.mutation<UploadImageResponse, { files: FileList }>({
         query: args => {
           const formData = new FormData()
@@ -126,6 +169,7 @@ export const PostsService = inctagramService.injectEndpoints({
 export const {
   useCreateCommentToPostMutation,
   useCreatePostMutation,
+  useDeletePostByIdMutation,
   useGetPostByIdQuery,
   useGetPostCommentsQuery,
   useGetPostsByUserNameQuery,
@@ -133,5 +177,6 @@ export const {
   useGetPublicPostsByUserIdQuery,
   useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,
+  useUpdatePostByIdMutation,
   useUploadImagesMutation,
 } = PostsService

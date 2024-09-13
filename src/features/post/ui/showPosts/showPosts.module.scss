@@ -11,12 +11,13 @@
   justify-content: flex-start;
 
   width: 100%;
-  margin: 48px auto;
+  margin: 48px auto 0;
 
   .galleryItem {
     position: relative;
     width: calc(25% - 12px);
     height: 300px;
+    cursor: pointer;
   }
 }
 

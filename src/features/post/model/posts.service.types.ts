@@ -155,3 +155,14 @@ export interface GetLastCreatedPostsResponse {
   totalCount: number
   totalUsers: number
 }
+
+export interface DeletePostArgs {
+  ownerId: number
+  postId: number
+}
+
+export interface UpdatePostArgs {
+  ownerId: string
+  postId: string
+  updatedPostData: Pick<Post, 'description'>
+}

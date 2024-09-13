@@ -1,7 +1,7 @@
 .content {
 	position: relative;
 	width: 490px;
-	height: 503px;
+	height: 70%;
 }
 
 .controls {
@@ -148,5 +148,16 @@
 
 	.addFiles {
 		cursor: pointer;
+	}
+}
+
+.cropConfirm {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 1;
+
+	&::before {
+		content: '\2713';
 	}
 }

@@ -1,7 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
-import { randomUUID } from 'crypto'
-
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
 import { Loader } from '@/src/shared/ui/loader/Loader'

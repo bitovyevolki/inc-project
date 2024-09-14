@@ -27,7 +27,7 @@ type Props = {
 export const ShowPosts = ({ post, profileId }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  const { combinedPosts } = usePosts({ profileId })
+  const { combinedPosts, deletePostFromCombinedPostsArray } = usePosts({ profileId })
   const { changeQueryHandler, removeQueryParamHandler } = usePostsParams()
 
   const { data: meData, isLoading: isLoadingMe } = useMeQuery()
@@ -107,6 +107,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
           <ViewPost
             avatars={profileData?.avatars}
             closePostModal={onClosePostHandler}
+            deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
             post={post as Post}
             removeQuery={removeQueryParamHandler}
             userName={profileData?.userName as string}

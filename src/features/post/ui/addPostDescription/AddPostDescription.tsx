@@ -74,7 +74,9 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
             <ProfileIntro
               avatarSize={'small'}
               avatars={profileData?.avatars}
+              postOwner={meData?.userId === profileData?.id}
               userName={profileData?.userName}
+              withMenu={false}
             />
             <div className={s.postContainer}>
               <form onSubmit={handleSubmit}>

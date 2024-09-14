@@ -17,11 +17,22 @@ import baseUserPhoto from './../../../../../public/image/default-post.png'
 type Props = {
   avatarSize?: 'large' | 'small'
   avatars?: IProfile['avatars']
-  cb?: () => void
+  deletePost?: () => void
+  postOwner: boolean
+  updatePostHandler?: () => void
   userName?: string
+  withMenu?: boolean
 }
 
-export const ProfileIntro = ({ avatarSize = 'small', avatars, cb, userName }: Props) => {
+export const ProfileIntro = ({
+  avatarSize = 'small',
+  avatars,
+  deletePost,
+  postOwner,
+  updatePostHandler,
+  userName,
+  withMenu,
+}: Props) => {
   const [isShowDeletePostModal, setIsShowDeletePostModal] = useState(false)
   const [avatarLarge, avatarSmall] = avatars ?? []
 
@@ -41,23 +52,26 @@ export const ProfileIntro = ({ avatarSize = 'small', avatars, cb, userName }: Pr
           {userName}
         </Typography>
       </div>
-      <Popover.Root>
-        <Popover.Trigger asChild>
-          <EllipsisIcon className={s.ellipsisIcon} />
-        </Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>
-            <div className={s.popoverItem}>
-              <EditIcon />
-              <span>Edit Post</span>
-            </div>
-            <div className={s.popoverItem} onClick={() => setIsShowDeletePostModalHandler(true)}>
-              <DeleteIcon />
-              <span>Delete Post</span>
-            </div>
-          </Popover.Content>
-        </Popover.Portal>
-      </Popover.Root>
+      {postOwner && withMenu && (
+        <Popover.Root>
+          <Popover.Trigger asChild>
+            <EllipsisIcon className={s.ellipsisIcon} />
+          </Popover.Trigger>
+          <Popover.Portal>
+            <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>
+              <div className={s.popoverItem} onClick={updatePostHandler}>
+                <EditIcon />
+                <span>Edit Post</span>
+              </div>
+              <div className={s.popoverItem} onClick={() => setIsShowDeletePostModalHandler(true)}>
+                <DeleteIcon />
+                <span>Delete Post</span>
+              </div>
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover.Root>
+      )}
+
       <ModalWindow
         className={s.deletePostModal}
         onOpenChange={setIsShowDeletePostModalHandler}
@@ -69,7 +83,7 @@ export const ProfileIntro = ({ avatarSize = 'small', avatars, cb, userName }: Pr
             Are you sure you want to delete this post
           </Typography>
           <div className={s.buttonsContainer}>
-            <Button onClick={cb}>Yes</Button>
+            <Button onClick={deletePost}>Yes</Button>
             <Button onClick={() => setIsShowDeletePostModalHandler(false)}>No</Button>
           </div>
         </div>

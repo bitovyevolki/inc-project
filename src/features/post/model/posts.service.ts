@@ -15,6 +15,7 @@ import {
   GetPostsByUserArgs,
   GetPostsByUserResponse,
   GetPublicPostsByUserArgs,
+  UpdatePostArgs,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
@@ -43,28 +44,6 @@ export const PostsService = inctagramService.injectEndpoints({
         },
       }),
       deletePostById: builder.mutation<void, DeletePostArgs>({
-        invalidatesTags: ['Post'],
-        async onQueryStarted({ ownerId, postId }, { dispatch, queryFulfilled }) {
-          const patchResult = dispatch(
-            PostsService.util.updateQueryData(
-              'getPublicPostsByUserId',
-              { userId: ownerId },
-              draft => {
-                const index = draft.items.findIndex(post => post.id === postId)
-
-                if (index !== -1) {
-                  draft.items.splice(index, 1)
-                }
-              }
-            )
-          )
-
-          try {
-            await queryFulfilled
-          } catch {
-            patchResult.undo()
-          }
-        },
         query: ({ postId }) => {
           return {
             method: 'DELETE',
@@ -136,6 +115,38 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+      updatePostById: builder.mutation<void, UpdatePostArgs>({
+        async onQueryStarted({ ownerId, postId, updatedPostData }, { dispatch, queryFulfilled }) {
+          const numericOwnerId = Number(ownerId)
+
+          const patchResult = dispatch(
+            PostsService.util.updateQueryData(
+              'getPublicPostsByUserId',
+              { userId: numericOwnerId },
+              draft => {
+                const index = draft.items.findIndex(post => post.id === Number(postId))
+
+                if (index !== -1) {
+                  Object.assign(draft.items[index], updatedPostData)
+                }
+              }
+            )
+          )
+
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
+        query: ({ postId, updatedPostData }) => {
+          return {
+            body: updatedPostData,
+            method: 'PUT',
+            url: `v1/posts/${postId}`,
+          }
+        },
+      }),
       uploadImages: builder.mutation<UploadImageResponse, { files: FileList }>({
         query: args => {
           const formData = new FormData()
@@ -166,5 +177,6 @@ export const {
   useGetPublicPostsByUserIdQuery,
   useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,
+  useUpdatePostByIdMutation,
   useUploadImagesMutation,
 } = PostsService

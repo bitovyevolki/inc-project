@@ -1,9 +1,11 @@
 .modalBox {
   overflow: hidden;
   display: flex;
+
   width: 972px;
-  background-color: #333;
   min-width: 972px;
+
+  background-color: #333;
 }
 
 .photoBox {
@@ -18,6 +20,7 @@
 
 .textBox {
   min-height: 564px;
+  width: 482px;
 }
 
 .postHeader {
@@ -27,23 +30,23 @@
 }
 
 .post {
-  padding: 10px 16px;
   height: 100px;
+  padding: 10px 16px;
 }
 
 .comments {
-  padding: 10px 16px;
   overflow-y: auto;
   max-height: 240px;
+  padding: 10px 16px;
 }
 
 .reactToPost {
-  padding: 10px 16px;
   display: flex;
   flex-flow: column nowrap;
   align-self: flex-end;
 
   width: 100%;
+  padding: 10px 16px;
 
   border-top: 1px solid #4c4c4c;
 
@@ -81,4 +84,25 @@
   align-items: center;
   justify-content: center;
   height: 564px;
+}
+
+.descWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  height: 460px;
+  margin-top: 12px;
+  padding-right: 24px;
+  padding-left: 24px;
+
+  textarea {
+    min-width: 433px;
+    min-height: 120px;
+  }
+
+  button {
+    margin-bottom: 24px;
+  }
 }

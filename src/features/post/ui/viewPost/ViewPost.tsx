@@ -1,18 +1,21 @@
 import * as React from 'react'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { IProfile } from '@/src/entities/profile/model/types/profile'
+import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
   useGetPostCommentsQuery,
   useLazyGetPostCommentsQuery,
+  useUpdatePostByIdMutation,
 } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { HeartIcon } from '@/src/shared/assets/icons/heart'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
-import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, Input, TextArea, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
 import s from './viewPost.module.scss'
@@ -21,19 +24,33 @@ import { Post } from '../../model/posts.service.types'
 
 type Props = {
   avatars?: IProfile['avatars']
-  closePostModal: () => void
+  closePostModal?: () => void
+  deletePostFromCombinedPostsArray?: (postId: number) => void
   post: Post
   removeQuery: (param: string) => void
   userName: string
 }
 
-export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName }: Props) => {
-  const { data: commentsData, isLoading: isLoadingComments } = useGetPostCommentsQuery({
-    postId: post?.id,
-  })
-  const [updateComments, { data: moreComments }] = useLazyGetPostCommentsQuery()
-  const [createComment, { isError, isLoading }] = useCreateCommentToPostMutation()
+export const ViewPost = ({
+  avatars,
+  closePostModal,
+  deletePostFromCombinedPostsArray,
+  post,
+  removeQuery,
+  userName,
+}: Props) => {
+  const { data: commentsData } = useGetPostCommentsQuery({ postId: post?.id })
+
+  const { data: me } = useMeQuery()
+  const postOwner = post.ownerId === me?.userId
+  const [description, setDescription] = useState(post?.description || '')
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [updateComments] = useLazyGetPostCommentsQuery()
+  const [createComment] = useCreateCommentToPostMutation()
   const [deletePost] = useDeletePostByIdMutation()
+  const [updatePost] = useUpdatePostByIdMutation()
+
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   useEffect(() => {
     return () => {
@@ -59,12 +76,41 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
       })
   }
 
+  const startEditMode = () => {
+    setIsEditMode(true)
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 0)
+  }
+
+  const saveDescription = () => {
+    updatePost({
+      ownerId: String(post.ownerId),
+      postId: String(post.id),
+      updatedPostData: { description },
+    })
+      .unwrap()
+      .then(() => {
+        setIsEditMode(false)
+        closePostModal && closePostModal()
+        toast.success('Post description updated', { position: 'top-right' })
+      })
+      .catch(err => {
+        toast.error(`Error updating post: ${err}`, { position: 'top-right' })
+      })
+  }
+
   const deletePostHandler = () => {
     deletePost({ ownerId: post.ownerId, postId: post.id as number })
       .unwrap()
       .then(() => {
-        closePostModal()
+        deletePostFromCombinedPostsArray && deletePostFromCombinedPostsArray(post?.id as number)
+        closePostModal && closePostModal()
+        toast.success('Post deleted', { position: 'top-right' })
         setTimeout(() => (document.body.style.pointerEvents = ''), 0)
+      })
+      .catch(err => {
+        toast.error(`Error deleting post: ${err}`, { position: 'top-right' })
       })
   }
 
@@ -74,6 +120,7 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
         <ProfileIntro
           avatarSize={'small'}
           avatars={comment.from.avatars}
+          postOwner={postOwner}
           userName={comment.from.username}
         />
         <Typography as={'p'} variant={'body1'}>
@@ -93,33 +140,63 @@ export const ViewPost = ({ avatars, closePostModal, post, removeQuery, userName 
           <ProfileIntro
             avatarSize={'small'}
             avatars={avatars}
-            cb={deletePostHandler}
+            deletePost={deletePostHandler}
+            postOwner={postOwner}
+            updatePostHandler={startEditMode}
             userName={userName}
+            withMenu
           />
         </div>
         <div className={s.post}>
-          <span>{post?.userName}</span>
-          <span className={s.post}>{post?.description}</span>
+          {isEditMode ? (
+            <div className={s.descWrap}>
+              <div>
+                <TextArea
+                  label={'Add description'}
+                  onChange={e => setDescription(e.target.value)}
+                  placeholder={'Edit description...'}
+                  ref={inputRef}
+                  value={description}
+                />
+              </div>
+              <div>
+                <Button onClick={saveDescription}>Save Changes</Button>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <span>{post?.userName}</span>
+              <span className={s.post}>{post?.description}</span>
+            </div>
+          )}
         </div>
         <div>
-          <div className={s.comments}>{commentsToShow} </div>
-        </div>
-        <div className={s.reactToPost}>
-          <div className={s.reactionsBox}>
-            <div className={s.iconsBox}>
-              <BookmarkIcon />
-              <HeartIcon />
-              <span onClick={copyUrlToClipboardHandler}>
-                <PaperPlaneIcon />
-              </span>
+          {isEditMode ? null : (
+            <div className={s.reactToPost}>
+              <div className={s.reactionsBox}>
+                <div className={s.iconsBox}>
+                  <BookmarkIcon />
+                  <HeartIcon />
+                  <span onClick={copyUrlToClipboardHandler}>
+                    <PaperPlaneIcon />
+                  </span>
+                </div>
+              </div>
+              {me && (
+                <form className={s.leaveComment} onSubmit={handleSubmit}>
+                  <Input
+                    inputMode={'text'}
+                    name={'leaveComment'}
+                    placeholder={'Add a comment...'}
+                  />
+                  <Button type={'submit'} variant={'ghost'}>
+                    Publish
+                  </Button>
+                </form>
+              )}
+              <div className={s.comments}>{commentsToShow} </div>
             </div>
-          </div>
-          <form className={s.leaveComment} onSubmit={handleSubmit}>
-            <Input inputMode={'text'} name={'leaveComment'} placeholder={'Add a comment...'} />
-            <Button type={'submit'} variant={'ghost'}>
-              Publish
-            </Button>
-          </form>
+          )}
         </div>
       </div>
     </Card>

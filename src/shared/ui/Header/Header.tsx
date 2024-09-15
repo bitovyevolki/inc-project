@@ -1,7 +1,9 @@
 import s from './header.module.scss'
 import { Typography, Button, Select, IOption } from '@bitovyevolki/ui-kit-int'
-import { BellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
+import { BellIcon, BlueBellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
 import Link from 'next/link'
+import { useState } from 'react'
+import { Notifications } from '@/src/features/notifications'
 
 export type LanguageType = 'en' | 'ru'
 
@@ -43,13 +45,25 @@ export const Header = ({
   signUpSrc,
   title,
 }: HeaderProps) => {
+  const [showNotifications, setShowNotifications] = useState(false)
+
+  const handlerShowNotifications = () => {
+    setShowNotifications(!showNotifications)
+  }
   return isAuth ? (
     <div className={s.header}>
       <Link href="/" className={s.nounderline}>
         <Typography variant={'h1'}>{title}</Typography>
       </Link>
       <div className={s.actions}>
-        <BellIcon />
+        <div>
+          <div>{showNotifications ? <Notifications /> : null}</div>
+        </div>
+        {showNotifications ? (
+          <BlueBellIcon onClick={handlerShowNotifications} />
+        ) : (
+          <BellIcon onClick={handlerShowNotifications} />
+        )}
 
         <Select
           // onValueChange={onLanguageChange}

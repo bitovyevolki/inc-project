@@ -48,7 +48,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   }
 
   return (
-    <Card style={{ height: '120px', padding: '12px', width: '972px' }}>
+    <Card className={s.cardWrap}>
       <div className={s.wrap}>
         <div className={s.contentWrap}>
           <div className={s.icon}>

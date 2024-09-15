@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
+import { FileLoader } from '@/src/shared/ui/FileLoader/FileLoader'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, ModalWindow } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
@@ -28,12 +29,6 @@ export const CreatePost = (props: Props) => {
   }
 
   const uploadId = data?.images[0].uploadId
-
-  const inputUploadFile = useRef<HTMLInputElement>(null)
-
-  const onClickButtonSelectFile = () => {
-    inputUploadFile.current?.click()
-  }
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -70,20 +65,17 @@ export const CreatePost = (props: Props) => {
                   <AvatarIcon />
                 )}
               </div>
-              <input
-                accept={'image/png, image/jpeg'}
-                className={s.fileInp}
-                hidden
-                multiple
-                name={'file'}
-                onChange={e => setFiles(e.currentTarget.files)}
-                ref={inputUploadFile}
-                type={'file'}
-              />
               <div className={s.buttonsContainer}>
-                <Button fullWidth onClick={onClickButtonSelectFile} variant={'primary'}>
+                <FileLoader
+                  accept={'image/png, image/jpeg'}
+                  as={Button}
+                  fullWidth
+                  multiple
+                  name={'file'}
+                  onChange={e => setFiles(e.currentTarget.files)}
+                >
                   Select from Computer
-                </Button>
+                </FileLoader>
                 <Button fullWidth type={'submit'} variant={'outlined'}>
                   Create Post
                 </Button>

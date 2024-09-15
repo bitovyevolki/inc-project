@@ -32,8 +32,8 @@ export const Notifications = () => {
             <div key={notification.id}>
               <div className={s.newNot}>
                 <Typography variant={'body2'}>Новое уведомеление!</Typography>
-                <Typography variant={'caption'} className={s.newText}>
-                  {notification.isRead ? null : 'Новое'!}
+                <Typography variant={'caption'}>
+                  {notification.isRead ? null : <div className={s.newText}>Новое</div>}
                 </Typography>
               </div>
               <div className={s.notBody}>

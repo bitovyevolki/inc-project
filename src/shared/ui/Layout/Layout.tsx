@@ -1,12 +1,11 @@
 import { ReactNode, useState } from 'react'
 
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
-
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 
-import { Sidebar } from '../Sidebar/Sidebar'
 import { Header } from '../Header/Header'
+import { Sidebar } from '../Sidebar/Sidebar'
 
 type Props = {
   children: ReactNode

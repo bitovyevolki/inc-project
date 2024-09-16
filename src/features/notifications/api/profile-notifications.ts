@@ -1,17 +1,17 @@
 import { inctagramService } from '@/src/shared/model/inctagram.service'
+
 import { IErrorResponse, IMarkAsReadRequest, INotificationsResponse } from '../models/notifications'
 
 export const NotificationsAPI = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
-      // Пометка уведомлений как прочитанных
-      markNotificationsAsRead: builder.mutation<void, IMarkAsReadRequest>({
+      // Удаление уведомления по ID
+      deleteNotificationById: builder.mutation<void, { id: number }>({
         invalidatesTags: ['Notifications'],
-        query: ({ ids }) => {
+        query: ({ id }) => {
           return {
-            method: 'POST',
-            url: '/v1/notifications/mark-as-read',
-            body: { ids },
+            method: 'DELETE',
+            url: `/v1/notifications/${id}`,
           }
         },
         transformResponse: (response: IErrorResponse) => {
@@ -30,13 +30,14 @@ export const NotificationsAPI = inctagramService.injectEndpoints({
           }
         },
       }),
-      // Удаление уведомления по ID
-      deleteNotificationById: builder.mutation<void, { id: number }>({
+      // Пометка уведомлений как прочитанных
+      markNotificationsAsRead: builder.mutation<void, IMarkAsReadRequest>({
         invalidatesTags: ['Notifications'],
-        query: ({ id }) => {
+        query: ({ ids }) => {
           return {
-            method: 'DELETE',
-            url: `/v1/notifications/${id}`,
+            body: { ids },
+            method: 'POST',
+            url: '/v1/notifications/mark-as-read',
           }
         },
         transformResponse: (response: IErrorResponse) => {
@@ -50,7 +51,7 @@ export const NotificationsAPI = inctagramService.injectEndpoints({
 })
 
 export const {
-  useMarkNotificationsAsReadMutation,
-  useGetNotificationsByProfileQuery,
   useDeleteNotificationByIdMutation,
+  useGetNotificationsByProfileQuery,
+  useMarkNotificationsAsReadMutation,
 } = NotificationsAPI

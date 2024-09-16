@@ -1,9 +1,12 @@
-import s from './header.module.scss'
-import { Typography, Button, Select, IOption } from '@bitovyevolki/ui-kit-int'
-import { BellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
-import Link from 'next/link'
 import { useState } from 'react'
+
 import { Notifications } from '@/src/features/notifications'
+import { Button, IOption, Select, Typography } from '@bitovyevolki/ui-kit-int'
+import Link from 'next/link'
+
+import s from './header.module.scss'
+
+import { BellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
 
 export type LanguageType = 'en' | 'ru'
 
@@ -50,9 +53,10 @@ export const Header = ({
   const handlerShowNotifications = () => {
     setShowNotifications(!showNotifications)
   }
+
   return isAuth ? (
     <div className={s.header}>
-      <Link href="/" className={s.nounderline}>
+      <Link className={s.nounderline} href={'/'}>
         <Typography variant={'h1'}>{title}</Typography>
       </Link>
       <div className={s.actions}>
@@ -62,7 +66,7 @@ export const Header = ({
         {showNotifications ? (
           <div className={s.notWrap}>
             <span className={s.notSpan}>3</span>
-            <Button variant={'ghost'} onClick={handlerShowNotifications} className={s.btn}>
+            <Button className={s.btn} onClick={handlerShowNotifications} variant={'ghost'}>
               <BellIcon />
             </Button>
           </div>

@@ -4,24 +4,24 @@ export interface IMarkAsReadRequest {
 
 export interface INotificationItem {
   id: number
-  message: string
   isRead: boolean
+  message: string
   notifyAt: string
 }
 
 export interface INotificationsResponse {
+  items: INotificationItem[]
   pageSize: number
   totalCount: number
-  items: INotificationItem[]
 }
 
 export interface IErrorMessage {
-  message: string
   field: string
+  message: string
 }
 
 export interface IErrorResponse {
-  statusCode: number
+  error: null | string
   messages: IErrorMessage[]
-  error: string | null
+  statusCode: number
 }

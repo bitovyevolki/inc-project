@@ -117,7 +117,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
               )}
             </div>
 
-            <Button type={'submit'} fullWidth variant={'primary'}>
+            <Button fullWidth type={'submit'} variant={'primary'}>
               {`${t('Sign Up')}`}
             </Button>
             <div className={s.loginLink}>

@@ -1,6 +1,6 @@
 import s from './header.module.scss'
 import { Typography, Button, Select, IOption } from '@bitovyevolki/ui-kit-int'
-import { BellIcon, BlueBellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
+import { BellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Notifications } from '@/src/features/notifications'
@@ -60,9 +60,12 @@ export const Header = ({
           <div>{showNotifications ? <Notifications /> : null}</div>
         </div>
         {showNotifications ? (
-          <Button variant={'ghost'} onClick={handlerShowNotifications} className={s.btn}>
-            <BellIcon />
-          </Button>
+          <div className={s.notWrap}>
+            <span className={s.notSpan}>3</span>
+            <Button variant={'ghost'} onClick={handlerShowNotifications} className={s.btn}>
+              <BellIcon />
+            </Button>
+          </div>
         ) : (
           <BellIcon onClick={handlerShowNotifications} />
         )}

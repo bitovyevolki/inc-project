@@ -41,3 +41,28 @@
 .btn {
   padding: 0;
 }
+
+.notSpan {
+  position: absolute;
+  top: -5px; /* Сдвиг вверх */
+  right: -5px; /* Сдвиг вправо */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 13px;
+  height: 13px;
+
+  font-size: 12px; /* Размер текста */
+  font-weight: bold;
+  color: var(--color-light-300);
+
+  background-color: var(--color-danger-300);
+  border-radius: 50%;
+}
+
+.notWrap {
+  position: relative;
+  display: inline-block;
+}

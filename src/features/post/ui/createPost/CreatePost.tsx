@@ -15,11 +15,12 @@ type Props = {}
 export const CreatePost = (props: Props) => {
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
 
+  console.log('images', data)
   const [showAddPhotos, setShowAddPhotos] = useState(true)
   const [showAddDescription, setShowAddDescription] = useState(false)
   const [files, setFiles] = useState<FileList | null>(null)
 
-  const image = data?.images[0].url
+  const images = data?.images.map(image => image.url)
   let previewUrl
 
   if (files) {
@@ -28,7 +29,7 @@ export const CreatePost = (props: Props) => {
     previewUrl = fileUrl
   }
 
-  const uploadId = data?.images[0].uploadId
+  const uploadIds = data?.images.map(image => image.uploadId)
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -84,7 +85,7 @@ export const CreatePost = (props: Props) => {
           </div>
         )}
       </ModalWindow>
-      {showAddDescription && <AddPostDescription imageURL={image} uploadId={uploadId} />}
+      {showAddDescription && <AddPostDescription imageURL={images} uploadId={uploadIds} />}
     </div>
   )
 }

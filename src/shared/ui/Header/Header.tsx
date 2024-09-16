@@ -60,7 +60,9 @@ export const Header = ({
           <div>{showNotifications ? <Notifications /> : null}</div>
         </div>
         {showNotifications ? (
-          <BlueBellIcon onClick={handlerShowNotifications} />
+          <Button variant={'ghost'} onClick={handlerShowNotifications} className={s.btn}>
+            <BellIcon />
+          </Button>
         ) : (
           <BellIcon onClick={handlerShowNotifications} />
         )}

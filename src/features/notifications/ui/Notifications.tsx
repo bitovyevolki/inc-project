@@ -1,3 +1,4 @@
+import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Card, Typography } from '@bitovyevolki/ui-kit-int'
 import { useState } from 'react'
 import { useGetNotificationsByProfileQuery } from '../api/profile-notifications'
@@ -21,7 +22,7 @@ export const Notifications = () => {
 
   // Функция для рендеринга уведомлений
   const renderNotifications = () => {
-    if (isLoading) return <p>Loading notifications...</p>
+    if (isLoading) return <Loader />
     if (error) return <p>Error loading notifications</p>
     if (!data || !data.items.length) return <p>No notifications found</p>
 

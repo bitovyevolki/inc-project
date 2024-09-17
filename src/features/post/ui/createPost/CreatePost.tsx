@@ -107,7 +107,6 @@ export const CreatePost = () => {
         return (
           <Crop
             files={files}
-            handleSubmit={handleUpload}
             inputUploadFile={inputUploadFile}
             onAddFiles={onAddFiles}
             onChangeFiles={onChangeFiles}

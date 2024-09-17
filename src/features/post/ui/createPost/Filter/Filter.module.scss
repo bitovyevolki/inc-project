@@ -1,9 +1,28 @@
 .wrapper {
-  width: 100%;
   display: flex;
   flex-direction: row;
+  width: 100%;
+}
+
+.currentImage {
+	display: block !important;
 }
 
 .container {
 	width: 50%;
+}
+
+.filters {
+	width: 100%;
+	height: 100%;
+	padding: 24px 54px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px 18px;
+
+	& p {
+		width: 108px;
+		height: 132px;
+		border: 1px solid red;
+	}
 }

@@ -16,7 +16,7 @@ export type ViewPostModalProps = {
   isOpen: boolean
   onOpenChange: (value: boolean) => void
   returnAllChangesFile: () => void
-  setStep: (value: string) => void
+  setStep: (value: StepOption) => void
   step: StepOption
 }
 
@@ -70,17 +70,20 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
           <Content className={s.contentWrapper}>
             <div className={s.header}>
               {hasFile && (
-                <Button className={s.returnButton} onClick={onClickBack} variant={'ghost'}>
-                  <ArrowBackIcon height={28} width={28} />
-                </Button>
+                <ArrowBackIcon
+                  className={s.returnButton}
+                  height={28}
+                  onClick={onClickBack}
+                  width={28}
+                />
               )}
-              <Typography className={`${hasFile ? s.isCropping : ''}`} variant={'h1'}>
+              <Typography className={`${s.title} ${hasFile ? s.isCropping : ''}`} variant={'h2'}>
                 {title}
               </Typography>
               {hasFile ? (
-                <Button className={s.rightButton} onClick={onClickNext} variant={'ghost'}>
+                <Typography className={s.rightButton} onClick={onClickNext} variant={'h4'}>
                   Next
-                </Button>
+                </Typography>
               ) : (
                 <Close asChild>
                   <Button

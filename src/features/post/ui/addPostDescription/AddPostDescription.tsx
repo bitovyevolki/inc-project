@@ -88,38 +88,38 @@ export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
 
   return (
     <div>
-      <ModalWindow
+      {/* <ModalWindow
         className={s.modal}
         onOpenChange={closeModal}
         open={isModalOpen}
         title={'Publication'}
-      >
-        <div className={s.container}>
-          <div className={s.sliderContainer}>{renderPhotos()}</div>
-          <div className={s.publicationContainer}>
-            <ProfileIntro
-              avatarSize={profileIntroData.avatarSize}
-              avatars={profileData?.avatars}
-              postOwner={meData?.userId === profileData?.id}
-              userName={profileData?.userName}
-              withMenu={false}
-            />
-            <div className={s.postContainer}>
-              <form onSubmit={handleSubmit}>
-                <TextArea
-                  className={s.textArea}
-                  label={'Add publication descriptions'}
-                  name={'postDescription'}
-                  placeholder={'Text-area'}
-                />
-                <Button className={s.button} type={'submit'}>
-                  Publish post
-                </Button>
-              </form>
-            </div>
+      > */}
+      <div className={s.container}>
+        <div className={s.sliderContainer}>{renderPhotos()}</div>
+        <div className={s.publicationContainer}>
+          <ProfileIntro
+            avatarSize={profileIntroData.avatarSize}
+            avatars={profileData?.avatars}
+            postOwner={meData?.userId === profileData?.id}
+            userName={profileData?.userName}
+            withMenu={false}
+          />
+          <div className={s.postContainer}>
+            <form onSubmit={handleSubmit}>
+              <TextArea
+                className={s.textArea}
+                label={'Add publication descriptions'}
+                name={'postDescription'}
+                placeholder={'Text-area'}
+              />
+              <Button className={s.button} type={'submit'}>
+                Publish post
+              </Button>
+            </form>
           </div>
         </div>
-      </ModalWindow>
+      </div>
+      {/* </ModalWindow> */}
     </div>
   )
 }

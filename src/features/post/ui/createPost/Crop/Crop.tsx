@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 /* eslint-disable @next/next/no-img-element */
 import { RefObject, useEffect, useRef, useState } from 'react'
 
@@ -7,8 +6,7 @@ import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { ChangeScaleIcon } from '@/src/shared/assets/icons/change-scale'
 import { DeleteImageIcon } from '@/src/shared/assets/icons/delete-image'
 import { MaximizeIcon } from '@/src/shared/assets/icons/maximize'
-import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
-import { Slider } from '@bitovyevolki/ui-kit-int'
+import { Slider as SliderRadix } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
 import Cropper from 'cropperjs'
 import Image from 'next/image'
@@ -17,11 +15,12 @@ import 'cropperjs/dist/cropper.css'
 
 import s from './Crop.module.scss'
 
+import { toast } from 'react-toastify'
 import { FileWithIdAndUrl } from '../CreatePost'
+import { SliderPostImages } from '../SliderPostImages/SliderPostImages'
 
 type Props = {
   files: FileWithIdAndUrl[]
-  handleSubmit: (files: any) => void
   inputUploadFile: RefObject<HTMLInputElement>
   onAddFiles: (addedFiles: FileList | null) => void
   onChangeFiles: (files: any) => void
@@ -31,7 +30,6 @@ type Props = {
 
 export const Crop = ({
   files,
-  handleSubmit,
   inputUploadFile,
   onAddFiles,
   onChangeFiles,
@@ -46,6 +44,8 @@ export const Crop = ({
   const imageRef = useRef<HTMLImageElement>(null)
   const [isCropperActive, setIsCropperActive] = useState(false)
 
+  const [slideIndex, setSlideIndex] = useState(0)
+
   const option = [
     {
       icon: <AvatarIcon height={'24px'} style={{ marginRight: '-4px' }} width={'24px'} />,
@@ -57,16 +57,26 @@ export const Crop = ({
   ]
 
   useEffect(() => {
+		if(files.length > 10){
+			toast.warning('The number of files is too large, please upload the file less than 10')
+			const lastTenFiles = files.slice(-10)
+			onChangeFiles(lastTenFiles)
+		}
+	}, [files])
+
+  useEffect(() => {
     if (files) {
       if (currentFile && files.find(el => el.id === currentFile.id)) {
-        const indexCurrentFile = files.findIndex(el => el.id === currentFile.id)
-
-        setCurrentFile(files[indexCurrentFile])
+        setCurrentFile(files[slideIndex])
       } else {
         setCurrentFile(files[0])
       }
     }
-  }, [files])
+  }, [files, slideIndex, currentFile])
+
+  useEffect(() => {
+    console.log('slideIndex')
+  }, [slideIndex])
 
   useEffect(() => {
     if (imageRef.current && !cropper && isCropperActive) {
@@ -165,67 +175,45 @@ export const Crop = ({
     }
   }
 
-  const onChangeCurrentFile = (file: FileWithIdAndUrl) => {
-    setCurrentFile(file)
+  const onChangeCurrentFile = (i: number) => {
+    setSlideIndex(i)
   }
 
   if (!files || files.length === 0 || !currentFile) {
     return
   }
 
-  const NextArrow = (props: any) => {
-    const { className, onClick } = props
-
-    return <div className={`${className} ${s.nextArrow}`} onClick={onClick} />
-  }
-
-  const PrevArrow = (props: any) => {
-    const { className, onClick } = props
-
-    return <div className={`${className} ${s.nextArrow}`} onClick={onClick} />
-  }
-
-  const settings = {
-    dots: true,
-    dotsClass: `slick-dots ${s.dots}`,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-  }
-
   return (
     <div className={s.content}>
       {isCropperActive && (
-        // eslint-disable-next-line react/button-has-type
         <button className={clsx(s.block, s.cropConfirm)} onClick={onCropConfirm}></button>
       )}
-      {currentFile && (
-        <PhotoSlider settings={settings}>
-          {files.map((el, i) => {
-            return (
-              <Image
-                alt={'Image'}
-                className={s.image}
-                height={240}
-                key={i}
-                src={el.url}
-                width={234}
-              />
-            )
-          })}
-        </PhotoSlider>
-        // <img
-        //   alt={'Preview'}
-        //   onClick={() => onCloseSelect()}
-        //   ref={imageRef}
-        //   src={currentFile.url}
-        //   style={{
-        //     display: 'block',
-        //     height: '100%',
-        //     maxHeight: '60vh',
-        //     objectFit: 'contain',
-        //     width: '100%',
-        //   }}
-        // />
+      {!isCropperActive ? (
+        <SliderPostImages
+          onChangeCurrentFile={onChangeCurrentFile}
+          setSlideIndex={setSlideIndex}
+          slideIndex={slideIndex}
+        >
+					{files.map((el, i) => {
+        		return <Image alt={'Image'} key={i} src={el.url} className={s.currentImage} height={450} width={600} />
+      		})}
+
+				</SliderPostImages>
+      ) : (
+        <img
+          alt={'Preview'}
+          onClick={() => onCloseSelect()}
+          ref={imageRef}
+          src={currentFile.url}
+					className={s.currentImages}
+          style={{
+            display: 'block',
+            height: '100%',
+            maxHeight: '60vh',
+            objectFit: 'contain',
+            width: '100%',
+          }}
+        />
       )}
 
       <div className={s.controls}>
@@ -256,7 +244,7 @@ export const Crop = ({
             </div>
             {openedOptions === 'maximize' && (
               <div className={clsx(s.options, s.slider)}>
-                <Slider max={40} onValueChange={setSliderValue} value={sliderValue} />
+                <SliderRadix max={40} min={0} onValueChange={setSliderValue} value={sliderValue} />
               </div>
             )}
           </div>
@@ -273,7 +261,7 @@ export const Crop = ({
                     <Image
                       alt={'Preview'}
                       height={80}
-                      onClick={() => onChangeCurrentFile(item)}
+                      onClick={() => onChangeCurrentFile(i)}
                       src={item.url}
                       style={{ objectFit: 'cover' }}
                       width={82}
@@ -282,6 +270,8 @@ export const Crop = ({
                     <input
                       accept={'image/png, image/jpeg'}
                       hidden
+                      max={10}
+                      maxLength={10}
                       multiple
                       name={'file'}
                       onChange={e => onAddFiles(e.currentTarget.files)}

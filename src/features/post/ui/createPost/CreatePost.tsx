@@ -1,39 +1,53 @@
+/* eslint-disable no-nested-ternary */
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { ModalWindow } from '@bitovyevolki/ui-kit-int'
 import { v4 as uuidv4 } from 'uuid'
 
-import s from './createPost.module.scss'
-
-import { WithUploadPhoto } from './withUploadPhoto/WithUploadPhoto'
+import { Crop } from './Crop/Crop'
+import { Filter } from './Filter/Filter'
+import { CreatePostModal } from './createPostModal/CreatePostModal'
 import { WithoutUploadPhoto } from './withoutUploadPhoto/WithoutUploadPhoto'
 
-export type FileWithId = {
+export type FileWithIdAndUrl = {
   file: File
   id: string
+  url: string
 }
 
-type Props = {}
-export const CreatePost = (props: Props) => {
+export type StepOption = 'crop' | 'filter' | 'publish'
+
+export const CreatePost = () => {
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
+  const [step, setStep] = useState<StepOption>('crop')
+  const [files, setFiles] = useState<FileWithIdAndUrl[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [hasFile, setHasFile] = useState(false)
+  const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
 
-  const [showAddPhotos, setShowAddPhotos] = useState(true)
-  const [isUploadPhoto, setIsUploadPhoto] = useState(false)
-  const [showAddDescription, setShowAddDescription] = useState(false)
-  const [files, setFiles] = useState<FileWithId[]>([])
-
-  const image = data?.images[0].url
+  // const image = data?.images[0].useSelector
 
   useEffect(() => {
-    if (files) {
-      setIsUploadPhoto(true)
+    if (files.length > 0) {
+      setHasFile(true)
+    } else {
+      setHasFile(false)
     }
   }, [files])
 
-  const uploadId = data?.images[0].uploadId
+  useEffect(() => {
+    if (data) {
+      setUploadImagesId(
+        data?.images.map(image => {
+          return { uploadId: image.uploadId }
+        })
+      )
+    }
+  }, [data])
+
+  // const uploadId = data?.images[0].uploadId
 
   const inputUploadFile = useRef<HTMLInputElement>(null)
 
@@ -41,19 +55,31 @@ export const CreatePost = (props: Props) => {
     inputUploadFile.current?.click()
   }
 
-  const onAddFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    const newFiles = e.currentTarget.files
-      ? Array.from(e.currentTarget.files).map(file => ({ file, id: uuidv4() }))
+  const onAddFiles = (files: FileList | null) => {
+    if (!files) {
+      return
+    }
+    const newFiles = files
+      ? Array.from(files).map(file => ({ file, id: uuidv4(), url: URL.createObjectURL(file) }))
       : []
 
     setFiles(prevFiles => [...prevFiles, ...newFiles])
+  }
+
+  const onChangeFiles = (updatedFile: FileWithIdAndUrl[]) => {
+    setFiles(updatedFile)
   }
 
   const removeFile = (id: string) => {
     setFiles(prevFiles => prevFiles.filter(item => item.id !== id))
   }
 
-  const convertArrayToFileList = (fileArray: FileWithId[]): FileList => {
+  const returnAllChangesFile = () => {
+    setFiles([])
+    setStep('crop')
+  }
+
+  const convertArrayToFileList = (fileArray: FileWithIdAndUrl[]): FileList => {
     const dataTransfer = new DataTransfer()
 
     fileArray.forEach(file => dataTransfer.items.add(file.file))
@@ -61,8 +87,7 @@ export const CreatePost = (props: Props) => {
     return dataTransfer.files
   }
 
-  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleUpload = () => {
     if (files.length === 0) {
       return
     }
@@ -70,11 +95,32 @@ export const CreatePost = (props: Props) => {
     const fileList = convertArrayToFileList(files)
 
     uploadImages({ files: fileList })
-      .unwrap()
-      .then(() => {
-        setShowAddPhotos(false)
-        setShowAddDescription(true)
-      })
+  }
+
+  const setIsModalOpenHandler = (value: boolean) => {
+    setIsModalOpen(value)
+  }
+
+  const viewedComponent = (step: StepOption) => {
+    switch (step) {
+      case 'crop':
+        return (
+          <Crop
+            files={files}
+            handleSubmit={handleUpload}
+            inputUploadFile={inputUploadFile}
+            onAddFiles={onAddFiles}
+            onChangeFiles={onChangeFiles}
+            onSelectFile={onSelectFile}
+            removeFile={removeFile}
+          />
+        )
+      case 'filter':
+        return <Filter files={files} />
+
+      case 'publish':
+        return <AddPostDescription files={files} uploadImagesId={uploadImagesId} />
+    }
   }
 
   if (isLoading) {
@@ -83,11 +129,14 @@ export const CreatePost = (props: Props) => {
 
   return (
     <div>
-      <ModalWindow
-        className={s.modalWindow}
-        onOpenChange={() => setShowAddPhotos(false)}
-        open={showAddPhotos}
-        title={!isUploadPhoto ? 'Add photo' : 'Crupped'}
+      <CreatePostModal
+        handleUpload={handleUpload}
+        hasFile={hasFile}
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpenHandler}
+        returnAllChangesFile={returnAllChangesFile}
+        setStep={setStep}
+        step={step}
       >
         {files.length === 0 ? (
           <WithoutUploadPhoto
@@ -96,16 +145,9 @@ export const CreatePost = (props: Props) => {
             onSelectFile={onSelectFile}
           />
         ) : (
-          <WithUploadPhoto
-            files={files}
-            inputUploadFile={inputUploadFile}
-            onAddFiles={onAddFiles}
-            onSelectFile={onSelectFile}
-            removeFile={removeFile}
-          />
+          viewedComponent(step)
         )}
-      </ModalWindow>
-      {showAddDescription && <AddPostDescription imageURL={image} uploadId={uploadId} />}
+      </CreatePostModal>
     </div>
   )
 }

@@ -8,7 +8,7 @@ import s from './WithoutUploadPhoto.module.scss'
 
 type Props = {
   inputUploadFile: any
-  onAddFiles: (addedFiles: ChangeEvent<HTMLInputElement>) => void
+  onAddFiles: (addedFiles: FileList | null) => void
   onSelectFile: () => void
 }
 
@@ -29,7 +29,7 @@ export const WithoutUploadPhoto = ({ inputUploadFile, onAddFiles, onSelectFile }
         hidden
         multiple
         name={'file'}
-        onChange={e => onAddFiles(e)}
+        onChange={e => onAddFiles(e.currentTarget.files)}
         ref={inputUploadFile}
         type={'file'}
       />

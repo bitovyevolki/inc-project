@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Card, Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './notification.module.scss'
 
-import { useGetNotificationsByProfileQuery } from '../api/profile-notifications'
+import {
+  useGetNotificationsByProfileQuery,
+  useMarkNotificationsAsReadMutation,
+} from '../api/profile-notifications'
 
 // Функция для форматирования даты
 const formatDate = (dateString: string) => {
@@ -23,6 +26,26 @@ const formatDate = (dateString: string) => {
 export const Notifications = () => {
   const [cursor, setCursor] = useState('') // Установите начальный курсор
   const { data, error, isLoading } = useGetNotificationsByProfileQuery({ cursor })
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [markAsRead] = useMarkNotificationsAsReadMutation()
+
+  // Подсчет количества непрочитанных уведомлений
+  useEffect(() => {
+    if (data) {
+      const unread = data.items.filter(notification => !notification.isRead).length
+      setUnreadCount(unread)
+    }
+  }, [data])
+
+  const handleNotificationClick = async (notificationId: number) => {
+    // Отмечаем уведомление как прочитанное
+    await markAsRead({ ids: [notificationId] })
+
+    // Обновляем локальное состояние, чтобы скрыть индикатор "Новое"
+    setUnreadCount(prevCount => prevCount - 1)
+
+    console.log('done')
+  }
 
   // Функция для рендеринга уведомлений
   const renderNotifications = () => {
@@ -39,12 +62,16 @@ export const Notifications = () => {
     return (
       <ul>
         {data.items.map(notification => (
-          <div className={s.notWrap} key={notification.id}>
+          <div
+            className={s.notWrap}
+            key={notification.id}
+            onClick={() => handleNotificationClick(notification.id)}
+          >
             <div>
               <div className={s.newNot}>
                 <Typography variant={'body2'}>Новое уведомеление!</Typography>
                 <Typography variant={'caption'}>
-                  {notification.isRead ? null : <div className={s.newText}>Новое</div>}
+                  {!notification.isRead && <span className={s.newText}>Новое</span>}
                 </Typography>
               </div>
               <div className={s.notBody}>

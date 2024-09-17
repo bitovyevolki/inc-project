@@ -9,7 +9,6 @@ import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import moment from 'moment'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -23,7 +22,6 @@ type PublicPostItemProps = {
 }
 
 export const PublicPostItem = ({ post }: PublicPostItemProps) => {
-  const router = useRouter()
   const [isCollapsed, setIsCollapsed] = useState(false)
   const handleOnCollapse = () => {
     setIsCollapsed(!isCollapsed)

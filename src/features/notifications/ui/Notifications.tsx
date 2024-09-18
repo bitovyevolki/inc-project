@@ -19,7 +19,7 @@ interface MarkAsReadResponse {
 
 export const Notifications = () => {
   const [cursor, setCursor] = useState('') // Установите начальный курсор
-  const { data, error, isLoading } = useGetNotificationsByProfileQuery({ cursor })
+  const { data, error, isLoading, refetch } = useGetNotificationsByProfileQuery({ cursor })
   const [unreadCount, setUnreadCount] = useState(0)
   const [markAsRead] = useMarkNotificationsAsReadMutation<MarkAsReadResponse>()
   const [notifications, setNotifications] = useState<INotificationItem[]>([]) // Инициализация состояния с правильным типом
@@ -40,7 +40,7 @@ export const Notifications = () => {
     try {
       // Отметить уведомление как прочитанное на сервере
       await markAsRead({ ids: [notificationId] })
-
+      refetch()
       // Обновить локальное состояние после успешного запроса
       const updatedNotifications = notifications.map(notification =>
         notification.id === notificationId ? { ...notification, isRead: true } : notification

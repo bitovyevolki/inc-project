@@ -39,7 +39,7 @@ export const Notifications = () => {
   const handleNotificationClick = async (notificationId: number) => {
     try {
       // Отметить уведомление как прочитанное на сервере
-      await markAsRead({ ids: [notificationId] }).unwrap()
+      await markAsRead({ ids: [notificationId] })
 
       // Обновить локальное состояние после успешного запроса
       const updatedNotifications = notifications.map(notification =>

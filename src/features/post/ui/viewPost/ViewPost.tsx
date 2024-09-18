@@ -15,6 +15,7 @@ import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { HeartIcon } from '@/src/shared/assets/icons/heart'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
+import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Button, Card, Input, TextArea, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
@@ -132,9 +133,16 @@ export const ViewPost = ({
 
   return (
     <Card className={s.modalBox}>
-      <div className={s.photoBox}>
-        <Image alt={'Post image'} fill priority src={post?.images[0].url as string} />
+      <div className={s.sliderBox}>
+        <PhotoSlider>
+          {post.images.map((image, index) => (
+            <div className={s.photoBox} key={image.uploadId}>
+              <Image alt={`Post image ${index}`} fill priority src={image.url} />
+            </div>
+          ))}
+        </PhotoSlider>
       </div>
+
       <div className={s.textBox}>
         <div className={s.postHeader}>
           <ProfileIntro

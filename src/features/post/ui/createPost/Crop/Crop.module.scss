@@ -50,12 +50,12 @@
 
 .options {
 	position: absolute;
+	z-index: 2;
 	bottom: 40px;
 
 	opacity: 0.8;
 	background: rgba(23 23 23);
 	border-radius: 2px;
-	z-index: 2;
 
 
 }
@@ -169,9 +169,9 @@
 
 .cropConfirm {
 	position: absolute;
+	z-index: 1;
 	top: 5px;
 	right: 5px;
-	z-index: 1;
 
 	&::before {
 		content: '\2713';

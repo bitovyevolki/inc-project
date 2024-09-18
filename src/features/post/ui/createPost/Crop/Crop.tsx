@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { RefObject, useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { AddIcon } from '@/src/shared/assets/icons/addIcon'
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
@@ -15,7 +16,6 @@ import 'cropperjs/dist/cropper.css'
 
 import s from './Crop.module.scss'
 
-import { toast } from 'react-toastify'
 import { FileWithIdAndUrl } from '../CreatePost'
 import { SliderPostImages } from '../SliderPostImages/SliderPostImages'
 
@@ -57,12 +57,13 @@ export const Crop = ({
   ]
 
   useEffect(() => {
-		if(files.length > 10){
-			toast.warning('The number of files is too large, please upload the file less than 10')
-			const lastTenFiles = files.slice(-10)
-			onChangeFiles(lastTenFiles)
-		}
-	}, [files])
+    if (files.length > 10) {
+      toast.warning('The number of files is too large, please upload the file less than 10')
+      const lastTenFiles = files.slice(-10)
+
+      onChangeFiles(lastTenFiles)
+    }
+  }, [files])
 
   useEffect(() => {
     if (files) {
@@ -194,18 +195,26 @@ export const Crop = ({
           setSlideIndex={setSlideIndex}
           slideIndex={slideIndex}
         >
-					{files.map((el, i) => {
-        		return <Image alt={'Image'} key={i} src={el.url} className={s.currentImage} height={450} width={600} />
-      		})}
-
-				</SliderPostImages>
+          {files.map((el, i) => {
+            return (
+              <Image
+                alt={'Image'}
+                className={s.currentImage}
+                height={450}
+                key={i}
+                src={el.url}
+                width={600}
+              />
+            )
+          })}
+        </SliderPostImages>
       ) : (
         <img
           alt={'Preview'}
+          className={s.currentImages}
           onClick={() => onCloseSelect()}
           ref={imageRef}
           src={currentFile.url}
-					className={s.currentImages}
           style={{
             display: 'block',
             height: '100%',

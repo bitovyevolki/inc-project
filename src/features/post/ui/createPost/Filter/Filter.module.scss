@@ -13,12 +13,13 @@
 }
 
 .filters {
-	width: 100%;
-	height: 100%;
-	padding: 24px 54px;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 24px 18px;
+
+	width: 100%;
+	height: 100%;
+	padding: 24px 54px;
 
 	& p {
 		width: 108px;

@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import Slider from 'react-slick'
+import Slider, {Settings} from 'react-slick'
 
 import clsx from 'clsx'
 import Image from 'next/image'
@@ -44,10 +44,12 @@ export const SliderPostImages = ({
 	children
 }: Props) => {
   const [updateCount, setUpdateCount] = useState(0)
-  let sliderRef = useRef(null)
+  let sliderRef = useRef<Slider | null>(null)
 
   useEffect(() => {
-    sliderRef.slickGoTo(slideIndex)
+		if(sliderRef.current){
+			sliderRef.current.slickGoTo(slideIndex)
+		}
   }, [slideIndex])
 
   const onClick = (i: number) => {
@@ -57,7 +59,7 @@ export const SliderPostImages = ({
 
   const settings = {
     afterChange: () => setUpdateCount(updateCount + 1),
-    appendDots: dots => (
+    appendDots: (dots: number) => (
       <div
         style={{
           borderRadius: '10px',
@@ -71,7 +73,7 @@ export const SliderPostImages = ({
         <ul style={{ margin: '0px' }}> {dots} </ul>
       </div>
     ),
-    beforeChange: (current, next) => setSlideIndex(next),
+    beforeChange: (current: number, next: number) => setSlideIndex(next),
     customPaging: (index: number) => {
       return <div className={clsx(s.dot, index === slideIndex && s.dotActive)}></div>
     },
@@ -88,7 +90,7 @@ export const SliderPostImages = ({
     	<Slider
       	{...settings}
       	ref={slider => {
-        sliderRef = slider
+        sliderRef.current = slider
       	}}
     	>
 				{children}

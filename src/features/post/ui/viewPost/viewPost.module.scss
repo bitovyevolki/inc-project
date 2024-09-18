@@ -7,7 +7,13 @@
 
   background-color: #333;
 }
-
+.sliderBox {
+  flex-shrink: 0;
+  width: 490px;
+  height: 564px;
+  background-color: #333;
+  overflow: hidden;
+}
 .photoBox {
   position: relative;
   width: 490px;

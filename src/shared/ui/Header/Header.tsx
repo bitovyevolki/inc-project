@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react'
-import { Notifications } from '@/src/features/notifications'
-import { Button, IOption, Select, Typography } from '@bitovyevolki/ui-kit-int'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
-import s from './header.module.scss'
-import { BellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
+import { Notifications } from '@/src/features/notifications'
 import {
   useGetNotificationsByProfileQuery,
   useMarkNotificationsAsReadMutation,
 } from '@/src/features/notifications/api/profile-notifications'
+import { Button, IOption, Select, Typography } from '@bitovyevolki/ui-kit-int'
+import Link from 'next/link'
+
+import s from './header.module.scss'
+
+import { BellIcon, FlagRussia, FlagUnitedKingdom } from '../../assets/icons'
 
 export type LanguageType = 'en' | 'ru'
 
@@ -58,6 +60,7 @@ export const Header = ({
   useEffect(() => {
     if (notificationsData) {
       const unread = notificationsData.items.filter(notification => !notification.isRead).length
+
       setUnreadCount(unread)
     }
   }, [notificationsData])
@@ -70,6 +73,7 @@ export const Header = ({
       const unreadIds = notificationsData?.items
         .filter(notification => !notification.isRead)
         .map(n => n.id)
+
       if (unreadIds && unreadIds.length > 0) {
         await markAsRead({ ids: unreadIds })
         setUnreadCount(0) // Скрываем индикатор
@@ -89,8 +93,8 @@ export const Header = ({
         {showNotifications ? (
           <Button
             className={s.bellBtn}
-            style={{ padding: 0 }}
             onClick={handlerShowNotifications}
+            style={{ padding: 0 }}
             variant={'ghost'}
           >
             <BellIcon />
@@ -98,7 +102,7 @@ export const Header = ({
         ) : (
           <div className={s.notWrap}>
             {unreadCount > 0 && <span className={s.notSpan}>{unreadCount}</span>}
-            <div onClick={handlerShowNotifications} className={s.btn}>
+            <div className={s.btn} onClick={handlerShowNotifications}>
               <BellIcon />
             </div>
           </div>

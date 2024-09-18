@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Card, Typography } from '@bitovyevolki/ui-kit-int'
@@ -9,6 +9,14 @@ import {
   useGetNotificationsByProfileQuery,
   useMarkNotificationsAsReadMutation,
 } from '../api/profile-notifications'
+
+// Определение интерфейса для уведомлений
+interface Notification {
+  id: number
+  isRead: boolean
+  message: string
+  notifyAt: string
+}
 
 // Функция для форматирования даты
 const formatDate = (dateString: string) => {
@@ -28,23 +36,33 @@ export const Notifications = () => {
   const { data, error, isLoading } = useGetNotificationsByProfileQuery({ cursor })
   const [unreadCount, setUnreadCount] = useState(0)
   const [markAsRead] = useMarkNotificationsAsReadMutation()
+  const [notifications, setNotifications] = useState<Notification[]>([]) // Инициализация состояния с правильным типом
 
-  // Подсчет количества непрочитанных уведомлений
+  // Обновление уведомлений при изменении данных
   useEffect(() => {
     if (data) {
-      const unread = data.items.filter(notification => !notification.isRead).length
+      const unread = data.items.filter((notification: Notification) => !notification.isRead).length
+
       setUnreadCount(unread)
+      setNotifications(data.items) // Обновляем уведомления сразу при получении данных
     }
-  }, [data])
+  }, [data]) // Обновляем при каждом изменении data
 
   const handleNotificationClick = async (notificationId: number) => {
-    // Отмечаем уведомление как прочитанное
-    await markAsRead({ ids: [notificationId] })
+    try {
+      // Отметить уведомление как прочитанное на сервере
+      await markAsRead({ ids: [notificationId] }).unwrap()
 
-    // Обновляем локальное состояние, чтобы скрыть индикатор "Новое"
-    setUnreadCount(prevCount => prevCount - 1)
+      // Обновить локальное состояние, чтобы пометить уведомление как прочитанное
+      const updatedNotifications = notifications.map(notification =>
+        notification.id === notificationId ? { ...notification, isRead: true } : notification
+      )
 
-    console.log('done')
+      // Обновить состояние с новыми данными
+      setNotifications(updatedNotifications)
+    } catch (error) {
+      console.error('Failed to mark notification as read:', error)
+    }
   }
 
   // Функция для рендеринга уведомлений
@@ -55,13 +73,13 @@ export const Notifications = () => {
     if (error) {
       return <p>Error loading notifications</p>
     }
-    if (!data || !data.items.length) {
+    if (!notifications.length) {
       return <p>No notifications found</p>
     }
 
     return (
       <ul>
-        {data.items.map(notification => (
+        {notifications.map(notification => (
           <div
             className={s.notWrap}
             key={notification.id}
@@ -69,7 +87,7 @@ export const Notifications = () => {
           >
             <div>
               <div className={s.newNot}>
-                <Typography variant={'body2'}>Новое уведомеление!</Typography>
+                <Typography variant={'body2'}>Новое уведомление!</Typography>
                 <Typography variant={'caption'}>
                   {!notification.isRead && <span className={s.newText}>Новое</span>}
                 </Typography>
@@ -88,7 +106,7 @@ export const Notifications = () => {
 
   return (
     <Card className={s.card}>
-      <Typography variant={'body1'}>Уведомеления</Typography>
+      <Typography variant={'body1'}>Уведомления</Typography>
       <hr className={s.line} />
       {renderNotifications()}
     </Card>

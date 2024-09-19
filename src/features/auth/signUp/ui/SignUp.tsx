@@ -62,9 +62,9 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
             <div className={s.inputWrapper}>
               <FormInput
                 control={control}
-                label={`${t('User Name')}`}
+                label={`${t('Username')}`}
                 name={'userName'}
-                placeholder={`${t('User Name')}`}
+                placeholder={`${t('Username')}`}
                 type={'text'}
               />
             </div>

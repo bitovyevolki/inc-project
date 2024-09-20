@@ -21,7 +21,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
   const isRussian = locale === 'ru'
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     getValues,
     handleSubmit,
     reset,
@@ -117,7 +117,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
               )}
             </div>
 
-            <Button fullWidth type={'submit'} variant={'primary'}>
+            <Button disabled={!isValid} fullWidth type={'submit'} variant={'primary'}>
               {`${t('Sign Up')}`}
             </Button>
             <div className={s.loginLink}>

@@ -10,6 +10,7 @@ import {
 } from '../api/profile-notifications'
 import { INotificationItem } from '../models/notifications'
 import { ShowNotifications } from './ShowNotifications'
+import { toast } from 'react-toastify'
 
 interface MarkAsReadResponse {
   error?: string
@@ -46,17 +47,17 @@ export const Notifications = () => {
       )
 
       setNotifications(updatedNotifications)
-      console.log('Notification marked as read successfully.')
+      toast.error('Notification marked as read successfully.!', { position: 'top-right' })
     } catch (error) {
       if (typeof error === 'object' && error !== null && 'status' in error) {
         const err = error as { status: number; message?: string }
         if (err.status === 400) {
-          console.error('Bad request: Invalid input', err)
+          toast.error('Bad request: Invalid input', { position: 'top-right' })
         } else {
-          console.error('Failed to mark notification as read:', err)
+          toast.error('Failed to mark notification as read', { position: 'top-right' })
         }
       } else {
-        console.error('Unexpected error:', error)
+        toast.error('Unexpected error', { position: 'top-right' })
       }
     }
   }

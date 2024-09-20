@@ -6,6 +6,7 @@ import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/Ad
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { v4 as uuidv4 } from 'uuid'
 
+import { Post } from '../../model/posts.service.types'
 import { Crop } from './Crop/Crop'
 import { Filter } from './Filter/Filter'
 import { CreatePostModal } from './createPostModal/CreatePostModal'
@@ -19,11 +20,17 @@ export type FileWithIdAndUrl = {
 
 export type StepOption = 'crop' | 'filter' | 'publish'
 
-export const CreatePost = () => {
+interface IProps {
+  addPost: (post: Post) => void
+  closeModal: () => void
+  isOpenModal: boolean
+}
+
+export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
   const [step, setStep] = useState<StepOption>('crop')
   const [files, setFiles] = useState<FileWithIdAndUrl[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  // const [isModalOpen, setIsModalOpen] = useState(true)
   const [hasFile, setHasFile] = useState(false)
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
 
@@ -87,6 +94,11 @@ export const CreatePost = () => {
     return dataTransfer.files
   }
 
+  const closeModalHandler = () => {
+    closeModal()
+    returnAllChangesFile()
+  }
+
   const handleUpload = () => {
     if (files.length === 0) {
       return
@@ -95,10 +107,6 @@ export const CreatePost = () => {
     const fileList = convertArrayToFileList(files)
 
     uploadImages({ files: fileList })
-  }
-
-  const setIsModalOpenHandler = (value: boolean) => {
-    setIsModalOpen(value)
   }
 
   const viewedComponent = (step: StepOption) => {
@@ -118,7 +126,14 @@ export const CreatePost = () => {
         return <Filter files={files} />
 
       case 'publish':
-        return <AddPostDescription files={files} uploadImagesId={uploadImagesId} />
+        return (
+          <AddPostDescription
+            addPost={addPost}
+            closeModal={closeModal}
+            files={files}
+            uploadImagesId={uploadImagesId}
+          />
+        )
     }
   }
 
@@ -131,8 +146,8 @@ export const CreatePost = () => {
       <CreatePostModal
         handleUpload={handleUpload}
         hasFile={hasFile}
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpenHandler}
+        isOpen={isOpenModal}
+        onOpenChange={closeModalHandler}
         returnAllChangesFile={returnAllChangesFile}
         setStep={setStep}
         step={step}

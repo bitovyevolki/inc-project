@@ -24,6 +24,10 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
     setCombinedPosts(prev => prev.filter(p => p.id !== postId))
   }
 
+  const addPostToCombinedPosts = (post: Post) => {
+    setCombinedPosts(prev => [post, ...prev])
+  }
+
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
@@ -65,5 +69,5 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
     }
   }, [publicPostsData?.items])
 
-  return { combinedPosts, deletePostFromCombinedPostsArray }
+  return { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray }
 }

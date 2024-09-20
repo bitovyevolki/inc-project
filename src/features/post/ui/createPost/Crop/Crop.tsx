@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable @next/next/no-img-element */
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -187,7 +188,11 @@ export const Crop = ({
   return (
     <div className={s.content}>
       {isCropperActive && (
-        <button className={clsx(s.block, s.cropConfirm)} onClick={onCropConfirm}></button>
+        <button
+          className={clsx(s.block, s.cropConfirm)}
+          onClick={onCropConfirm}
+          type={'button'}
+        ></button>
       )}
       {!isCropperActive ? (
         <SliderPostImages

@@ -8,7 +8,7 @@ import s from './Filter.module.scss'
 
 import { FileWithIdAndUrl } from '../CreatePost'
 import { SliderPostImages } from '../SliderPostImages/SliderPostImages'
-import { HelloBlue } from './HelloBlue'
+import { FilterItem } from './FilterItem'
 import colorScales from './colorScales'
 export { colorScales }
 
@@ -87,9 +87,9 @@ export const Filter = ({ files }: Props) => {
           <Surface height={50} ref={surfaceRef1} width={70}>
             {/* LinearCopy ensures the filter is applied before rendering to the screen */}
             <LinearCopy>
-              <HelloBlue colorScale={colorScales['Accent']} interpolation={'linear'}>
+              <FilterItem colorScale={colorScales['Accent']} interpolation={'linear'}>
                 {files[slideIndex].url}
-              </HelloBlue>
+              </FilterItem>
             </LinearCopy>
           </Surface>
         </div>
@@ -97,9 +97,9 @@ export const Filter = ({ files }: Props) => {
           <Surface height={50} ref={surfaceRef2} width={70}>
             {/* LinearCopy ensures the filter is applied before rendering to the screen */}
             <LinearCopy>
-              <HelloBlue colorScale={colorScales['monochrome']} interpolation={'linear'}>
+              <FilterItem colorScale={colorScales['monochrome']} interpolation={'linear'}>
                 {files[slideIndex].url}
-              </HelloBlue>
+              </FilterItem>
             </LinearCopy>
           </Surface>
         </div>

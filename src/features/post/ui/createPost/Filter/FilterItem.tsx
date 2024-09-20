@@ -18,7 +18,7 @@ void main() {
   },
 })
 
-export const HelloBlue = ({ ...props }: any) => {
+export const FilterItem = ({ ...props }: any) => {
   const { children, colorScale, interpolation } = props
 
   return (

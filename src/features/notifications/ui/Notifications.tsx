@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Card, Typography } from '@bitovyevolki/ui-kit-int'
@@ -33,6 +33,7 @@ export const Notifications = () => {
   useEffect(() => {
     if (data) {
       const unread = data.items.filter(notification => !notification.isRead).length
+
       setUnreadCount(unread)
     }
   }, [data])

@@ -1,0 +1,32 @@
+.modalWindow {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 492px;
+  overflow: hidden;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 222px;
+  height: 222px;
+  background-color: black;
+  margin: 72px auto 60px;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 48px;
+}

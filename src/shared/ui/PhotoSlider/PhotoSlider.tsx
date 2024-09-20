@@ -10,13 +10,13 @@ import s from './PhotoSlider.module.scss'
 const NextArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props
 
-  return <div className={`${className} ${s.customArrow} ${s.nextArrow}`} onClick={onClick} />
+  return <div className={` ${s.customArrow} ${s.nextArrow} ${className}`} onClick={onClick} />
 }
 
 const PrevArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props
 
-  return <div className={`${className} ${s.customArrow} ${s.prevArrow}`} onClick={onClick} />
+  return <div className={` ${s.customArrow} ${s.prevArrow} ${className}`} onClick={onClick} />
 }
 
 const defaultSliderSettings: Settings = {

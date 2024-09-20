@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -15,12 +14,13 @@ import Router from 'next/router'
 
 import s from './addPostDescription.module.scss'
 
-type Props = {
-  imageURL: string[] | undefined
-  uploadId: string[] | undefined
-}
+import { FileWithIdAndUrl } from '../createPost'
 
-export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
+type Props = {
+  files: FileWithIdAndUrl[]
+  uploadImagesId: any[]
+}
+export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
   const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
     profileId: meData?.userId,
@@ -48,14 +48,12 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
     const formData = new FormData(e.target)
     const description = formData.get('postDescription') as string
 
-    if (!uploadId) {
+    if (!uploadImagesId) {
       return
     }
 
-    const childrenMetadata = uploadId.map(id => ({ uploadId: id }))
-
     try {
-      await createPost({ childrenMetadata, description }).unwrap()
+      await createPost({ childrenMetadata: uploadImagesId, description }).unwrap()
       toast.success('Successfully created post')
       Router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
     } catch (error) {
@@ -69,15 +67,15 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
   }, [])
 
   const renderPhotos = () => {
-    if (!imageURL || imageURL.length === 0) {
+    if (!files || files.length === 0) {
       return <div>NO Images</div>
     }
 
     return (
       <PhotoSlider>
-        {imageURL.map((imageUrl, index) => (
-          <div className={s.imageContainer} key={index}>
-            <Image alt={'post image'} fill src={imageUrl} />
+        {files.map(item => (
+          <div className={s.imageContainer} key={item.id}>
+            <Image alt={'post image'} fill src={item.url} />
           </div>
         ))}
       </PhotoSlider>
@@ -90,38 +88,38 @@ export const AddPostDescription = ({ imageURL, uploadId }: Props) => {
 
   return (
     <div>
-      <ModalWindow
+      {/* <ModalWindow
         className={s.modal}
         onOpenChange={closeModal}
         open={isModalOpen}
         title={'Publication'}
-      >
-        <div className={s.container}>
-          <div className={s.sliderContainer}>{renderPhotos()}</div>
-          <div className={s.publicationContainer}>
-            <ProfileIntro
-              avatarSize={profileIntroData.avatarSize}
-              avatars={profileData?.avatars}
-              postOwner={meData?.userId === profileData?.id}
-              userName={profileData?.userName}
-              withMenu={false}
-            />
-            <div className={s.postContainer}>
-              <form onSubmit={handleSubmit}>
-                <TextArea
-                  className={s.textArea}
-                  label={'Add publication descriptions'}
-                  name={'postDescription'}
-                  placeholder={'Text-area'}
-                />
-                <Button className={s.button} type={'submit'}>
-                  Publish post
-                </Button>
-              </form>
-            </div>
+      > */}
+      <div className={s.container}>
+        <div className={s.sliderContainer}>{renderPhotos()}</div>
+        <div className={s.publicationContainer}>
+          <ProfileIntro
+            avatarSize={profileIntroData.avatarSize}
+            avatars={profileData?.avatars}
+            postOwner={meData?.userId === profileData?.id}
+            userName={profileData?.userName}
+            withMenu={false}
+          />
+          <div className={s.postContainer}>
+            <form onSubmit={handleSubmit}>
+              <TextArea
+                className={s.textArea}
+                label={'Add publication descriptions'}
+                name={'postDescription'}
+                placeholder={'Text-area'}
+              />
+              <Button className={s.button} type={'submit'}>
+                Publish post
+              </Button>
+            </form>
           </div>
         </div>
-      </ModalWindow>
+      </div>
+      {/* </ModalWindow> */}
     </div>
   )
 }

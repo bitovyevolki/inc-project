@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Card, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './notification.module.scss'
 
@@ -50,10 +50,15 @@ export const Notifications = () => {
       console.log('Notification marked as read successfully.')
     } catch (error) {
       // Обработка возможных ошибок
-      if (error.status === 400) {
-        console.error('Bad request: Invalid input', error)
+      if (typeof error === 'object' && error !== null && 'status' in error) {
+        const err = error as { status: number; message?: string }
+        if (err.status === 400) {
+          console.error('Bad request: Invalid input', err)
+        } else {
+          console.error('Failed to mark notification as read:', err)
+        }
       } else {
-        console.error('Failed to mark notification as read:', error)
+        console.error('Unexpected error:', error)
       }
     }
   }

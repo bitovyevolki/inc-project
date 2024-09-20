@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useMemo } from 'react'
 import { toast } from 'react-toastify'
 
 import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
@@ -8,26 +8,27 @@ import { ProfileIntro } from '@/src/features/post/ui/profileIntro/ProfileIntro'
 import { RouterPaths } from '@/src/shared/config/router.paths'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Button, ModalWindow, TextArea } from '@bitovyevolki/ui-kit-int'
+import { Button, TextArea } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 import Router from 'next/router'
 
 import s from './addPostDescription.module.scss'
 
+import { Post } from '../../model/posts.service.types'
 import { FileWithIdAndUrl } from '../createPost'
 
 type Props = {
+  addPost: (post: Post) => void
+  closeModal: () => void
   files: FileWithIdAndUrl[]
   uploadImagesId: any[]
 }
-export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
+export const AddPostDescription = ({ addPost, closeModal, files, uploadImagesId }: Props) => {
   const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
     profileId: meData?.userId,
   })
-  const [createPost, { isLoading: LoadingPost, isSuccess }] = useCreatePostMutation()
-
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [createPost, { isLoading: LoadingPost }] = useCreatePostMutation()
 
   const isLoading = LoadingMe || LoadingProfile || LoadingPost
 
@@ -53,18 +54,17 @@ export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
     }
 
     try {
-      await createPost({ childrenMetadata: uploadImagesId, description }).unwrap()
+      const response = await createPost({ childrenMetadata: uploadImagesId, description }).unwrap()
+
+      addPost(response)
+      closeModal()
+
       toast.success('Successfully created post')
       Router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
     } catch (error) {
       toast.error('Failed to create post')
     }
   }
-
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false)
-    Router.back()
-  }, [])
 
   const renderPhotos = () => {
     if (!files || files.length === 0) {
@@ -88,12 +88,6 @@ export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
 
   return (
     <div>
-      {/* <ModalWindow
-        className={s.modal}
-        onOpenChange={closeModal}
-        open={isModalOpen}
-        title={'Publication'}
-      > */}
       <div className={s.container}>
         <div className={s.sliderContainer}>{renderPhotos()}</div>
         <div className={s.publicationContainer}>
@@ -119,7 +113,6 @@ export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
           </div>
         </div>
       </div>
-      {/* </ModalWindow> */}
     </div>
   )
 }

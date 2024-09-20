@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
 import { GetProfileByIdArgs } from '@/src/entities/profile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
-import { ViewPost } from '@/src/features/post/ui'
+import { CreatePost, ViewPost } from '@/src/features/post/ui'
 import { ViewPostModal } from '@/src/features/post/ui/viewPostModal/ViewPostModal'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
@@ -25,10 +25,13 @@ type Props = {
   profileId?: string
 }
 export const ShowPosts = ({ post, profileId }: Props) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isViewPostModalOpen, setIsViewPostModalOpen] = useState<boolean>(false)
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
 
-  const { combinedPosts, deletePostFromCombinedPostsArray } = usePosts({ profileId })
-  const { changeQueryHandler, removeQueryParamHandler } = usePostsParams()
+  const { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray } = usePosts({
+    profileId,
+  })
+  const { changeQueryHandler, removeQueryParamHandler, searchParams } = usePostsParams()
 
   const { data: meData, isLoading: isLoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
@@ -38,19 +41,26 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const isLoading = isLoadingMe || LoadingProfile
 
   useEffect(() => {
+    if (searchParams.get('createPost')) {
+      setIsCreatePostModalOpen(true)
+    }
+  }, [searchParams])
+
+  useEffect(() => {
     if (post) {
-      setIsModalOpenHandler(true)
+      setIsViewPostModalOpen(true)
     }
   }, [post])
 
   const showSettingsButton = meData?.userId === profileData?.id
 
-  const onClosePostHandler = () => {
-    setIsModalOpen(false)
+  const closeViewPostModalHandler = () => {
+    setIsViewPostModalOpen(false)
   }
 
-  const setIsModalOpenHandler = (value: boolean) => {
-    setIsModalOpen(value)
+  const closeCreatePostModalHandler = () => {
+    removeQueryParamHandler('createPost')
+    setIsCreatePostModalOpen(false)
   }
 
   if (isLoading) {
@@ -102,18 +112,21 @@ export const ShowPosts = ({ post, profileId }: Props) => {
           ))}
         </div>
       </div>
-      {isModalOpen && (
-        <ViewPostModal isOpen={isModalOpen} onOpenChange={setIsModalOpenHandler}>
-          <ViewPost
-            avatars={profileData?.avatars}
-            closePostModal={onClosePostHandler}
-            deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
-            post={post as Post}
-            removeQuery={removeQueryParamHandler}
-            userName={profileData?.userName as string}
-          />
-        </ViewPostModal>
-      )}
+      <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>
+        <ViewPost
+          avatars={profileData?.avatars}
+          closePostModal={closeViewPostModalHandler}
+          deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
+          post={post as Post}
+          removeQuery={removeQueryParamHandler}
+          userName={profileData?.userName as string}
+        />
+      </ViewPostModal>
+      <CreatePost
+        addPost={addPostToCombinedPosts}
+        closeModal={closeCreatePostModalHandler}
+        isOpenModal={isCreatePostModalOpen}
+      />
     </>
   )
 }

@@ -34,7 +34,6 @@ export const PostsService = inctagramService.injectEndpoints({
         },
       }),
       createPost: builder.mutation<CreatePostResponse, CreatePostArgs>({
-        invalidatesTags: ['Post'],
         query: queryArgs => {
           return {
             body: queryArgs,

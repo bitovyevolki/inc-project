@@ -38,10 +38,9 @@ export const Notifications = () => {
 
   const handleNotificationClick = async (notificationId: number) => {
     try {
-      // Отметить уведомление как прочитанное на сервере
       await markAsRead({ ids: [notificationId] })
       refetch()
-      // Обновить локальное состояние после успешного запроса
+
       const updatedNotifications = notifications.map(notification =>
         notification.id === notificationId ? { ...notification, isRead: true } : notification
       )
@@ -49,7 +48,6 @@ export const Notifications = () => {
       setNotifications(updatedNotifications)
       console.log('Notification marked as read successfully.')
     } catch (error) {
-      // Обработка возможных ошибок
       if (typeof error === 'object' && error !== null && 'status' in error) {
         const err = error as { status: number; message?: string }
         if (err.status === 400) {

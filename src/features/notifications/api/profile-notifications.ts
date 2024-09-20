@@ -36,7 +36,7 @@ export const NotificationsAPI = inctagramService.injectEndpoints({
         query: ({ ids }) => {
           return {
             body: { ids },
-            method: 'POST',
+            method: 'PUT',
             url: '/v1/notifications/mark-as-read',
           }
         },

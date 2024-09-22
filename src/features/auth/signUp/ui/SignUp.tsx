@@ -21,7 +21,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
   const isRussian = locale === 'ru'
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     getValues,
     handleSubmit,
     reset,
@@ -62,9 +62,9 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
             <div className={s.inputWrapper}>
               <FormInput
                 control={control}
-                label={`${t('User Name')}`}
+                label={`${t('Username')}`}
                 name={'userName'}
-                placeholder={`${t('User Name')}`}
+                placeholder={`${t('Username')}`}
                 type={'text'}
               />
             </div>
@@ -117,7 +117,7 @@ export const SignUpForm = ({ locale }: SignUpFormProps) => {
               )}
             </div>
 
-            <Button fullWidth variant={'primary'}>
+            <Button disabled={!isValid} fullWidth type={'submit'} variant={'primary'}>
               {`${t('Sign Up')}`}
             </Button>
             <div className={s.loginLink}>

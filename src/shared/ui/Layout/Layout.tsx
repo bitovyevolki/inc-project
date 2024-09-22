@@ -1,10 +1,10 @@
 import { ReactNode, useState } from 'react'
 
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
-import { Header } from '@bitovyevolki/ui-kit-int'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 
+import { Header } from '../Header/Header'
 import { Sidebar } from '../Sidebar/Sidebar'
 
 type Props = {

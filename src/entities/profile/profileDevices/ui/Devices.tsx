@@ -63,13 +63,7 @@ export const Devices = () => {
       <div className={s.card}>
         {currentDevice ? (
           <div className={s.curWrap}>
-            <Card
-              style={{
-                height: '120px',
-                padding: '12px',
-                width: '972px',
-              }}
-            >
+            <Card className={s.cardWrap}>
               <div className={s.wrap}>
                 <div className={s.contentWrap}>
                   <div className={s.icon}>

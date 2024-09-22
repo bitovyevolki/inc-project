@@ -1,0 +1,40 @@
+.card {
+  position: absolute;
+  z-index: 2;
+  top: 50px;
+  right: 265px;
+
+  overflow: auto;
+
+  width: 371px;
+  height: 440px;
+  padding: 16px;
+}
+
+.newNot {
+  display: flex;
+  flex-direction: row;
+}
+
+.notWrap {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.newText {
+  margin-left: 5px;
+  color: blue;
+}
+
+.notBody {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.line {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid rgb(69 68 68);
+}

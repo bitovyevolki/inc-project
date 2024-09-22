@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable @next/next/no-img-element */
-import { RefObject, useEffect, useRef, useState } from 'react'
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { AddIcon } from '@/src/shared/assets/icons/addIcon'
@@ -64,7 +64,7 @@ export const Crop = ({
 
       onChangeFiles(lastTenFiles)
     }
-  }, [files])
+  }, [files, onChangeFiles])
 
   useEffect(() => {
     if (files) {
@@ -76,9 +76,7 @@ export const Crop = ({
     }
   }, [files, slideIndex, currentFile])
 
-  useEffect(() => {
-    console.log('slideIndex')
-  }, [slideIndex])
+  useEffect(() => {}, [slideIndex])
 
   useEffect(() => {
     if (imageRef.current && !cropper && isCropperActive) {
@@ -95,9 +93,18 @@ export const Crop = ({
     }
   }, [imageRef, cropper, aspectRatioValue, currentFile, isCropperActive])
 
+  const onSliderChange = useCallback(
+    (value: number[]) => {
+      if (cropper) {
+        cropper.zoomTo(value[0] / 10)
+      }
+    },
+    [cropper]
+  )
+
   useEffect(() => {
     onSliderChange(sliderValue)
-  }, [sliderValue])
+  }, [sliderValue, onSliderChange])
 
   const onCropConfirm = () => {
     if (cropper) {
@@ -169,12 +176,6 @@ export const Crop = ({
         break
     }
     onCloseSelect()
-  }
-
-  const onSliderChange = (value: number[]) => {
-    if (cropper) {
-      cropper.zoomTo(value[0] / 10)
-    }
   }
 
   const onChangeCurrentFile = (i: number) => {

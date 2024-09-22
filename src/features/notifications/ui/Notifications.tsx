@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
-import { Button, Card, Typography } from '@bitovyevolki/ui-kit-int'
+import { Card, Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './notification.module.scss'
 
@@ -10,7 +11,6 @@ import {
 } from '../api/profile-notifications'
 import { INotificationItem } from '../models/notifications'
 import { ShowNotifications } from './ShowNotifications'
-import { toast } from 'react-toastify'
 
 interface MarkAsReadResponse {
   error?: string
@@ -50,7 +50,8 @@ export const Notifications = () => {
       toast.error('Notification marked as read successfully.!', { position: 'top-right' })
     } catch (error) {
       if (typeof error === 'object' && error !== null && 'status' in error) {
-        const err = error as { status: number; message?: string }
+        const err = error as { message?: string; status: number }
+
         if (err.status === 400) {
           toast.error('Bad request: Invalid input', { position: 'top-right' })
         } else {

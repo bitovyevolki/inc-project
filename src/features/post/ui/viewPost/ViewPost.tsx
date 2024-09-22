@@ -57,7 +57,7 @@ export const ViewPost = ({
     return () => {
       removeQuery('postId')
     }
-  }, [])
+  }, [removeQuery])
 
   const copyUrlToClipboardHandler = () => {
     navigator.clipboard.writeText(window.location.toString())

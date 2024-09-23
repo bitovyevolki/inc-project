@@ -24,7 +24,7 @@ type Props = {
   files: FileWithIdAndUrl[]
   inputUploadFile: RefObject<HTMLInputElement>
   onAddFiles: (addedFiles: FileList | null) => void
-  onChangeFiles: (files: any) => void
+  onChangeFiles: (files: FileWithIdAndUrl[]) => void
   onSelectFile: () => void
   removeFile: (id: string) => void
 }
@@ -195,11 +195,7 @@ export const Crop = ({
         ></button>
       )}
       {!isCropperActive ? (
-        <SliderPostImages
-          onChangeCurrentFile={onChangeCurrentFile}
-          setSlideIndex={setSlideIndex}
-          slideIndex={slideIndex}
-        >
+        <SliderPostImages setSlideIndex={setSlideIndex} slideIndex={slideIndex}>
           {files.map((el, i) => {
             return (
               <Image

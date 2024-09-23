@@ -26,7 +26,13 @@ export const CreatePost = () => {
   const [isModalOpen, setIsModalOpen] = useState(true)
   const [hasFile, setHasFile] = useState(false)
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
+  const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>([])
 
+  useEffect(() => {
+    if (files) {
+      setFiltredFiles(files)
+    }
+  }, [files])
   // const image = data?.images[0].useSelector
 
   useEffect(() => {
@@ -92,7 +98,7 @@ export const CreatePost = () => {
       return
     }
 
-    const fileList = convertArrayToFileList(files)
+    const fileList = convertArrayToFileList(filtredFiles)
 
     uploadImages({ files: fileList })
   }
@@ -115,10 +121,12 @@ export const CreatePost = () => {
           />
         )
       case 'filter':
-        return <Filter files={files} />
+        return (
+          <Filter files={files} filtredFiles={filtredFiles} setFiltredFiles={setFiltredFiles} />
+        )
 
       case 'publish':
-        return <AddPostDescription files={files} uploadImagesId={uploadImagesId} />
+        return <AddPostDescription files={filtredFiles} uploadImagesId={uploadImagesId} />
     }
   }
 

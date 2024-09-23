@@ -36,6 +36,8 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
         return 'Cropping'
       case 'filter':
         return 'Filters'
+      case 'publish':
+        return 'Publication'
     }
   }
 

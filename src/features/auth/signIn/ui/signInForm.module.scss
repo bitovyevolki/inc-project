@@ -39,7 +39,11 @@
       text-align: end;
     }
   }
-
+  .registerLink {
+    p {
+      color: var(--color-accent-500);
+    }
+  }
   .buttons {
     display: flex;
     flex-direction: column;

@@ -77,10 +77,6 @@ export const Crop = ({
   }, [files, slideIndex, currentFile])
 
   useEffect(() => {
-    console.log('slideIndex')
-  }, [slideIndex])
-
-  useEffect(() => {
     if (imageRef.current && !cropper && isCropperActive) {
       const newCropper = new Cropper(imageRef.current, {
         aspectRatio: 1,
@@ -153,7 +149,6 @@ export const Crop = ({
     switch (label) {
       case 'Original':
         handleAspectRatioChange(NaN)
-
         break
       case '1:1':
         handleAspectRatioChange(1)

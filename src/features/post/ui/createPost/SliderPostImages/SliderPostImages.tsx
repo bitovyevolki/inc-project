@@ -1,8 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import Slider, { Settings } from 'react-slick'
+import Slider from 'react-slick'
 
 import clsx from 'clsx'
-import Image from 'next/image'
 
 import s from './SliderPostImages.module.scss'
 

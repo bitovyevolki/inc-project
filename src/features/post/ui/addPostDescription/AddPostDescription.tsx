@@ -1,16 +1,12 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
-import { toast } from 'react-toastify'
+import { useMemo } from 'react'
 
 import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
-import { useCreatePostMutation } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui/profileIntro/ProfileIntro'
-import { RouterPaths } from '@/src/shared/config/router.paths'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Button, ModalWindow, TextArea } from '@bitovyevolki/ui-kit-int'
+import { TextArea } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
-import Router from 'next/router'
 
 import s from './addPostDescription.module.scss'
 
@@ -18,18 +14,14 @@ import { FileWithIdAndUrl } from '../createPost'
 
 type Props = {
   files: FileWithIdAndUrl[]
-  uploadImagesId: any[]
+  postDescription: string
+  setPostDescription: (value: string) => void
 }
-export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
+export const AddPostDescription = ({ files, postDescription, setPostDescription }: Props) => {
   const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
     profileId: meData?.userId,
   })
-  const [createPost, { isLoading: LoadingPost, isSuccess }] = useCreatePostMutation()
-
-  const [isModalOpen, setIsModalOpen] = useState(true)
-
-  const isLoading = LoadingMe || LoadingProfile || LoadingPost
 
   const profileIntroData = useMemo(
     () => ({
@@ -41,30 +33,6 @@ export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
     }),
     [profileData, meData]
   )
-
-  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const formData = new FormData(e.target)
-    const description = formData.get('postDescription') as string
-
-    if (!uploadImagesId) {
-      return
-    }
-
-    try {
-      await createPost({ childrenMetadata: uploadImagesId, description }).unwrap()
-      toast.success('Successfully created post')
-      Router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
-    } catch (error) {
-      toast.error('Failed to create post')
-    }
-  }
-
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false)
-    Router.back()
-  }, [])
 
   const renderPhotos = () => {
     if (!files || files.length === 0) {
@@ -82,18 +50,12 @@ export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
     )
   }
 
-  if (isLoading) {
+  if (LoadingProfile) {
     return <Loader />
   }
 
   return (
     <div>
-      {/* <ModalWindow
-        className={s.modal}
-        onOpenChange={closeModal}
-        open={isModalOpen}
-        title={'Publication'}
-      > */}
       <div className={s.container}>
         <div className={s.sliderContainer}>{renderPhotos()}</div>
         <div className={s.publicationContainer}>
@@ -105,21 +67,17 @@ export const AddPostDescription = ({ files, uploadImagesId }: Props) => {
             withMenu={false}
           />
           <div className={s.postContainer}>
-            <form onSubmit={handleSubmit}>
-              <TextArea
-                className={s.textArea}
-                label={'Add publication descriptions'}
-                name={'postDescription'}
-                placeholder={'Text-area'}
-              />
-              <Button className={s.button} type={'submit'}>
-                Publish post
-              </Button>
-            </form>
+            <TextArea
+              className={s.textArea}
+              label={'Add publication descriptions'}
+              name={'postDescription'}
+              onChange={e => setPostDescription(e.currentTarget.value)}
+              placeholder={'Text-area'}
+              value={postDescription}
+            />
           </div>
         </div>
       </div>
-      {/* </ModalWindow> */}
     </div>
   )
 }

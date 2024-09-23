@@ -111,25 +111,35 @@ export const Filter = ({ files, filtredFiles, setFiltredFiles }: Props) => {
         ))}
       </div>
     )
-  }, [filtredFiles, surfaceRefs, filterList, slideIndex])
+  }, [filterList, files, slideIndex, changeBright])
 
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
-        <SliderPostImages setSlideIndex={setSlideIndex} slideIndex={slideIndex}>
-          {filtredFiles.map((el, i) => {
-            return (
-              <NextImage
-                alt={'Image'}
-                className={s.currentImage}
-                height={503}
-                key={i}
-                src={el.url}
-                width={490}
-              />
-            )
-          })}
-        </SliderPostImages>
+        {filtredFiles.length === 1 ? (
+          <NextImage
+            alt={'Image'}
+            className={s.currentImage}
+            height={503}
+            src={filtredFiles[0].url}
+            width={490}
+          />
+        ) : (
+          <SliderPostImages setSlideIndex={setSlideIndex} slideIndex={slideIndex}>
+            {filtredFiles.map((el, i) => {
+              return (
+                <NextImage
+                  alt={'Image'}
+                  className={s.currentImage}
+                  height={503}
+                  key={i}
+                  src={el.url}
+                  width={490}
+                />
+              )
+            })}
+          </SliderPostImages>
+        )}
       </div>
       {filtersMemo}
     </div>

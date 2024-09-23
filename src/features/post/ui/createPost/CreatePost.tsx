@@ -1,5 +1,4 @@
-/* eslint-disable no-nested-ternary */
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
@@ -28,12 +27,13 @@ export const CreatePost = () => {
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
   const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>([])
 
+  const [postDescription, setPostDescription] = useState('')
+
   useEffect(() => {
     if (files) {
       setFiltredFiles(files)
     }
   }, [files])
-  // const image = data?.images[0].useSelector
 
   useEffect(() => {
     if (files.length > 0) {
@@ -52,8 +52,6 @@ export const CreatePost = () => {
       )
     }
   }, [data])
-
-  // const uploadId = data?.images[0].uploadId
 
   const inputUploadFile = useRef<HTMLInputElement>(null)
 
@@ -126,7 +124,13 @@ export const CreatePost = () => {
         )
 
       case 'publish':
-        return <AddPostDescription files={filtredFiles} uploadImagesId={uploadImagesId} />
+        return (
+          <AddPostDescription
+            files={filtredFiles}
+            postDescription={postDescription}
+            setPostDescription={setPostDescription}
+          />
+        )
     }
   }
 
@@ -141,9 +145,11 @@ export const CreatePost = () => {
         hasFile={hasFile}
         isOpen={isModalOpen}
         onOpenChange={setIsModalOpenHandler}
+        postDescription={postDescription}
         returnAllChangesFile={returnAllChangesFile}
         setStep={setStep}
         step={step}
+        uploadImagesId={uploadImagesId}
       >
         {files.length === 0 ? (
           <WithoutUploadPhoto

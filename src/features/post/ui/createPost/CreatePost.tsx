@@ -1,16 +1,24 @@
-/* eslint-disable no-nested-ternary */
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
 import { Loader } from '@/src/shared/ui/loader/Loader'
+import { setIndexedDBItem } from '@/src/shared/utils/indexedDB'
+import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
+import { useTranslations } from 'next-intl'
 import { v4 as uuidv4 } from 'uuid'
 
+import s from './createPost.module.scss'
+
 import { Post } from '../../model/posts.service.types'
-import { Crop } from './Crop/Crop'
-import { Filter } from './Filter/Filter'
-import { CreatePostModal } from './createPostModal/CreatePostModal'
-import { WithoutUploadPhoto } from './withoutUploadPhoto/WithoutUploadPhoto'
+import { Crop } from './Crop'
+import { Filter } from './Filter'
+import { CreatePostModal } from './createPostModal'
+import { WithoutUploadPhoto } from './withoutUploadPhoto'
+
+const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024
+const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png']
 
 export type FileWithIdAndUrl = {
   file: File
@@ -27,14 +35,30 @@ interface IProps {
 }
 
 export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
+  const t = useTranslations('CreatePost.confirn-close-modal')
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
   const [step, setStep] = useState<StepOption>('crop')
   const [files, setFiles] = useState<FileWithIdAndUrl[]>([])
-  // const [isModalOpen, setIsModalOpen] = useState(true)
   const [hasFile, setHasFile] = useState(false)
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
+  const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>([])
 
-  // const image = data?.images[0].useSelector
+  const [postDescription, setPostDescription] = useState('')
+  const [isOpenConfitmCloseModal, setIsOpenConfitmCloseModal] = useState(false)
+
+  const onCloseAddPost = () => {
+    if (files.length !== 0) {
+      setIsOpenConfitmCloseModal(true)
+    } else {
+      closeAllModals()
+    }
+  }
+
+  useEffect(() => {
+    if (files) {
+      setFiltredFiles(files)
+    }
+  }, [files])
 
   useEffect(() => {
     if (files.length > 0) {
@@ -54,8 +78,6 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     }
   }, [data])
 
-  // const uploadId = data?.images[0].uploadId
-
   const inputUploadFile = useRef<HTMLInputElement>(null)
 
   const onSelectFile = () => {
@@ -66,24 +88,40 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     if (!files) {
       return
     }
-    const newFiles = files
-      ? Array.from(files).map(file => ({ file, id: uuidv4(), url: URL.createObjectURL(file) }))
-      : []
+
+    const newFiles = Array.from(files)
+      .filter(file => {
+        if (file.size > MAX_FILE_SIZE_BYTES) {
+          toast.warning(`${file.name} exceeds the 20MB limit and will not be added.`)
+
+          return false
+        }
+
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+          toast.warning(`${file.name} is not a valid format. Only JPG and PNG files are allowed.`)
+
+          return false
+        }
+
+        return true
+      })
+      .map(file => ({ file, id: uuidv4(), url: URL.createObjectURL(file) }))
 
     setFiles(prevFiles => [...prevFiles, ...newFiles])
   }
 
-  const onChangeFiles = (updatedFile: FileWithIdAndUrl[]) => {
+  const onUpdateFiles = (updatedFile: FileWithIdAndUrl[]) => {
     setFiles(updatedFile)
   }
 
-  const removeFile = (id: string) => {
+  const onRemoveFile = (id: string) => {
     setFiles(prevFiles => prevFiles.filter(item => item.id !== id))
   }
 
   const returnAllChangesFile = () => {
     setFiles([])
     setStep('crop')
+    setPostDescription('')
   }
 
   const convertArrayToFileList = (fileArray: FileWithIdAndUrl[]): FileList => {
@@ -94,19 +132,29 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     return dataTransfer.files
   }
 
-  const closeModalHandler = () => {
-    closeModal()
-    returnAllChangesFile()
-  }
-
   const handleUpload = () => {
     if (files.length === 0) {
       return
     }
 
-    const fileList = convertArrayToFileList(files)
+    const fileList = convertArrayToFileList(filtredFiles)
 
     uploadImages({ files: fileList })
+  }
+
+  const closeAllModals = () => {
+    setIsOpenConfitmCloseModal(false)
+    closeModal()
+    returnAllChangesFile()
+  }
+
+  const onSaveDraft = () => {
+    const draftFileList = files.map(item => {
+      return item.file
+    })
+
+    setIndexedDBItem('files', draftFileList)
+    closeAllModals()
   }
 
   const viewedComponent = (step: StepOption) => {
@@ -117,40 +165,40 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
             files={files}
             inputUploadFile={inputUploadFile}
             onAddFiles={onAddFiles}
-            onChangeFiles={onChangeFiles}
+            onRemoveFile={onRemoveFile}
             onSelectFile={onSelectFile}
-            removeFile={removeFile}
+            onUpdateFiles={onUpdateFiles}
           />
         )
       case 'filter':
-        return <Filter files={files} />
+        return (
+          <Filter files={files} filtredFiles={filtredFiles} setFiltredFiles={setFiltredFiles} />
+        )
 
       case 'publish':
         return (
           <AddPostDescription
-            addPost={addPost}
-            closeModal={closeModal}
-            files={files}
-            uploadImagesId={uploadImagesId}
+            files={filtredFiles}
+            postDescription={postDescription}
+            setPostDescription={setPostDescription}
           />
         )
     }
   }
 
-  if (isLoading) {
-    return <Loader />
-  }
-
   return (
-    <div>
+    <>
       <CreatePostModal
+        closeAllModals={closeAllModals}
         handleUpload={handleUpload}
-        hasFile={hasFile}
+        hasFile={files.length > 0}
         isOpen={isOpenModal}
-        onOpenChange={closeModalHandler}
+        onOpenChange={onCloseAddPost}
+        postDescription={postDescription}
         returnAllChangesFile={returnAllChangesFile}
         setStep={setStep}
         step={step}
+        uploadImagesId={uploadImagesId}
       >
         {files.length === 0 ? (
           <WithoutUploadPhoto
@@ -162,6 +210,29 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
           viewedComponent(step)
         )}
       </CreatePostModal>
-    </div>
+      {files.length !== 0 && (
+        <ModalWindow
+          className={s.lastModal}
+          onOpenChange={setIsOpenConfitmCloseModal}
+          open={isOpenConfitmCloseModal}
+          title={t('title')}
+        >
+          <div className={s.modalContent}>
+            <Typography variant={'body1'}>{t('description')}</Typography>
+            <div className={s.buttonGroup}>
+              <Button onClick={closeAllModals} variant={'outlined'}>
+                {t('button-discard')}
+              </Button>
+              <Button onClick={onSaveDraft}>{t('button-draft')}</Button>
+            </div>
+          </div>
+        </ModalWindow>
+      )}
+      {isLoading && (
+        <div className={s.overlay}>
+          <Loader />
+        </div>
+      )}
+    </>
   )
 }

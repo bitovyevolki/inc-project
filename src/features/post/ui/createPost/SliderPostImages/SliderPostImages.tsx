@@ -1,14 +1,12 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import Slider, { Settings } from 'react-slick'
+import Slider from 'react-slick'
 
 import clsx from 'clsx'
-import Image from 'next/image'
 
 import s from './SliderPostImages.module.scss'
 
 type Props = {
   children: ReactNode
-  onChangeCurrentFile: (index: number) => void
   setSlideIndex: (i: number) => void
   slideIndex: number
 }
@@ -37,12 +35,7 @@ const PrevArrow = (props: any) => {
   )
 }
 
-export const SliderPostImages = ({
-  children,
-  onChangeCurrentFile,
-  setSlideIndex,
-  slideIndex,
-}: Props) => {
+export const SliderPostImages = ({ children, setSlideIndex, slideIndex }: Props) => {
   const [updateCount, setUpdateCount] = useState(0)
   const sliderRef = useRef<Slider | null>(null)
 
@@ -53,7 +46,6 @@ export const SliderPostImages = ({
   }, [slideIndex])
 
   const onClick = (i: number) => {
-    onChangeCurrentFile(i)
     setSlideIndex(i)
   }
 

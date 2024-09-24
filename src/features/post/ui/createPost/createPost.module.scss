@@ -1,32 +1,22 @@
-.modalWindow {
-  max-height: 100vh;
-  overflow: hidden;
+.lastModal {
+	z-index: 1000;
+	max-width: 378px;
+	
+	.modalContent {
+		padding: 30px 24px 36px;
+
+		.buttonGroup {
+			display: flex;
+			gap: 20px;
+			justify-content: space-between;
+			margin-top: 18px;
+		}
+	}
 }
 
-.uploadContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 492px;
-  overflow: hidden;
-}
-
-.imageContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 222px;
-  height: 222px;
-  background-color: black;
-  margin: 72px auto 60px;
-}
-
-.buttonsContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 48px;
+.overlay {
+	position: absolute;
+	z-index: 100;
+	inset: 0;
+	background: rgba(0 0 0 / 40%);
 }

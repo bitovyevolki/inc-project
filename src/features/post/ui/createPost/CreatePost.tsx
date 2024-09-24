@@ -102,6 +102,7 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
   const returnAllChangesFile = () => {
     setFiles([])
     setStep('crop')
+    setPostDescription('')
   }
 
   const convertArrayToFileList = (fileArray: FileWithIdAndUrl[]): FileList => {

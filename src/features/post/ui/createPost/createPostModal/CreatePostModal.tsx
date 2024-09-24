@@ -90,7 +90,8 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
     try {
       await createPost({ childrenMetadata: uploadImagesId, description: postDescription }).unwrap()
       toast.success(t('toast-message.success'))
-      router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
+      // router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
+      onOpenChange(false)
     } catch (error) {
       toast.error(t('toast-message.error'))
     }

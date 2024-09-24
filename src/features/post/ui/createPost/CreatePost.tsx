@@ -1,16 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
-import {
-  useCreatePostMutation,
-  useUploadImagesMutation,
-} from '@/src/features/post/model/posts.service'
+import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
-import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { setIndexedDBItem } from '@/src/shared/utils/indexedDB'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
-import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -32,14 +27,11 @@ export type StepOption = 'crop' | 'filter' | 'publish'
 export const CreatePost = () => {
   const t = useTranslations('CreatePost.confirn-close-modal')
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
-  const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const [step, setStep] = useState<StepOption>('crop')
   const [files, setFiles] = useState<FileWithIdAndUrl[]>([])
   const [hasFile, setHasFile] = useState(false)
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
   const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>([])
-  const router = useRouter()
-  const [createPost, { isLoading: LoadingPost, isSuccess }] = useCreatePostMutation()
 
   const [postDescription, setPostDescription] = useState('')
 
@@ -126,10 +118,6 @@ export const CreatePost = () => {
     uploadImages({ files: fileList })
   }
 
-  const returnToMyProfile = () => {
-    router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
-  }
-
   const saveDraft = () => {
     const draftFileList = files.map(item => {
       return item.file
@@ -142,7 +130,6 @@ export const CreatePost = () => {
   const closeAllModals = () => {
     setIsOpenConfitmCloseModal(false)
     setIsModalOpen(false)
-    returnToMyProfile()
   }
   const viewedComponent = (step: StepOption) => {
     switch (step) {
@@ -173,7 +160,7 @@ export const CreatePost = () => {
     }
   }
 
-  if (isLoading || LoadingMe) {
+  if (isLoading) {
     return <Loader />
   }
 
@@ -200,7 +187,7 @@ export const CreatePost = () => {
           viewedComponent(step)
         )}
       </CreatePostModal>
-      {files.length ?? (
+      {files.length === 0 && (
         <ModalWindow
           className={s.lastModal}
           onOpenChange={setIsOpenConfitmCloseModal}

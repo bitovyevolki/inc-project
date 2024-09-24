@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { LinearCopy } from 'gl-react'
 import { Surface } from 'gl-react-dom'
 import NextImage from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import s from './Filter.module.scss'
 
@@ -19,20 +20,21 @@ type Props = {
 }
 
 export const Filter = ({ files, filtredFiles, setFiltredFiles }: Props) => {
+  const t = useTranslations('CreatePost.filters')
   const [slideIndex, setSlideIndex] = useState(0)
   const [filter, setFilter] = useState('')
   const [imageSizes, setImageSizes] = useState({ height: 0, width: 0 })
 
   const filterList = [
-    { brightness: 1, contrast: 1, name: 'Original', saturation: 1 },
-    { brightness: 1.3, contrast: 1, name: 'Bright', saturation: 1 },
-    { brightness: 1.1, contrast: 1.3, name: 'Contrast', saturation: 1 },
-    { brightness: 1, contrast: 1, name: 'Saturation', saturation: 1.5 },
-    { brightness: 1, contrast: 1, name: 'Subdued', saturation: 0.7 },
-    { brightness: 1.5, contrast: 1, name: 'Light', saturation: 0.9 },
-    { brightness: 0.7, contrast: 1.2, name: 'Dark', saturation: 1 },
-    { brightness: 1, contrast: 1.1, name: 'Soft contrast', saturation: 1 },
-    { brightness: 1, contrast: 1, name: 'black and white', saturation: 0 },
+    { brightness: 1, contrast: 1, name: t('original'), saturation: 1 },
+    { brightness: 1.3, contrast: 1, name: t('bright'), saturation: 1 },
+    { brightness: 1.1, contrast: 1.3, name: t('contrast'), saturation: 1 },
+    { brightness: 1, contrast: 1, name: t('saturation'), saturation: 1.5 },
+    { brightness: 1, contrast: 1, name: t('subdued'), saturation: 0.7 },
+    { brightness: 1.5, contrast: 1, name: t('light'), saturation: 0.9 },
+    { brightness: 0.7, contrast: 1.2, name: t('dark'), saturation: 1 },
+    { brightness: 1, contrast: 1.1, name: t('soft-contrast'), saturation: 1 },
+    { brightness: 1, contrast: 1, name: t('black-and-white'), saturation: 0 },
   ]
 
   const surfaceRefs = useRef<Array<any>>(filterList.map(() => React.createRef()))

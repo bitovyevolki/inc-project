@@ -7,6 +7,7 @@ import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { Loader } from '@/src/shared/ui/loader/Loader'
 import { TextArea } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import s from './addPostDescription.module.scss'
 
@@ -18,6 +19,7 @@ type Props = {
   setPostDescription: (value: string) => void
 }
 export const AddPostDescription = ({ files, postDescription, setPostDescription }: Props) => {
+  const t = useTranslations('CreatePost.add-description')
   const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
     profileId: meData?.userId,
@@ -69,10 +71,10 @@ export const AddPostDescription = ({ files, postDescription, setPostDescription 
           <div className={s.postContainer}>
             <TextArea
               className={s.textArea}
-              label={'Add publication descriptions'}
+              label={t('text-area-label')}
               name={'postDescription'}
               onChange={e => setPostDescription(e.currentTarget.value)}
-              placeholder={'Text-area'}
+              placeholder={''}
               value={postDescription}
             />
           </div>

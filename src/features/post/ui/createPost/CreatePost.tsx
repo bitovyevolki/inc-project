@@ -1,9 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
+import { useMeQuery } from '@/src/features/auth/service/auth.service'
+import {
+  useCreatePostMutation,
+  useUploadImagesMutation,
+} from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
+import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Loader } from '@/src/shared/ui/loader/Loader'
+import { setIndexedDBItem } from '@/src/shared/utils/indexedDB'
+import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
+import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import { v4 as uuidv4 } from 'uuid'
+
+import s from './createPost.module.scss'
 
 import { Crop } from './Crop/Crop'
 import { Filter } from './Filter/Filter'
@@ -19,15 +30,29 @@ export type FileWithIdAndUrl = {
 export type StepOption = 'crop' | 'filter' | 'publish'
 
 export const CreatePost = () => {
+  const t = useTranslations('CreatePost.confirn-close-modal')
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
+  const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const [step, setStep] = useState<StepOption>('crop')
   const [files, setFiles] = useState<FileWithIdAndUrl[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(true)
   const [hasFile, setHasFile] = useState(false)
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
   const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>([])
+  const router = useRouter()
+  const [createPost, { isLoading: LoadingPost, isSuccess }] = useCreatePostMutation()
 
   const [postDescription, setPostDescription] = useState('')
+
+  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isOpenConfitmCloseModal, setIsOpenConfitmCloseModal] = useState(false)
+
+  const onCloseAddPost = () => {
+    if (files.length) {
+      setIsOpenConfitmCloseModal(true)
+    } else {
+      setIsModalOpen(false)
+    }
+  }
 
   useEffect(() => {
     if (files) {
@@ -101,10 +126,24 @@ export const CreatePost = () => {
     uploadImages({ files: fileList })
   }
 
-  const setIsModalOpenHandler = (value: boolean) => {
-    setIsModalOpen(value)
+  const returnToMyProfile = () => {
+    router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
   }
 
+  const saveDraft = () => {
+    const draftFileList = files.map(item => {
+      return item.file
+    })
+
+    setIndexedDBItem('files', draftFileList)
+    closeAllModals()
+  }
+
+  const closeAllModals = () => {
+    setIsOpenConfitmCloseModal(false)
+    setIsModalOpen(false)
+    returnToMyProfile()
+  }
   const viewedComponent = (step: StepOption) => {
     switch (step) {
       case 'crop':
@@ -134,7 +173,7 @@ export const CreatePost = () => {
     }
   }
 
-  if (isLoading) {
+  if (isLoading || LoadingMe) {
     return <Loader />
   }
 
@@ -144,7 +183,7 @@ export const CreatePost = () => {
         handleUpload={handleUpload}
         hasFile={hasFile}
         isOpen={isModalOpen}
-        onOpenChange={setIsModalOpenHandler}
+        onOpenChange={onCloseAddPost}
         postDescription={postDescription}
         returnAllChangesFile={returnAllChangesFile}
         setStep={setStep}
@@ -161,6 +200,24 @@ export const CreatePost = () => {
           viewedComponent(step)
         )}
       </CreatePostModal>
+      {files.length ?? (
+        <ModalWindow
+          className={s.lastModal}
+          onOpenChange={setIsOpenConfitmCloseModal}
+          open={isOpenConfitmCloseModal}
+          title={t('title')}
+        >
+          <div className={s.modalContent}>
+            <Typography variant={'body1'}>{t('description')}</Typography>
+            <div className={s.buttonGroup}>
+              <Button onClick={closeAllModals} variant={'outlined'}>
+                {t('button-discard')}
+              </Button>
+              <Button onClick={saveDraft}>{t('button-draft')}</Button>
+            </div>
+          </div>
+        </ModalWindow>
+      )}
     </div>
   )
 }

@@ -1,32 +1,52 @@
 .modalWindow {
-  max-height: 100vh;
   overflow: hidden;
+  max-height: 100vh;
 }
 
 .uploadContainer {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   width: 492px;
-  overflow: hidden;
 }
 
 .imageContainer {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   width: 222px;
   height: 222px;
-  background-color: black;
   margin: 72px auto 60px;
+
+  background-color: black;
 }
 
 .buttonsContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   gap: 24px;
+  align-items: center;
+  justify-content: center;
+
   margin-bottom: 48px;
+}
+
+.lastModal {
+	z-index: 1000;
+	max-width: 378px;
+	
+	.modalContent {
+		padding: 30px 24px 36px;
+
+		.buttonGroup {
+			display: flex;
+			gap: 20px;
+			justify-content: space-between;
+			margin-top: 18px;
+		}
+	}
 }

@@ -9,6 +9,7 @@ import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import { Close, Content, Portal, Root } from '@radix-ui/react-dialog'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 
 import s from './CreatePostModal.module.scss'
 
@@ -40,18 +41,19 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
   step,
   uploadImagesId,
 }) => {
+  const t = useTranslations('CreatePost')
   const [createPost, { isLoading: LoadingPost, isSuccess }] = useCreatePostMutation()
   const { data: meData, isLoading: LoadingMe } = useMeQuery()
   const router = useRouter()
-  const isLoading = LoadingMe || LoadingPost
+  const isLoading = LoadingPost
   const addTitle = (step: StepOption) => {
     switch (step) {
       case 'crop':
-        return 'Cropping'
+        return t('cropping.title')
       case 'filter':
-        return 'Filters'
+        return t('filters.title')
       case 'publish':
-        return 'Publication'
+        return t('filters.title')
     }
   }
 
@@ -87,14 +89,14 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
 
     try {
       await createPost({ childrenMetadata: uploadImagesId, description: postDescription }).unwrap()
-      toast.success('Successfully created post')
+      toast.success(t('toast-message.success'))
       router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
     } catch (error) {
-      toast.error('Failed to create post')
+      toast.error(t('toast-message.error'))
     }
   }
 
-  const title = hasFile ? addTitle(step) : 'Add Photo'
+  const title = hasFile ? addTitle(step) : t('add-photo.title')
 
   if (isLoading) {
     return <Loader />
@@ -119,7 +121,7 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
               </Typography>
               {hasFile ? (
                 <Typography className={s.rightButton} onClick={onClickNext} variant={'h4'}>
-                  {step !== 'publish' ? 'Next' : 'Publish'}
+                  {step !== 'publish' ? t('button-next.next') : t('button-next.publish')}
                 </Typography>
               ) : (
                 <Close asChild>

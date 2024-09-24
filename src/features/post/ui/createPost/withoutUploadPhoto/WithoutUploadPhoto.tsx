@@ -1,10 +1,14 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
+import { getIndexedDBItem } from '@/src/shared/utils/indexedDB'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import s from './WithoutUploadPhoto.module.scss'
+
+import { FileWithIdAndUrl } from '../CreatePost'
 
 type Props = {
   inputUploadFile: any
@@ -13,15 +17,41 @@ type Props = {
 }
 
 export const WithoutUploadPhoto = ({ inputUploadFile, onAddFiles, onSelectFile }: Props) => {
+  const t = useTranslations('CreatePost')
+  const [draftFiles, setDraftFiles] = useState<FileList | null>(null)
+
+  const getDraft = async () => {
+    const res = await getIndexedDBItem('files')
+
+    if (res) {
+      const dataTransfer = new DataTransfer()
+
+      res.forEach((file: File) => {
+        dataTransfer.items.add(file)
+      })
+
+      const fileList = dataTransfer.files
+
+      if (fileList.length === 0) {
+        setDraftFiles(null)
+      } else {
+        setDraftFiles(fileList)
+      }
+    }
+  }
+
+  useEffect(() => {
+    getDraft()
+  }, [])
+
+  const onAddDraftFiles = async () => {
+    onAddFiles(draftFiles)
+  }
+
   return (
     <div className={s.uploadContainer}>
-      {/* <form onSubmit={handleSubmit}> */}
       <div className={s.imageContainer}>
-        {/* {previewUrl ? (
-          <Image alt={'Preview'} height={300} src={previewUrl} width={300} />
-        ) : ( */}
         <AvatarIcon />
-        {/* )} */}
       </div>
       <input
         accept={'image/png, image/jpeg'}
@@ -35,13 +65,14 @@ export const WithoutUploadPhoto = ({ inputUploadFile, onAddFiles, onSelectFile }
       />
       <div className={s.buttonsContainer}>
         <Button fullWidth onClick={onSelectFile} variant={'primary'}>
-          Select from Computer
+          {t('without-photo.button-select-files')}
         </Button>
-        {/* <Button fullWidth type={'submit'} variant={'outlined'}>
-            Create Post
-          </Button> */}
+        {draftFiles && (
+          <Button fullWidth onClick={onAddDraftFiles} variant={'outlined'}>
+            {t('without-photo.button-draft')}
+          </Button>
+        )}
       </div>
-      {/* </form> */}
     </div>
   )
 }

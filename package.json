@@ -13,7 +13,7 @@
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts  --no-error-on-unmatched-pattern --fix && stylelint --fix src/{,*/}*.{scss,css} --allow-empty-input"
   },
   "dependencies": {
-    "@bitovyevolki/ui-kit-int": "^0.1.9",
+    "@bitovyevolki/ui-kit-int": "^0.2.2",
     "@hookform/resolvers": "^3.9.0",
     "@it-incubator/eslint-config": "^1.0.3",
     "@it-incubator/prettier-config": "^0.1.2",
@@ -73,9 +73,12 @@
     "@types/react-google-recaptcha": "^2.1.9",
     "@types/react-show-more-text": "^1.4.5",
     "@types/react-slick": "^0.23.13",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "eslint-plugin-storybook": "^0.8.0",
+    "i": "^0.3.7",
+    "npm": "^10.8.3",
     "storybook": "^8.2.5",
     "typescript": "5.3.3"
   }

@@ -10,7 +10,9 @@ import { useTranslations } from 'next-intl'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './createPost.module.scss'
+import s from './createPost.module.scss'
 
+import { Post } from '../../model/posts.service.types'
 import { Crop } from './Crop/Crop'
 import { Filter } from './Filter/Filter'
 import { CreatePostModal } from './createPostModal/CreatePostModal'
@@ -24,25 +26,32 @@ export type FileWithIdAndUrl = {
 
 export type StepOption = 'crop' | 'filter' | 'publish'
 
-export const CreatePost = () => {
+interface IProps {
+  addPost: (post: Post) => void
+  closeModal: () => void
+  isOpenModal: boolean
+}
+
+export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
   const t = useTranslations('CreatePost.confirn-close-modal')
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
   const [step, setStep] = useState<StepOption>('crop')
   const [files, setFiles] = useState<FileWithIdAndUrl[]>([])
+  // const [isModalOpen, setIsModalOpen] = useState(true)
   const [hasFile, setHasFile] = useState(false)
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
   const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>([])
 
   const [postDescription, setPostDescription] = useState('')
 
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  // const [isModalOpen, setIsModalOpen] = useState(true)
   const [isOpenConfitmCloseModal, setIsOpenConfitmCloseModal] = useState(false)
 
   const onCloseAddPost = () => {
     if (files.length) {
       setIsOpenConfitmCloseModal(true)
     } else {
-      setIsModalOpen(false)
+      closeModal()
     }
   }
 
@@ -108,6 +117,11 @@ export const CreatePost = () => {
     return dataTransfer.files
   }
 
+  const closeModalHandler = () => {
+    closeModal()
+    returnAllChangesFile()
+  }
+
   const handleUpload = () => {
     if (files.length === 0) {
       return
@@ -129,7 +143,7 @@ export const CreatePost = () => {
 
   const closeAllModals = () => {
     setIsOpenConfitmCloseModal(false)
-    setIsModalOpen(false)
+    closeModal()
   }
   const viewedComponent = (step: StepOption) => {
     switch (step) {
@@ -169,7 +183,7 @@ export const CreatePost = () => {
       <CreatePostModal
         handleUpload={handleUpload}
         hasFile={hasFile}
-        isOpen={isModalOpen}
+        isOpen={isOpenModal}
         onOpenChange={onCloseAddPost}
         postDescription={postDescription}
         returnAllChangesFile={returnAllChangesFile}

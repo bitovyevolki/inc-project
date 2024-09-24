@@ -79,7 +79,7 @@ export const useSignUpForm = (language: 'en' | 'ru') => {
       password: '',
       userName: '',
     },
-    mode: 'onSubmit',
+    mode: 'onChange',
     resolver: zodResolver(getSignUpSchema(language)),
   })
 }

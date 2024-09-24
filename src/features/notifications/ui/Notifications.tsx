@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { Card, Typography } from '@bitovyevolki/ui-kit-int'
 
@@ -38,22 +39,26 @@ export const Notifications = () => {
 
   const handleNotificationClick = async (notificationId: number) => {
     try {
-      // Отметить уведомление как прочитанное на сервере
       await markAsRead({ ids: [notificationId] })
       refetch()
-      // Обновить локальное состояние после успешного запроса
+
       const updatedNotifications = notifications.map(notification =>
         notification.id === notificationId ? { ...notification, isRead: true } : notification
       )
 
       setNotifications(updatedNotifications)
-      console.log('Notification marked as read successfully.')
+      toast.error('Notification marked as read successfully.!', { position: 'top-right' })
     } catch (error) {
-      // Обработка возможных ошибок
-      if (error.status === 400) {
-        console.error('Bad request: Invalid input', error)
+      if (typeof error === 'object' && error !== null && 'status' in error) {
+        const err = error as { message?: string; status: number }
+
+        if (err.status === 400) {
+          toast.error('Bad request: Invalid input', { position: 'top-right' })
+        } else {
+          toast.error('Failed to mark notification as read', { position: 'top-right' })
+        }
       } else {
-        console.error('Failed to mark notification as read:', error)
+        toast.error('Unexpected error', { position: 'top-right' })
       }
     }
   }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useGetPublicPostsByUserIdQuery } from '../../model/posts.service'
 import { Post } from '../../model/posts.service.types'
@@ -24,7 +24,11 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
     setCombinedPosts(prev => prev.filter(p => p.id !== postId))
   }
 
-  const handleScroll = () => {
+  const addPostToCombinedPosts = (post: Post) => {
+    setCombinedPosts(prev => [post, ...prev])
+  }
+
+  const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.offsetHeight - SCROLL_OFFSET
@@ -49,7 +53,7 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
       setPortionSize(finalPortionSize)
       setLastPostId(lastCombinedPostId ?? 0)
     }
-  }
+  }, [combinedPosts, publicPostsData?.totalCount])
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
@@ -57,7 +61,7 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [combinedPosts])
+  }, [combinedPosts, handleScroll])
 
   useEffect(() => {
     if (publicPostsData?.items) {
@@ -65,5 +69,5 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
     }
   }, [publicPostsData?.items])
 
-  return { combinedPosts, deletePostFromCombinedPostsArray }
+  return { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray }
 }

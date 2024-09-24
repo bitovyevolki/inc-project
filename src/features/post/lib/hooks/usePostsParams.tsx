@@ -25,5 +25,5 @@ export const usePostsParams = () => {
     router.push(pathname + '?' + createQueryStringHandler('postId', String(id)))
   }
 
-  return { changeQueryHandler, removeQueryParamHandler }
+  return { changeQueryHandler, removeQueryParamHandler, searchParams }
 }

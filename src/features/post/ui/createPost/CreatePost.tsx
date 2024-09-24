@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
@@ -15,6 +16,9 @@ import { Crop } from './Crop'
 import { Filter } from './Filter'
 import { CreatePostModal } from './createPostModal'
 import { WithoutUploadPhoto } from './withoutUploadPhoto'
+
+const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024
+const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png']
 
 export type FileWithIdAndUrl = {
   file: File
@@ -84,9 +88,24 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     if (!files) {
       return
     }
-    const newFiles = files
-      ? Array.from(files).map(file => ({ file, id: uuidv4(), url: URL.createObjectURL(file) }))
-      : []
+
+    const newFiles = Array.from(files)
+      .filter(file => {
+        if (file.size > MAX_FILE_SIZE_BYTES) {
+          toast.warning(`${file.name} exceeds the 20MB limit and will not be added.`)
+
+          return false
+        }
+
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+          toast.warning(`${file.name} is not a valid format. Only JPG and PNG files are allowed.`)
+
+          return false
+        }
+
+        return true
+      })
+      .map(file => ({ file, id: uuidv4(), url: URL.createObjectURL(file) }))
 
     setFiles(prevFiles => [...prevFiles, ...newFiles])
   }

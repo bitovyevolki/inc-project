@@ -1,31 +1,50 @@
-import React from 'react'
+import React, { ReactNode, memo } from 'react'
 
 import { GLSL, Node, Shaders } from 'gl-react'
 
 const shaders = Shaders.create({
-  colorify: {
+  Saturate: {
     frag: GLSL`
 precision highp float;
 varying vec2 uv;
-uniform sampler2D children, colorScale;
-float greyscale (vec3 c) { return 0.2125 * c.r + 0.7154 * c.g + 0.0721 * c.b; }
+uniform sampler2D t;
+uniform float contrast, saturation, brightness;
+const vec3 L = vec3(0.2125, 0.7154, 0.0721);
 void main() {
-  vec4 original = texture2D(children, uv);
-  vec4 newcolor = texture2D(colorScale, vec2(greyscale(original.rgb), 0.5));
-  gl_FragColor = vec4(newcolor.rgb, original.a * newcolor.a);
+  vec4 c = texture2D(t, uv);
+	vec3 brt = c.rgb * brightness;
+	gl_FragColor = vec4(mix(
+    vec3(0.5),
+    mix(vec3(dot(brt, L)), brt, saturation),
+    contrast), c.a);
 }
 `,
   },
 })
 
-export const FilterItem = ({ ...props }: any) => {
-  const { children, colorScale, interpolation } = props
-
-  return (
-    <Node
-      shader={shaders.colorify}
-      uniforms={{ children, colorScale }}
-      uniformsOptions={{ colorScale: { interpolation } }}
-    />
-  )
+type Option = {
+  brightness: number
+  contrast: number
+  saturation: number
 }
+
+type Props = {
+  children: ReactNode
+  option: Option
+}
+
+export const FilterItem = memo(function FilterItem({ children, option }: Props) {
+  return (
+    <>
+      <Node
+        shader={shaders.Saturate}
+        uniforms={{
+          brightness: option.brightness,
+          contrast: option.contrast,
+          saturation: option.saturation,
+          t: children,
+        }}
+      />
+    </>
+  )
+})

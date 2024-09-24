@@ -5,7 +5,7 @@ export const setIndexedDBItem = (key: string, value: any) => {
 }
 
 export const getIndexedDBItem = (key: string) => {
-  get(key).then().catch()
+  return get(key).then().catch()
 }
 
 export const removeIndexedDBItem = (key: string) => {

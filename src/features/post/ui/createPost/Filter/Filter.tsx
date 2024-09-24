@@ -1,109 +1,158 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { LinearCopy } from 'gl-react'
 import { Surface } from 'gl-react-dom'
-import Image from 'next/image'
+import NextImage from 'next/image'
+import { useTranslations } from 'next-intl'
 
 import s from './Filter.module.scss'
 
 import { FileWithIdAndUrl } from '../CreatePost'
-import { SliderPostImages } from '../SliderPostImages/SliderPostImages'
+import { SliderPostImages } from '../SliderPostImages'
 import { FilterItem } from './FilterItem'
 import colorScales from './colorScales'
 export { colorScales }
 
 type Props = {
   files: FileWithIdAndUrl[]
+  filtredFiles: FileWithIdAndUrl[]
+  setFiltredFiles: (files: FileWithIdAndUrl[]) => void
 }
 
-export const Filter = ({ files }: Props) => {
+export const Filter = ({ files, filtredFiles, setFiltredFiles }: Props) => {
+  const t = useTranslations('CreatePost.filters')
   const [slideIndex, setSlideIndex] = useState(0)
   const [filter, setFilter] = useState('')
-  const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>(files)
-  const [file, setFile] = useState<File | null>(null)
+  const [imageSizes, setImageSizes] = useState({ height: 0, width: 0 })
 
-  const surfaceRef1 = useRef<any>(null)
-  const surfaceRef2 = useRef<any>(null)
+  const filterList = useMemo(
+    () => [
+      { brightness: 1, contrast: 1, name: t('original'), saturation: 1 },
+      { brightness: 1.3, contrast: 1, name: t('bright'), saturation: 1 },
+      { brightness: 1.1, contrast: 1.3, name: t('contrast'), saturation: 1 },
+      { brightness: 1, contrast: 1, name: t('saturation'), saturation: 1.5 },
+      { brightness: 1, contrast: 1, name: t('subdued'), saturation: 0.7 },
+      { brightness: 1.5, contrast: 1, name: t('light'), saturation: 0.9 },
+      { brightness: 0.7, contrast: 1.2, name: t('dark'), saturation: 1 },
+      { brightness: 1, contrast: 1.1, name: t('soft-contrast'), saturation: 1 },
+      { brightness: 1, contrast: 1, name: t('black-and-white'), saturation: 0 },
+    ],
+    [t]
+  )
 
-  const onChangeCurrentFile = (index: number) => {
-    console.log('new current')
-    console.log(files[index].url)
-  }
+  const surfaceRefs = useRef<Array<any>>(filterList.map(() => React.createRef()))
 
-  const changeColor = (index: number, surfaceRef: any) => {
-    setFilter(Object.keys(colorScales)[index])
-    saveImageAsFile(surfaceRef)
-  }
+  useEffect(() => {
+    if (filtredFiles[slideIndex].file) {
+      const url = filtredFiles[slideIndex].url
+      const img = new Image()
 
-  const saveImageAsFile = (surfaceRef: any) => {
-    if (surfaceRef.current) {
-      const canvas = surfaceRef.current.glView.canvas
+      img.src = url
 
-      // Используем requestAnimationFrame, чтобы убедиться, что рендеринг завершён
-      requestAnimationFrame(() => {
-        canvas.toBlob((blob: Blob | null) => {
-          if (blob) {
-            console.log(blob)
-            const newFile = new File([blob], 'filtered-image.png', { type: 'image/png' })
-            const newUrl = URL.createObjectURL(newFile)
-            const changedFile = { file: newFile, id: files[slideIndex].id, url: newUrl }
-            const newArrFiles = filtredFiles.map(el =>
-              el.id === changedFile.id ? changedFile : el
-            )
-
-            console.log(changedFile)
-            console.log(filtredFiles)
-            setFiltredFiles(newArrFiles)
-          }
-        }, 'image/png')
-      })
+      img.onload = () => {
+        setImageSizes({
+          height: img.height,
+          width: img.width,
+        })
+      }
     }
-  }
+  }, [slideIndex, filtredFiles])
+
+  const saveImageAsFile = useCallback(
+    (surfaceRef: any) => {
+      if (surfaceRef.current) {
+        const canvas = surfaceRef.current.glView.canvas
+
+        canvas.width = imageSizes.width
+        canvas.height = imageSizes.height
+        requestAnimationFrame(() => {
+          canvas.toBlob((blob: Blob | null) => {
+            if (blob) {
+              const newFile = new File([blob], 'filtered-image.png', { type: 'image/png' })
+              const newUrl = URL.createObjectURL(newFile)
+              const changedFile = { file: newFile, id: filtredFiles[slideIndex].id, url: newUrl }
+              const newArrFiles = filtredFiles.map(el =>
+                el.id === changedFile.id ? changedFile : el
+              )
+
+              setFiltredFiles(newArrFiles)
+              setFilter('')
+            }
+          }, 'image/png')
+        })
+      }
+    },
+    [imageSizes, filtredFiles, slideIndex, setFiltredFiles, setFilter]
+  )
+
+  const changeBright = useCallback(
+    (newFilter: string, surfaceRef: any) => {
+      if (filter !== newFilter) {
+        setFilter(newFilter)
+        saveImageAsFile(surfaceRef)
+      }
+    },
+    [filter, setFilter, saveImageAsFile]
+  )
+
+  const filtersMemo = useMemo(() => {
+    return (
+      <div className={s.filters}>
+        {filterList.map((item, index) => (
+          <div
+            className={s.filter}
+            key={index}
+            onClick={() => changeBright(item.name, surfaceRefs.current[index])}
+          >
+            <Surface height={108} ref={surfaceRefs.current[index]} width={108}>
+              <LinearCopy>
+                <FilterItem
+                  option={{
+                    brightness: item.brightness,
+                    contrast: item.contrast,
+                    saturation: item.saturation,
+                  }}
+                >
+                  {files[slideIndex].url}
+                </FilterItem>
+              </LinearCopy>
+            </Surface>
+            {item.name}
+          </div>
+        ))}
+      </div>
+    )
+  }, [filterList, files, slideIndex, changeBright])
 
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
-        <SliderPostImages
-          onChangeCurrentFile={onChangeCurrentFile}
-          setSlideIndex={setSlideIndex}
-          slideIndex={slideIndex}
-        >
-          {filtredFiles.map((el, i) => {
-            return (
-              <Image
-                alt={'Image'}
-                className={s.currentImage}
-                height={490}
-                key={i}
-                src={el.url}
-                width={503}
-              />
-            )
-          })}
-        </SliderPostImages>
+        {filtredFiles.length === 1 ? (
+          <NextImage
+            alt={'Image'}
+            className={s.currentImage}
+            height={503}
+            src={filtredFiles[0].url}
+            width={490}
+          />
+        ) : (
+          <SliderPostImages setSlideIndex={setSlideIndex} slideIndex={slideIndex}>
+            {filtredFiles.map((el, i) => {
+              return (
+                <NextImage
+                  alt={'Image'}
+                  className={s.currentImage}
+                  height={503}
+                  key={i}
+                  src={el.url}
+                  width={490}
+                />
+              )
+            })}
+          </SliderPostImages>
+        )}
       </div>
-      <div className={s.filters}>
-        <div onClick={() => changeColor(0, surfaceRef1)} style={{ border: '1px solid red' }}>
-          <Surface height={50} ref={surfaceRef1} width={70}>
-            {/* LinearCopy ensures the filter is applied before rendering to the screen */}
-            <LinearCopy>
-              <FilterItem colorScale={colorScales['Accent']} interpolation={'linear'}>
-                {files[slideIndex].url}
-              </FilterItem>
-            </LinearCopy>
-          </Surface>
-        </div>
-        <div onClick={() => changeColor(2, surfaceRef2)} style={{ border: '1px solid red' }}>
-          <Surface height={50} ref={surfaceRef2} width={70}>
-            {/* LinearCopy ensures the filter is applied before rendering to the screen */}
-            <LinearCopy>
-              <FilterItem colorScale={colorScales['monochrome']} interpolation={'linear'}>
-                {files[slideIndex].url}
-              </FilterItem>
-            </LinearCopy>
-          </Surface>
-        </div>
-      </div>
+      {filtersMemo}
     </div>
   )
 }

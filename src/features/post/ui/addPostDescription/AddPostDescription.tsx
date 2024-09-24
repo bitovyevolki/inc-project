@@ -11,12 +11,9 @@ import { useTranslations } from 'next-intl'
 
 import s from './addPostDescription.module.scss'
 
-import { Post } from '../../model/posts.service.types'
 import { FileWithIdAndUrl } from '../createPost'
 
 type Props = {
-  addPost: (post: Post) => void
-  closeModal: () => void
   files: FileWithIdAndUrl[]
   postDescription: string
   setPostDescription: (value: string) => void

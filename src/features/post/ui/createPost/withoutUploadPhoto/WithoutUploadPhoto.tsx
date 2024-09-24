@@ -1,14 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { getIndexedDBItem } from '@/src/shared/utils/indexedDB'
 import { Button } from '@bitovyevolki/ui-kit-int'
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
 import s from './WithoutUploadPhoto.module.scss'
-
-import { FileWithIdAndUrl } from '../CreatePost'
 
 type Props = {
   inputUploadFile: any

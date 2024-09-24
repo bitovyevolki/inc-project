@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { useUploadImagesMutation } from '@/src/features/post/model/posts.service'
 import { AddPostDescription } from '@/src/features/post/ui/addPostDescription/AddPostDescription'
 import { Loader } from '@/src/shared/ui/loader/Loader'
@@ -10,13 +9,12 @@ import { useTranslations } from 'next-intl'
 import { v4 as uuidv4 } from 'uuid'
 
 import s from './createPost.module.scss'
-import s from './createPost.module.scss'
 
 import { Post } from '../../model/posts.service.types'
-import { Crop } from './Crop/Crop'
-import { Filter } from './Filter/Filter'
-import { CreatePostModal } from './createPostModal/CreatePostModal'
-import { WithoutUploadPhoto } from './withoutUploadPhoto/WithoutUploadPhoto'
+import { Crop } from './Crop'
+import { Filter } from './Filter'
+import { CreatePostModal } from './createPostModal'
+import { WithoutUploadPhoto } from './withoutUploadPhoto'
 
 export type FileWithIdAndUrl = {
   file: File
@@ -37,21 +35,18 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
   const [uploadImages, { data, isLoading }] = useUploadImagesMutation()
   const [step, setStep] = useState<StepOption>('crop')
   const [files, setFiles] = useState<FileWithIdAndUrl[]>([])
-  // const [isModalOpen, setIsModalOpen] = useState(true)
   const [hasFile, setHasFile] = useState(false)
   const [uploadImagesId, setUploadImagesId] = useState<any[]>([])
   const [filtredFiles, setFiltredFiles] = useState<FileWithIdAndUrl[]>([])
 
   const [postDescription, setPostDescription] = useState('')
-
-  // const [isModalOpen, setIsModalOpen] = useState(true)
   const [isOpenConfitmCloseModal, setIsOpenConfitmCloseModal] = useState(false)
 
   const onCloseAddPost = () => {
-    if (files.length) {
+    if (files.length !== 0) {
       setIsOpenConfitmCloseModal(true)
     } else {
-      closeModal()
+      closeAllModals()
     }
   }
 
@@ -96,11 +91,11 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     setFiles(prevFiles => [...prevFiles, ...newFiles])
   }
 
-  const onChangeFiles = (updatedFile: FileWithIdAndUrl[]) => {
+  const onUpdateFiles = (updatedFile: FileWithIdAndUrl[]) => {
     setFiles(updatedFile)
   }
 
-  const removeFile = (id: string) => {
+  const onRemoveFile = (id: string) => {
     setFiles(prevFiles => prevFiles.filter(item => item.id !== id))
   }
 
@@ -117,11 +112,6 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     return dataTransfer.files
   }
 
-  const closeModalHandler = () => {
-    closeModal()
-    returnAllChangesFile()
-  }
-
   const handleUpload = () => {
     if (files.length === 0) {
       return
@@ -132,7 +122,13 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     uploadImages({ files: fileList })
   }
 
-  const saveDraft = () => {
+  const closeAllModals = () => {
+    setIsOpenConfitmCloseModal(false)
+    closeModal()
+    returnAllChangesFile()
+  }
+
+  const onSaveDraft = () => {
     const draftFileList = files.map(item => {
       return item.file
     })
@@ -141,10 +137,6 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     closeAllModals()
   }
 
-  const closeAllModals = () => {
-    setIsOpenConfitmCloseModal(false)
-    closeModal()
-  }
   const viewedComponent = (step: StepOption) => {
     switch (step) {
       case 'crop':
@@ -153,9 +145,9 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
             files={files}
             inputUploadFile={inputUploadFile}
             onAddFiles={onAddFiles}
-            onChangeFiles={onChangeFiles}
+            onRemoveFile={onRemoveFile}
             onSelectFile={onSelectFile}
-            removeFile={removeFile}
+            onUpdateFiles={onUpdateFiles}
           />
         )
       case 'filter':
@@ -174,15 +166,12 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
     }
   }
 
-  if (isLoading) {
-    return <Loader />
-  }
-
   return (
-    <div>
+    <>
       <CreatePostModal
+        closeAllModals={closeAllModals}
         handleUpload={handleUpload}
-        hasFile={hasFile}
+        hasFile={files.length > 0}
         isOpen={isOpenModal}
         onOpenChange={onCloseAddPost}
         postDescription={postDescription}
@@ -201,7 +190,7 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
           viewedComponent(step)
         )}
       </CreatePostModal>
-      {files.length === 0 && (
+      {files.length !== 0 && (
         <ModalWindow
           className={s.lastModal}
           onOpenChange={setIsOpenConfitmCloseModal}
@@ -214,11 +203,16 @@ export const CreatePost = ({ addPost, closeModal, isOpenModal }: IProps) => {
               <Button onClick={closeAllModals} variant={'outlined'}>
                 {t('button-discard')}
               </Button>
-              <Button onClick={saveDraft}>{t('button-draft')}</Button>
+              <Button onClick={onSaveDraft}>{t('button-draft')}</Button>
             </div>
           </div>
         </ModalWindow>
       )}
-    </div>
+      {isLoading && (
+        <div className={s.overlay}>
+          <Loader />
+        </div>
+      )}
+    </>
   )
 }

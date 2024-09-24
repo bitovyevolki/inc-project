@@ -1,14 +1,12 @@
 import type { FC, ReactNode } from 'react'
 import { toast } from 'react-toastify'
 
-import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { ArrowBackIcon } from '@/src/shared/assets/icons/arrowBack'
 import { CloseOutlineIcon } from '@/src/shared/assets/icons/close-outline'
-import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Loader } from '@/src/shared/ui/loader/Loader'
+import { removeIndexedDBItem } from '@/src/shared/utils/indexedDB'
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import { Close, Content, Portal, Root } from '@radix-ui/react-dialog'
-import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 
 import s from './CreatePostModal.module.scss'
@@ -18,6 +16,7 @@ import { StepOption } from '../CreatePost'
 
 export type ViewPostModalProps = {
   children: ReactNode
+  closeAllModals: () => void
   handleUpload: () => void
   hasFile: boolean
   isOpen: boolean
@@ -31,6 +30,7 @@ export type ViewPostModalProps = {
 
 export const CreatePostModal: FC<ViewPostModalProps> = ({
   children,
+  closeAllModals,
   handleUpload,
   hasFile,
   isOpen,
@@ -42,9 +42,7 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
   uploadImagesId,
 }) => {
   const t = useTranslations('CreatePost')
-  const [createPost, { isLoading: LoadingPost, isSuccess }] = useCreatePostMutation()
-  const { data: meData, isLoading: LoadingMe } = useMeQuery()
-  const router = useRouter()
+  const [createPost, { isLoading: LoadingPost }] = useCreatePostMutation()
   const isLoading = LoadingPost
   const addTitle = (step: StepOption) => {
     switch (step) {
@@ -66,7 +64,7 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
       handleUpload()
     }
     if (step === 'publish') {
-      handleSubmit()
+      handleCreatePost()
     }
   }
 
@@ -82,7 +80,7 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
     }
   }
 
-  const handleSubmit = async () => {
+  const handleCreatePost = async () => {
     if (!uploadImagesId) {
       return
     }
@@ -90,8 +88,8 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
     try {
       await createPost({ childrenMetadata: uploadImagesId, description: postDescription }).unwrap()
       toast.success(t('toast-message.success'))
-      // router.push(`${RouterPaths.MY_PROFILE}/${meData?.userId}`)
-      onOpenChange(false)
+      closeAllModals()
+      removeIndexedDBItem('files')
     } catch (error) {
       toast.error(t('toast-message.error'))
     }
@@ -100,7 +98,11 @@ export const CreatePostModal: FC<ViewPostModalProps> = ({
   const title = hasFile ? addTitle(step) : t('add-photo.title')
 
   if (isLoading) {
-    return <Loader />
+    return (
+      <div className={s.overlayLoader}>
+        <Loader />
+      </div>
+    )
   }
 
   return (

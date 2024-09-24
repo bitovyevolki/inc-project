@@ -18,24 +18,24 @@ import 'cropperjs/dist/cropper.css'
 import s from './Crop.module.scss'
 
 import { FileWithIdAndUrl } from '../CreatePost'
-import { SliderPostImages } from '../SliderPostImages/SliderPostImages'
+import { SliderPostImages } from '../SliderPostImages'
 
 type Props = {
   files: FileWithIdAndUrl[]
   inputUploadFile: RefObject<HTMLInputElement>
   onAddFiles: (addedFiles: FileList | null) => void
-  onChangeFiles: (files: FileWithIdAndUrl[]) => void
+  onRemoveFile: (id: string) => void
   onSelectFile: () => void
-  removeFile: (id: string) => void
+  onUpdateFiles: (files: FileWithIdAndUrl[]) => void
 }
 
 export const Crop = ({
   files,
   inputUploadFile,
   onAddFiles,
-  onChangeFiles,
+  onRemoveFile,
   onSelectFile,
-  removeFile,
+  onUpdateFiles,
 }: Props) => {
   const [openedOptions, setOpenedOptions] = useState<null | string>(null)
   const [aspectRatioValue, setAspectRatioValue] = useState('1')
@@ -62,9 +62,9 @@ export const Crop = ({
       toast.warning('The number of files is too large, please upload the file less than 10')
       const lastTenFiles = files.slice(-10)
 
-      onChangeFiles(lastTenFiles)
+      onUpdateFiles(lastTenFiles)
     }
-  }, [files, onChangeFiles])
+  }, [files, onUpdateFiles])
 
   useEffect(() => {
     if (files) {
@@ -91,18 +91,16 @@ export const Crop = ({
     }
   }, [imageRef, cropper, aspectRatioValue, currentFile, isCropperActive])
 
-  const onSliderChange = useCallback(
-    (value: number[]) => {
-      if (cropper) {
-        cropper.zoomTo(value[0] / 10)
-      }
-    },
-    [cropper]
-  )
+  const onSliderChange = (value: number[]) => {
+    if (cropper) {
+      cropper.zoomTo(value[0] / 10)
+    }
+  }
 
   useEffect(() => {
     onSliderChange(sliderValue)
-  }, [sliderValue, onSliderChange])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sliderValue])
 
   const onCropConfirm = () => {
     if (cropper) {
@@ -116,7 +114,7 @@ export const Crop = ({
             file.id === currentFile?.id ? { ...file, url: newUrl } : file
           )
 
-          onChangeFiles(updatedFiles)
+          onUpdateFiles(updatedFiles)
           setIsCropperActive(false)
           cropper.destroy()
           setCropper(null)
@@ -289,7 +287,7 @@ export const Crop = ({
                     <div className={clsx(s.block, s.removeImage)}>
                       <DeleteImageIcon
                         onClick={() => {
-                          removeFile(item.id)
+                          onRemoveFile(item.id)
                         }}
                       />
                     </div>

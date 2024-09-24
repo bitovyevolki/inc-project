@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { LinearCopy } from 'gl-react'
 import { Surface } from 'gl-react-dom'
@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl'
 import s from './Filter.module.scss'
 
 import { FileWithIdAndUrl } from '../CreatePost'
-import { SliderPostImages } from '../SliderPostImages/SliderPostImages'
+import { SliderPostImages } from '../SliderPostImages'
 import { FilterItem } from './FilterItem'
 import colorScales from './colorScales'
 export { colorScales }
@@ -25,17 +25,20 @@ export const Filter = ({ files, filtredFiles, setFiltredFiles }: Props) => {
   const [filter, setFilter] = useState('')
   const [imageSizes, setImageSizes] = useState({ height: 0, width: 0 })
 
-  const filterList = [
-    { brightness: 1, contrast: 1, name: t('original'), saturation: 1 },
-    { brightness: 1.3, contrast: 1, name: t('bright'), saturation: 1 },
-    { brightness: 1.1, contrast: 1.3, name: t('contrast'), saturation: 1 },
-    { brightness: 1, contrast: 1, name: t('saturation'), saturation: 1.5 },
-    { brightness: 1, contrast: 1, name: t('subdued'), saturation: 0.7 },
-    { brightness: 1.5, contrast: 1, name: t('light'), saturation: 0.9 },
-    { brightness: 0.7, contrast: 1.2, name: t('dark'), saturation: 1 },
-    { brightness: 1, contrast: 1.1, name: t('soft-contrast'), saturation: 1 },
-    { brightness: 1, contrast: 1, name: t('black-and-white'), saturation: 0 },
-  ]
+  const filterList = useMemo(
+    () => [
+      { brightness: 1, contrast: 1, name: t('original'), saturation: 1 },
+      { brightness: 1.3, contrast: 1, name: t('bright'), saturation: 1 },
+      { brightness: 1.1, contrast: 1.3, name: t('contrast'), saturation: 1 },
+      { brightness: 1, contrast: 1, name: t('saturation'), saturation: 1.5 },
+      { brightness: 1, contrast: 1, name: t('subdued'), saturation: 0.7 },
+      { brightness: 1.5, contrast: 1, name: t('light'), saturation: 0.9 },
+      { brightness: 0.7, contrast: 1.2, name: t('dark'), saturation: 1 },
+      { brightness: 1, contrast: 1.1, name: t('soft-contrast'), saturation: 1 },
+      { brightness: 1, contrast: 1, name: t('black-and-white'), saturation: 0 },
+    ],
+    [t]
+  )
 
   const surfaceRefs = useRef<Array<any>>(filterList.map(() => React.createRef()))
 
@@ -55,36 +58,42 @@ export const Filter = ({ files, filtredFiles, setFiltredFiles }: Props) => {
     }
   }, [slideIndex, filtredFiles])
 
-  const changeBright = (newFilter: string, surfaceRef: any) => {
-    if (filter !== newFilter) {
-      setFilter(newFilter)
-      saveImageAsFile(surfaceRef)
-    }
-  }
+  const saveImageAsFile = useCallback(
+    (surfaceRef: any) => {
+      if (surfaceRef.current) {
+        const canvas = surfaceRef.current.glView.canvas
 
-  const saveImageAsFile = (surfaceRef: any) => {
-    if (surfaceRef.current) {
-      const canvas = surfaceRef.current.glView.canvas
+        canvas.width = imageSizes.width
+        canvas.height = imageSizes.height
+        requestAnimationFrame(() => {
+          canvas.toBlob((blob: Blob | null) => {
+            if (blob) {
+              const newFile = new File([blob], 'filtered-image.png', { type: 'image/png' })
+              const newUrl = URL.createObjectURL(newFile)
+              const changedFile = { file: newFile, id: filtredFiles[slideIndex].id, url: newUrl }
+              const newArrFiles = filtredFiles.map(el =>
+                el.id === changedFile.id ? changedFile : el
+              )
 
-      canvas.width = imageSizes.width
-      canvas.height = imageSizes.height
-      requestAnimationFrame(() => {
-        canvas.toBlob((blob: Blob | null) => {
-          if (blob) {
-            const newFile = new File([blob], 'filtered-image.png', { type: 'image/png' })
-            const newUrl = URL.createObjectURL(newFile)
-            const changedFile = { file: newFile, id: filtredFiles[slideIndex].id, url: newUrl }
-            const newArrFiles = filtredFiles.map(el =>
-              el.id === changedFile.id ? changedFile : el
-            )
+              setFiltredFiles(newArrFiles)
+              setFilter('')
+            }
+          }, 'image/png')
+        })
+      }
+    },
+    [imageSizes, filtredFiles, slideIndex, setFiltredFiles, setFilter]
+  )
 
-            setFiltredFiles(newArrFiles)
-            setFilter('')
-          }
-        }, 'image/png')
-      })
-    }
-  }
+  const changeBright = useCallback(
+    (newFilter: string, surfaceRef: any) => {
+      if (filter !== newFilter) {
+        setFilter(newFilter)
+        saveImageAsFile(surfaceRef)
+      }
+    },
+    [filter, setFilter, saveImageAsFile]
+  )
 
   const filtersMemo = useMemo(() => {
     return (

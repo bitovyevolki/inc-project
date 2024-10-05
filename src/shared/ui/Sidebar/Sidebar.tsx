@@ -81,7 +81,7 @@ export const Sidebar = () => {
           <LogoutIcon />
           <Button onClick={() => setIsModalOpen(true)} variant={'ghost'}>
             <Typography as={'p'} variant={'h4'}>
-              Log Out
+              {t('logout')}
             </Typography>
           </Button>
         </div>

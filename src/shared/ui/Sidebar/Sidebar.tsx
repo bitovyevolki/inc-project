@@ -46,7 +46,7 @@ export const Sidebar = () => {
       title: t('my-profile'),
     },
     { path: RouterPaths.HOME, svg: MessengerIcon, title: t('messenger') },
-    { path: RouterPaths.HOME, svg: SearchIcon, title: t('search') },
+    { path: RouterPaths.SEARCH, svg: SearchIcon, title: t('search') },
     { path: RouterPaths.HOME, svg: StatisticsIcon, title: t('statistics') },
     { path: RouterPaths.HOME, svg: FavoritesIcon, title: t('favorites') },
   ]

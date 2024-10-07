@@ -13,4 +13,5 @@ export enum RouterPaths {
   SIGN_UP = '/auth/sign-up',
   TERMS_OF_SERVICE = '/auth/terms-of-service',
   VERIFICATION_LINK = '/auth/verification-link',
+  SEARCH = '/search',
 }

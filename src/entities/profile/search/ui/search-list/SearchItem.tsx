@@ -21,7 +21,10 @@ export const SearchItem = ({ user }: SearchItemProps) => {
       </div>
       <div>
         <div className={s.nameField}>
-          <Typography variant={'link1'}>{user.userName}</Typography>
+          <Typography variant={'link1'}>
+            {user.userName.slice(0, 18)}
+            {user.userName.length > 18 ? '...' : ''}
+          </Typography>
         </div>
         <div>
           <Typography variant={'subTitle2'}>{`${user.firstName} ${user.lastName}`}</Typography>

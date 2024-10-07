@@ -55,7 +55,7 @@ export const ProfileIntro = ({
       {postOwner && withMenu && (
         <Popover.Root>
           <Popover.Trigger asChild>
-            <EllipsisIcon className={s.ellipsisIcon} />
+            <EllipsisIcon className={s.ellipsisIcon} fill={'#397DF6'} />
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>

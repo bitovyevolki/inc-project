@@ -1,0 +1,19 @@
+import { inctagramService } from '@/src/shared/model/inctagram.service'
+import { IUsersResponse } from '../model/user-model'
+
+export const UserService = inctagramService.injectEndpoints({
+  endpoints: builder => {
+    return {
+      getUserByUserName: builder.query<IUsersResponse, { userName: string }>({
+        query: ({ userName }) => {
+          return {
+            method: 'GET',
+            url: `/v1/users`,
+          }
+        },
+      }),
+    }
+  },
+})
+
+export const { useGetUserByUserNameQuery } = UserService

@@ -55,6 +55,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const showSettingsButton = meData?.userId === profileData?.id
 
   const closeViewPostModalHandler = () => {
+    removeQueryParamHandler('postId')
     setIsViewPostModalOpen(false)
   }
 
@@ -118,7 +119,6 @@ export const ShowPosts = ({ post, profileId }: Props) => {
           closePostModal={closeViewPostModalHandler}
           deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
           post={post as Post}
-          removeQuery={removeQueryParamHandler}
           userName={profileData?.userName as string}
         />
       </ViewPostModal>

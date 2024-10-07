@@ -21,14 +21,14 @@ import Image from 'next/image'
 
 import s from './viewPost.module.scss'
 
+import { usePostsParams } from '../../lib/hooks/usePostsParams'
 import { Post } from '../../model/posts.service.types'
 
 type Props = {
   avatars?: IProfile['avatars']
-  closePostModal?: () => void
+  closePostModal: () => void
   deletePostFromCombinedPostsArray?: (postId: number) => void
   post: Post
-  removeQuery: (param: string) => void
   userName: string
 }
 
@@ -37,7 +37,6 @@ export const ViewPost = ({
   closePostModal,
   deletePostFromCombinedPostsArray,
   post,
-  removeQuery,
   userName,
 }: Props) => {
   const { data: commentsData } = useGetPostCommentsQuery({ postId: post?.id })
@@ -51,24 +50,19 @@ export const ViewPost = ({
   const [deletePost] = useDeletePostByIdMutation()
   const [updatePost] = useUpdatePostByIdMutation()
 
-  const inputRef = useRef<HTMLTextAreaElement | null>(null)
+  const { changeQueryHandler } = usePostsParams()
 
-  useEffect(() => {
-    return () => {
-      removeQuery('postId')
-    }
-  }, [removeQuery])
+  const [inputValue, setInputValue] = useState('')
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   const copyUrlToClipboardHandler = () => {
     navigator.clipboard.writeText(window.location.toString())
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleSubmit = () => {
+    const content = inputValue
 
-    const formData = new FormData(event.currentTarget)
-    const data = Object.fromEntries(formData)
-    const content = JSON.stringify(data.leaveComment)
+    setInputValue('')
 
     createComment({ content, postId: post?.id })
       .unwrap()
@@ -92,9 +86,9 @@ export const ViewPost = ({
     })
       .unwrap()
       .then(() => {
-        setIsEditMode(false)
-        closePostModal && closePostModal()
         toast.success('Post description updated', { position: 'top-right' })
+        changeQueryHandler(post.id as number)
+        setIsEditMode(false)
       })
       .catch(err => {
         toast.error(`Error updating post: ${err}`, { position: 'top-right' })
@@ -106,7 +100,7 @@ export const ViewPost = ({
       .unwrap()
       .then(() => {
         deletePostFromCombinedPostsArray && deletePostFromCombinedPostsArray(post?.id as number)
-        closePostModal && closePostModal()
+        closePostModal()
         toast.success('Post deleted', { position: 'top-right' })
         setTimeout(() => (document.body.style.pointerEvents = ''), 0)
       })
@@ -173,7 +167,7 @@ export const ViewPost = ({
             </div>
           ) : (
             <div>
-              <span>{post?.userName}</span>
+              {/* <span>{post?.userName}</span> */}
               <span className={s.post}>{post?.description}</span>
             </div>
           )}
@@ -195,9 +189,11 @@ export const ViewPost = ({
                   <Input
                     inputMode={'text'}
                     name={'leaveComment'}
+                    onChange={e => setInputValue(e.currentTarget.value)}
                     placeholder={'Add a comment...'}
+                    value={inputValue}
                   />
-                  <Button type={'submit'} variant={'ghost'}>
+                  <Button disabled={inputValue.length === 0} type={'submit'} variant={'ghost'}>
                     Publish
                   </Button>
                 </form>

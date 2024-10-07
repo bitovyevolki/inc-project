@@ -8,10 +8,16 @@ interface SearchItemProps {
 }
 
 export const SearchItem = ({ user }: SearchItemProps) => {
+  const avatarUrl = user.avatars && user.avatars.length > 0 ? user.avatars[0].url : ''
+
   return (
     <div className={s.wrap}>
       <div>
-        <Image alt={''} className={s.avatar} height={30} src={user.avatars?.[0]?.url} width={30} />
+        {avatarUrl ? (
+          <Image alt={'avatar'} className={s.avatar} height={30} src={avatarUrl} width={30} />
+        ) : (
+          <div className={s.withoutAvatar}>{user.userName.slice(0, 2)}</div>
+        )}
       </div>
       <div>
         <div className={s.nameField}>

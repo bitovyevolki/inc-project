@@ -22,5 +22,5 @@ export interface IUsersResponse {
   pageSize: number
   prevCursor: number
   nextCursor: number
-  items: IUser // Предполагается, что здесь будет один объект IUser
+  items: IUser[] // Предполагается, что здесь будет один объект IUser
 }

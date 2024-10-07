@@ -1,0 +1,27 @@
+.wrap {
+  display: flex;
+}
+
+.searchList {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  justify-content: start;
+
+  width: 100%;
+  padding: 40px 24px;
+}
+
+.searchWrapper {
+  width: 100%;
+}
+
+.title {
+  padding-bottom: 13px;
+}
+
+.parag {
+  margin-top: 30px;
+  margin-bottom: 17px;
+}

@@ -165,6 +165,10 @@
     "without-photo": {
       "button-select-files": "Выбрать",
       "button-draft": "Открыть черновик"
+    },
+    "Search-page": {
+      "Search-placeholder": "Поиск",
+      "Requests": "Отправить запрос"
     }
   }
 }

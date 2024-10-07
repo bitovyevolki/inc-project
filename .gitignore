@@ -36,3 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 *storybook.log
+
+tsconfig.json
+vite.config
+vite.config.ts

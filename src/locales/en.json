@@ -164,6 +164,11 @@
       "success": "Successfully created post",
       "error": "Failed to create post"
     },
+
+    "Search-page": {
+      "Search-placeholder": "Search",
+      "Requests": "Resend Requests"
+    },
     "without-photo": {
       "button-select-files": "Select from Computer",
       "button-draft": "Open draft"

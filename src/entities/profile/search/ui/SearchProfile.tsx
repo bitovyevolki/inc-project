@@ -1,10 +1,11 @@
 import { useParamsHook } from '@/src/shared/hooks/useParamsHook'
 import { Sidebar } from '@/src/shared/ui/Sidebar/Sidebar'
 import { Input, Typography } from '@bitovyevolki/ui-kit-int'
+import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useGetUserByUserNameQuery } from '../api/search.services'
-import { IUser, IUsersResponse } from '../model/user-model'
+import { IUser } from '../model/user-model'
 import { SearchItem } from './search-list/SearchItem'
 import s from './search.module.scss'
 

@@ -27,7 +27,9 @@ export const SearchItem = ({ user }: SearchItemProps) => {
           </Typography>
         </div>
         <div>
-          <Typography variant={'subTitle2'}>{`${user.firstName} ${user.lastName}`}</Typography>
+          <Typography variant={'subTitle2'}>
+            {user.firstName ? `${user.firstName} ${user.lastName}` : 'Name LastName'}
+          </Typography>
         </div>
       </div>
     </div>

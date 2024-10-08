@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef } from 'react'
 
-import { formatImage } from '@/src/entities/profile/lib/utils/image'
+import { formatImage } from '@/src/entities/profile/userProfile/lib/utils/image'
 
 import { ITempProfilePhoto } from '../../model/types/profile'
 

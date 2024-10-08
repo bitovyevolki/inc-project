@@ -2,7 +2,7 @@ import * as React from 'react'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { IProfile } from '@/src/entities/profile/model/types/profile'
+import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import {
   useCreateCommentToPostMutation,

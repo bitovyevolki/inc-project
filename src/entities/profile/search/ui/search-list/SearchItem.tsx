@@ -1,5 +1,6 @@
-import { Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
+import Link from 'next/link'
 import { IUser } from '../../model/user-model'
 import s from './searchItem.module.scss'
 
@@ -21,10 +22,12 @@ export const SearchItem = ({ user }: SearchItemProps) => {
       </div>
       <div>
         <div className={s.nameField}>
-          <Typography variant={'link1'}>
-            {user.userName.slice(0, 18)}
-            {user.userName.length > 18 ? '...' : ''}
-          </Typography>
+          <Link href={`/profile/${user.id}`}>
+            <Typography variant={'link1'}>
+              {user.userName.slice(0, 18)}
+              {user.userName.length > 18 ? '...' : ''}
+            </Typography>
+          </Link>
         </div>
         <div>
           <Typography variant={'subTitle2'}>{`${user.firstName} ${user.lastName}`}</Typography>

@@ -14,10 +14,10 @@
   margin: 48px auto 0;
 
   .galleryItem {
+    cursor: pointer;
     position: relative;
     width: calc(25% - 12px);
     height: 300px;
-    cursor: pointer;
   }
 }
 
@@ -60,4 +60,30 @@
   max-width: 972px;
   min-height: 636px;
   max-height: unset;
+}
+
+.info {
+  padding-top: 35px;
+}
+
+.desc {
+  width: 730px;
+  height: 73px;
+}
+
+.bnts {
+  display: flex;
+  gap: 12px;
+}
+
+.followers {
+  display: flex;
+  gap: 100px;
+  margin-top: 26px;
+  margin-bottom: 28px;
+}
+
+.profile {
+  display: flex;
+  justify-content: space-between;
 }

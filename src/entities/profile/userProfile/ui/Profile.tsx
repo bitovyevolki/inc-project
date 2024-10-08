@@ -9,7 +9,7 @@ import '@bitovyevolki/ui-kit-int/dist/style.css'
 import s from './Profile.module.scss'
 
 import { ProfileContentType } from '../model/types/profile'
-import { Devices } from '../profileDevices'
+import { Devices } from '../../profileDevices'
 import AccountManagement from './AccountManagement/AccountManagement'
 import { GeneralInformation } from './GeneralInformation/GeneralInformation'
 import { MyPayments } from './MyPayments/MyPayments'

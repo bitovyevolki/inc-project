@@ -1,5 +1,5 @@
-import { useMoveImage } from '@/src/entities/profile/lib/hooks/useMoveImage'
-import { ITempProfilePhoto } from '@/src/entities/profile/model/types/profile'
+import { useMoveImage } from '@/src/entities/profile/userProfile/lib/hooks/useMoveImage'
+import { ITempProfilePhoto } from '@/src/entities/profile/userProfile/model/types/profile'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { motion } from 'framer-motion'

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 
-import { IProfile } from '@/src/entities/profile/model/types/profile'
+import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { DeleteIcon } from '@/src/shared/assets/icons/delete'
 import { EditIcon } from '@/src/shared/assets/icons/edit'
 import { EllipsisIcon } from '@/src/shared/assets/icons/ellipsis'

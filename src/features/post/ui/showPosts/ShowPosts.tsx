@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 
-import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
-import { GetProfileByIdArgs } from '@/src/entities/profile/model/types/profile'
+import { useGetProfileByIdQuery } from '@/src/entities/profile/userProfile/api/profile.service'
+import { GetProfileByIdArgs } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { CreatePost, ViewPost } from '@/src/features/post/ui'
 import { ViewPostModal } from '@/src/features/post/ui/viewPostModal/ViewPostModal'
@@ -19,6 +19,8 @@ import { usePosts } from '../../lib/hooks/usePosts'
 import { usePostsParams } from '../../lib/hooks/usePostsParams'
 import { Post } from '../../model/posts.service.types'
 import baseUserPhoto from './../../../../../public/image/default-post.png'
+import { UserBtn } from './menus/userMenu/UserBtn'
+import { ProfileBtn } from './menus/profileMenu/ProfileBtn'
 
 type Props = {
   post: Post | null
@@ -78,24 +80,31 @@ export const ShowPosts = ({ post, profileId }: Props) => {
               src={(profileData?.avatars[0]?.url as string) || baseUserPhoto}
             />
           </div>
-          <div className={s.textPresentation}>
-            <Typography as={'p'} className={s.userName} variant={'h3'}>
-              {profileData?.userName}
-            </Typography>
-            <Typography as={'p'} variant={'body1'}>
-              {profileData?.aboutMe}
-            </Typography>
-            {showSettingsButton && (
-              // @ts-ignore
-              <Button
-                as={Link}
-                className={s.settingsButton}
-                href={`/personal-info`}
-                variant={'primary'}
-              >
-                Profile Settings
-              </Button>
+          <div className={s.info}>
+            {showSettingsButton ? (
+              <ProfileBtn profileData={profileData} showSettingsButton={showSettingsButton} />
+            ) : (
+              <UserBtn profileData={profileData} />
             )}
+            <div className={s.followers}>
+              <div>
+                <div>2222</div>
+                <div>Following</div>
+              </div>
+              <div>
+                <div>3333</div>
+                <div>Followers</div>
+              </div>
+              <div>
+                <div>4444</div>
+                <div>Publications</div>
+              </div>
+            </div>
+            <div className={s.desc}>
+              <Typography as={'p'} variant={'body1'}>
+                {profileData?.aboutMe}
+              </Typography>
+            </div>
           </div>
         </div>
         <div className={s.postsGallery}>

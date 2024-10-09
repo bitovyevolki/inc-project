@@ -2,8 +2,8 @@ import { PointerEvent, useRef, useState } from 'react'
 
 import { useDragControls } from 'framer-motion'
 
-import { getCroppedImg } from '../utils/createImage'
 import { ITempProfilePhoto } from '../../model/types/profile'
+import { getCroppedImg } from '../utils/createImage'
 
 export const useMoveImage = (photo: ITempProfilePhoto) => {
   const dragControls = useDragControls()

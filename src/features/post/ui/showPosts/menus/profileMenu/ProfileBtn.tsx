@@ -1,5 +1,6 @@
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
+
 import s from './profileBtn.module.scss'
 
 interface profileDataProps {

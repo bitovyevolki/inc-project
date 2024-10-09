@@ -63,7 +63,7 @@ export const GeneralInformationForm = ({
             variant={'large'}
           />
         </div>
-        <FormInput control={control} label={t('select-city')} name={'city'} />
+        <FormInput control={control} label={t('enter-city')} name={'city'} />
       </div>
       <div>
         <FormTextarea control={control} label={t('about-me')} name={'aboutMe'} />

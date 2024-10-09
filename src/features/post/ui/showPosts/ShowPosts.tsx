@@ -19,8 +19,8 @@ import { usePosts } from '../../lib/hooks/usePosts'
 import { usePostsParams } from '../../lib/hooks/usePostsParams'
 import { Post } from '../../model/posts.service.types'
 import baseUserPhoto from './../../../../../public/image/default-post.png'
-import { UserBtn } from './menus/userMenu/UserBtn'
 import { ProfileBtn } from './menus/profileMenu/ProfileBtn'
+import { UserBtn } from './menus/userMenu/UserBtn'
 
 type Props = {
   post: Post | null

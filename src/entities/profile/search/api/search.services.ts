@@ -1,11 +1,12 @@
 import { inctagramService } from '@/src/shared/model/inctagram.service'
+
 import { IUsersResponse } from '../model/user-model'
 
 export const UserService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
-      getUserByUserName: builder.query<IUsersResponse, { userName: string; cursor?: number }>({
-        query: ({ userName, cursor }) => {
+      getUserByUserName: builder.query<IUsersResponse, { cursor?: number; userName: string }>({
+        query: ({ cursor, userName }) => {
           const queryParams = new URLSearchParams({
             search: userName,
           })

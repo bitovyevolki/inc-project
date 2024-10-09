@@ -4,12 +4,13 @@ import { toast } from 'react-toastify'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button, IOption } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 import s from './GeneralInformation.module.scss'
 
 import { useGetProfileQuery, useUpdateProfileMutation } from '../../api/profile.service'
-import countriesJson from '../../model/mock/countries.json'
+import countriesEnJson from '../../model/mock/countries.en.json'
+import countriesRuJson from '../../model/mock/countries.ru.json'
 import {
   GeneralProfileFormValue,
   generalProfileSchema,
@@ -20,11 +21,16 @@ import { UpdatePhotoBox } from './UpdatePhotoBox/UpdatePhotoBox'
 export const GeneralInformation = () => {
   const t = useTranslations('GeneralProfile')
 
+  const locale = useLocale()
+
   const { data, isFetching, isLoading } = useGetProfileQuery()
 
   const [updateProfile, { isLoading: isLoadingUpdate }] = useUpdateProfileMutation()
 
-  const countries: IOption[] = countriesJson.map(el => ({ label: el.name, value: el.name }))
+  const countries: IOption[] =
+    locale === 'en'
+      ? countriesEnJson.map(el => ({ label: el.name, value: el.code }))
+      : countriesRuJson.map(el => ({ label: el.name, value: el.code }))
 
   const {
     control,

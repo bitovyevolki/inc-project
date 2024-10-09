@@ -9,9 +9,9 @@ export enum RouterPaths {
   PRIVACY_POLICY = '/auth/privacy-policy',
   RECOVERY = '/auth/recovery',
   REGISTRATION_CONFIRMATION = '/auth/registration-confirmation',
+  SEARCH = '/search',
   SIGN_IN = '/auth/sign-in',
   SIGN_UP = '/auth/sign-up',
   TERMS_OF_SERVICE = '/auth/terms-of-service',
   VERIFICATION_LINK = '/auth/verification-link',
-  SEARCH = '/search',
 }

@@ -1,26 +1,26 @@
 export interface IAvatar {
+  createdAt: string // Формат даты
+  fileSize: number
+  height: number
   url: string
   width: number
-  height: number
-  fileSize: number
-  createdAt: string // Формат даты
 }
 
 export interface IUser {
-  id: number
-  userName: string
-  firstName: string
-  lastName: string
   avatars: IAvatar[] // Массив объектов аватаров
   createdAt: string // Формат даты
+  firstName: string
+  id: number
+  lastName: string
+  userName: string
 }
 
 export interface IUsersResponse {
-  totalCount: number
-  pagesCount: number
+  items: IUser[] // Предполагается, что здесь будет один объект IUser
+  nextCursor: number
   page: number
   pageSize: number
+  pagesCount: number
   prevCursor: number
-  nextCursor: number
-  items: IUser[] // Предполагается, что здесь будет один объект IUser
+  totalCount: number
 }

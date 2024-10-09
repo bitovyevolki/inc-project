@@ -1,179 +1,176 @@
 .content {
-	position: relative;
-	max-width: 600px;
-	max-height: 70vh;
+  position: relative;
+  max-width: 600px;
+  max-height: 70vh;
 }
 
 .controls {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	left: 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
-	padding: 11px;
+  padding: 11px;
 }
 
 .leftControls {
-	display: flex;
-	gap: 24px;
+  display: flex;
+  gap: 24px;
 }
 
-
 .block {
-	cursor: pointer;
+  cursor: pointer;
 
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-	width: 36px;
-	height: 36px;
+  width: 36px;
+  height: 36px;
 
-	opacity: 0.8;
-	background: rgba(23 23 23);
-	border-radius: 2px;
+  opacity: 0.8;
+  background: rgba(23 23 23);
+  border-radius: 2px;
 
-	transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 
-	&:hover {
-		opacity: 1;
-	}
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .trigger {
-	position: relative;
-	z-index: 2;
+  position: relative;
+  z-index: 2;
 }
 
 .options {
-	position: absolute;
-	z-index: 2;
-	bottom: 40px;
+  position: absolute;
+  z-index: 2;
+  bottom: 40px;
 
-	opacity: 0.8;
-	background: rgba(23 23 23);
-	border-radius: 2px;
-
-
+  opacity: 0.8;
+  background: rgba(23 23 23);
+  border-radius: 2px;
 }
 
 .scale {
-	display: flex;
-	flex-direction: column;
-	width: 156px;
+  display: flex;
+  flex-direction: column;
+  width: 156px;
 
-	.scaleItem {
-		cursor: pointer;
+  .scaleItem {
+    cursor: pointer;
 
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-		padding: 10px 13px;
+    padding: 10px 13px;
 
-		&:hover {
-			background-color: rgba(255 255 255 / 10%);
-		}
-	}
+    &:hover {
+      background-color: rgba(255 255 255 / 10%);
+    }
+  }
 
-	:nth-child(2){
-		&::after {
-			content: "";
+  :nth-child(2) {
+    &::after {
+      content: '';
 
-			width: 18px;
-			height: 18px;
+      width: 18px;
+      height: 18px;
 
-			border: 2px solid var(--color-light-900);
-			border-radius: 3px;
-		}
-	}
+      border: 2px solid var(--color-light-900);
+      border-radius: 3px;
+    }
+  }
 
-	:nth-child(3){
-		&::after {
-			content: "";
+  :nth-child(3) {
+    &::after {
+      content: '';
 
-			width: 18px;
-			height: 26px;
+      width: 18px;
+      height: 26px;
 
-			border: 2px solid var(--color-light-900);
-			border-radius: 3px;
-		}
-	}
+      border: 2px solid var(--color-light-900);
+      border-radius: 3px;
+    }
+  }
 
-	:nth-child(4){
-		&::after {
-			content: "";
+  :nth-child(4) {
+    &::after {
+      content: '';
 
-			width: 26px;
-			height: 20px;
+      width: 26px;
+      height: 20px;
 
-			border: 2px solid var(--color-light-900);
-			border-radius: 3px;
-		}
-	}
+      border: 2px solid var(--color-light-900);
+      border-radius: 3px;
+    }
+  }
 }
 
 .slider {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
 }
 
 .currentImage {
-	display: block !important;
+  display: block !important;
 }
 
 .imagesWrapper {
-	right: 0;
-	max-width: 350px;
-	padding: 12px;
+  right: 0;
+  max-width: 350px;
+  padding: 12px;
 
-	.images {
-		scrollbar-width: none;
+  .images {
+    scrollbar-width: none;
 
-		overflow-x: auto;
-		display: flex;
-		gap: 12px;
+    overflow-x: auto;
+    display: flex;
+    gap: 12px;
 
-		width: 100%;
+    width: 100%;
 
-		-ms-overflow-style: none;
-	}
+    -ms-overflow-style: none;
+  }
 
-	.imageItem {
-		position: relative;
-		width: 82px;
-		height: 80px;
+  .imageItem {
+    position: relative;
+    width: 82px;
+    height: 80px;
 
-		.block {
-			width: fit-content;
-			height: fit-content;
-			padding: 3px;
-		}
+    .block {
+      width: fit-content;
+      height: fit-content;
+      padding: 3px;
+    }
 
-		.removeImage{
-			position: absolute;
-			top: 2px;
-			right: 2px;
-		}
-	}
+    .removeImage {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+    }
+  }
 
-	.addFiles {
-		cursor: pointer;
-	}
+  .addFiles {
+    cursor: pointer;
+  }
 }
 
 .cropConfirm {
-	position: absolute;
-	z-index: 1;
-	top: 5px;
-	right: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  right: 5px;
 
-	&::before {
-		content: '\2713';
-	}
+  &::before {
+    content: '\2713';
+  }
 }

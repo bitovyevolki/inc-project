@@ -1,25 +1,24 @@
 .slideContainer {
-	max-height: 60vh;
+  max-height: 60vh;
 }
 
 .dots {
-	position: absolute;
-	z-index: 1;
-	top: 0;
+  position: absolute;
+  z-index: 1;
+  top: 0;
 }
 
 .dot {
-	content: '';
+  content: '';
 
-	width: 8px;
-	height: 8px;
-	
-	opacity: 1;
-	background: var(--color-light-900);
-	border-radius: 50%;
+  width: 8px;
+  height: 8px;
 
+  opacity: 1;
+  background: var(--color-light-900);
+  border-radius: 50%;
 }
 
 .dotActive {
-  background: #397DF6;
+  background: #397df6;
 }

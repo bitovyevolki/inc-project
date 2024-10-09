@@ -1,8 +1,10 @@
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 import Link from 'next/link'
-import { IUser } from '../../model/user-model'
+
 import s from './searchItem.module.scss'
+
+import { IUser } from '../../model/user-model'
 
 interface SearchItemProps {
   user: IUser

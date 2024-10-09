@@ -1,5 +1,7 @@
-import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import { useState } from 'react'
+
+import { Button, Typography } from '@bitovyevolki/ui-kit-int'
+
 import s from './userBnt.module.scss'
 
 interface profileDataProps {
@@ -22,15 +24,15 @@ export const UserBtn = ({ profileData }: profileDataProps) => {
       </div>
       <div className={s.bnts}>
         {follow ? (
-          <Button variant="outlined" onClick={handlerChange}>
+          <Button onClick={handlerChange} variant={'outlined'}>
             Unfollow
           </Button>
         ) : (
-          <Button variant="primary" onClick={handlerChange}>
+          <Button onClick={handlerChange} variant={'primary'}>
             Follow
           </Button>
         )}
-        <Button variant="secondary">Send Message</Button>
+        <Button variant={'secondary'}>Send Message</Button>
       </div>
     </div>
   )

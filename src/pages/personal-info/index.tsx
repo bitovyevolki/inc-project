@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 
-import { Profile } from '@/src/entities/profile'
+import { Profile } from '@/src/entities/profile/userProfile'
 import { Layout } from '@/src/shared/ui/Layout/Layout'
 import { GetServerSideProps } from 'next'
 

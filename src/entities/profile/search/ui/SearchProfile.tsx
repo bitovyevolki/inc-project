@@ -1,12 +1,14 @@
+import { useEffect, useState } from 'react'
+
 import { useParamsHook } from '@/src/shared/hooks/useParamsHook'
 import { Sidebar } from '@/src/shared/ui/Sidebar/Sidebar'
 import { Input, Typography } from '@bitovyevolki/ui-kit-int'
-import { useEffect } from 'react'
-import { useState } from 'react'
+
+import s from './search.module.scss'
+
 import { useGetUserByUserNameQuery } from '../api/search.services'
 import { IUser, IUsersResponse } from '../model/user-model'
 import { SearchItem } from './search-list/SearchItem'
-import s from './search.module.scss'
 
 export const SearchProfile = () => {
   const { changeQueryHandler, searchParams } = useParamsHook()
@@ -14,9 +16,9 @@ export const SearchProfile = () => {
   const [inputValue, setInputValue] = useState(searchValue)
   const [searchUsers, setSearchUsers] = useState<IUser[]>([])
   const [endCursorUsertId, setEndCursorUserId] = useState(0)
-  const { data, isLoading, isError } = useGetUserByUserNameQuery({
-    userName: searchValue || '',
+  const { data, isError, isLoading } = useGetUserByUserNameQuery({
     cursor: endCursorUsertId,
+    userName: searchValue || '',
   })
 
   useEffect(() => {
@@ -76,8 +78,9 @@ export const SearchProfile = () => {
   }
 
   if (isError) {
-    return <Typography variant="body2">Ошибка при получении данных пользователя</Typography>
+    return <Typography variant={'body2'}>Ошибка при получении данных пользователя</Typography>
   }
+
   return (
     <div className={s.wrap}>
       <Sidebar />
@@ -97,7 +100,7 @@ export const SearchProfile = () => {
             <Typography variant={'body1'}>Повторить запросы</Typography>
           </div>
           <div>
-            {isLoading && <Typography variant="body2">Загрузка...</Typography>}
+            {isLoading && <Typography variant={'body2'}>Загрузка...</Typography>}
             {searchUsers.map(user => (
               <SearchItem key={user.id} user={user} />
             ))}

@@ -82,7 +82,7 @@
     "last-name": "Фамилия",
     "date-of-birth": "Дата рождения",
     "select-country": "Выберите свою страну",
-    "select-city": "Выберите свой город",
+    "enter-city": "Ввведите свой город",
     "about-me": "Обо мне",
     "country": "Страна",
     "city": "Город",

@@ -1,4 +1,4 @@
-import { IProfileAvatar } from '@/src/entities/profile/model/types/profile'
+import { IProfileAvatar } from '@/src/entities/profile/userProfile/model/types/profile'
 
 export type CreatePostArgs = {
   childrenMetadata?: ChildrenMetadatum[]

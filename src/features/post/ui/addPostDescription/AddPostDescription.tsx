@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
+import { useGetProfileByIdQuery } from '@/src/entities/profile/userProfile/api/profile.service'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { ProfileIntro } from '@/src/features/post/ui/profileIntro/ProfileIntro'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'

@@ -1,6 +1,6 @@
 import { ToastContainer } from 'react-toastify'
 
-import { ITempProfilePhoto } from '@/src/entities/profile/model/types/profile'
+import { ITempProfilePhoto } from '@/src/entities/profile/userProfile/model/types/profile'
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Button } from '@bitovyevolki/ui-kit-int'
 import { useTranslations } from 'next-intl'

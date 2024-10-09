@@ -25,6 +25,11 @@ import {
   useGetFollowingByUserNameQuery,
 } from '@/src/entities/profile/userProfile/api/following.service'
 
+interface FollowersResponse {
+  totalCount: number
+  profiles: IProfile[] // Define your profile type accordingly
+}
+
 type Props = {
   post: Post | null
   profileId?: string
@@ -33,8 +38,6 @@ type Props = {
 export const ShowPosts = ({ post, profileId }: Props) => {
   const [isViewPostModalOpen, setIsViewPostModalOpen] = useState<boolean>(false)
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
-
-  // Initialize followerCount as 0
   const [followerCount, setFollowerCount] = useState<number>(0)
 
   const { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray } = usePosts({
@@ -49,20 +52,20 @@ export const ShowPosts = ({ post, profileId }: Props) => {
 
   const { data: followersData } = useGetFollowersByUserNameQuery({
     userName: profileData?.userName || '',
-  })
+  }) as FollowersResponse
+
   const { data: followingData } = useGetFollowingByUserNameQuery({
     userName: profileData?.userName || '',
-  })
+  }) as FollowersResponse
 
   const isLoading = isLoadingMe || LoadingProfile
 
-  // Update followerCount when followersData changes
   useEffect(() => {
     console.log('followersData:', followersData) // Debugging
-    if (followersData && followersData.totalCount !== undefined) {
-      setFollowerCount(followersData.totalCount) // Use totalCount instead of length
+    if (followersData && typeof followersData.totalCount === 'number') {
+      setFollowerCount(followersData.totalCount) // Use totalCount if available
     } else {
-      setFollowerCount(0) // Устанавливаем 0, если данные о подписчиках не загружены
+      setFollowerCount(0) // Set to 0 if not available
     }
   }, [followersData])
 
@@ -89,16 +92,6 @@ export const ShowPosts = ({ post, profileId }: Props) => {
     setIsCreatePostModalOpen(false)
   }
 
-  const { refetch: refetchFollowers } = useGetFollowersByUserNameQuery(
-    { userName: profileData?.userName || '' },
-    { skip: !profileData }
-  )
-
-  const { refetch: refetchFollowing } = useGetFollowingByUserNameQuery(
-    { userName: profileData?.userName || '' },
-    { skip: !profileData }
-  )
-
   if (isLoading) {
     return <Loader />
   }
@@ -122,11 +115,11 @@ export const ShowPosts = ({ post, profileId }: Props) => {
             )}
             <div className={s.followers}>
               <div>
-                <div>{followingData?.length || 0}</div>
+                <div>{followingData?.totalCount || 0}</div>
                 <div>Following</div>
               </div>
               <div>
-                <div>{followerCount}</div> {/* Use local state here */}
+                <div>{followerCount}</div>
                 <div>Followers</div>
               </div>
               <div>

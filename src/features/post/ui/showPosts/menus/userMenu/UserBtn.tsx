@@ -44,6 +44,14 @@ export const UserBtn = ({ profileData, setFollowerCount }: UserBtnProps) => {
     }
   }
 
+  useEffect(() => {
+    if (profileData?.followers?.some(follower => follower.id === profileData.id)) {
+      setFollow(true)
+    } else {
+      setFollow(false)
+    }
+  }, [profileData])
+
   if (!profileData) {
     return null
   }

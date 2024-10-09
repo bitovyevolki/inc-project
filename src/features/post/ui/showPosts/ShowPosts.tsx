@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 import { useGetProfileByIdQuery } from '@/src/entities/profile/api/profile.service'
@@ -113,15 +112,18 @@ export const ShowPosts = ({ post, profileId }: Props) => {
           ))}
         </div>
       </div>
-      <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>
-        <ViewPost
-          avatars={profileData?.avatars}
-          closePostModal={closeViewPostModalHandler}
-          deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
-          post={post as Post}
-          userName={profileData?.userName as string}
-        />
-      </ViewPostModal>
+      {post && (
+        <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>
+          <ViewPost
+            avatars={profileData?.avatars}
+            closePostModal={closeViewPostModalHandler}
+            deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
+            post={post}
+            userName={profileData?.userName as string}
+          />
+        </ViewPostModal>
+      )}
+
       <CreatePost
         addPost={addPostToCombinedPosts}
         closeModal={closeCreatePostModalHandler}

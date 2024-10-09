@@ -1,0 +1,95 @@
+	.commentItem {
+	display: flex;
+	flex-wrap: nowrap;
+
+	.avatar {
+		margin-right: 12px;
+		border-radius: 50%;
+	}
+
+	.like {
+		cursor: pointer;
+		height: fit-content;
+		margin-left: auto;
+
+	   &:hover svg {
+    filter: drop-shadow(0 0 3px white);
+    transition: filter 0.3s ease-in-out;
+  }
+	}
+}
+
+.commentItem p {
+  word-break: break-word;
+
+	.linkUserProfile {
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline white;
+
+		}
+	}
+}
+
+.bottomBlock {
+	display: flex;
+	gap: 12px;
+	align-items: baseline;
+
+		p {
+		color: #8D9094;
+	}
+
+	.answerButton {
+		cursor: pointer;
+
+		&:hover {
+			color: #b7bbc2;
+		}
+	}
+}
+
+.answersBlock {
+	margin-left: 50px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	.inputBlock {
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+.hideShowAnswersButton {
+  cursor: pointer;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+
+  .line {
+    width: 24px;
+    height: 1px;
+    background-color: #8D9094;
+  }
+
+  p {
+    color: #8D9094;
+  }
+
+  &:hover {
+    p {
+      color: #b7bbc2;
+    }
+
+    .line {
+      background-color: #b7bbc2;
+    }
+  }
+}
+
+.showMoreButton {
+	width: fit-content;
+	align-self: center;
+}

@@ -69,7 +69,7 @@ export const AuthService = inctagramService.injectEndpoints({
             dispatch(inctagramService.util.resetApiState())
             void Router.replace('/')
           } catch (error: any) {
-            toast.error(error)
+            toast.error(error.message || 'Log out failed')
           }
         },
         query: () => ({
@@ -77,6 +77,10 @@ export const AuthService = inctagramService.injectEndpoints({
           credentials: 'include',
           method: 'POST',
           url: `/v1/auth/logout`,
+          headers: {
+            // Добавляем токен авторизации из localStorage
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         }),
       }),
       me: builder.query<MeResponse, void>({

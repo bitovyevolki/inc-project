@@ -2,7 +2,10 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 import { useGetProfileByIdQuery } from '@/src/entities/profile/userProfile/api/profile.service'
-import { GetProfileByIdArgs } from '@/src/entities/profile/userProfile/model/types/profile'
+import {
+  GetProfileByIdArgs,
+  IProfile,
+} from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { CreatePost, ViewPost } from '@/src/features/post/ui'
 import { ViewPostModal } from '@/src/features/post/ui/viewPostModal/ViewPostModal'
@@ -21,6 +24,7 @@ import baseUserPhoto from './../../../../../public/image/default-post.png'
 import { ProfileBtn } from './menus/profileMenu/ProfileBtn'
 import { UserBtn } from './menus/userMenu/UserBtn'
 import {
+  useGetAllUsersQuery,
   useGetFollowersByUserNameQuery,
   useGetFollowingByUserNameQuery,
 } from '@/src/entities/profile/userProfile/api/following.service'
@@ -46,18 +50,23 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const { changeQueryHandler, removeQueryParamHandler, searchParams } = usePostsParams()
 
   const { data: meData, isLoading: isLoadingMe } = useMeQuery()
-  const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
+  const {
+    data: profileData,
+    isLoading: LoadingProfile,
+    refetch,
+  } = useGetProfileByIdQuery({
     profileId,
   } as GetProfileByIdArgs)
 
+  const { data } = useGetAllUsersQuery({ userName: profileData?.userName as string })
+
   const { data: followersData } = useGetFollowersByUserNameQuery({
     userName: profileData?.userName || '',
-  }) as FollowersResponse
+  })
 
   const { data: followingData } = useGetFollowingByUserNameQuery({
     userName: profileData?.userName || '',
-  }) as FollowersResponse
-
+  })
   const isLoading = isLoadingMe || LoadingProfile
 
   useEffect(() => {
@@ -68,6 +77,10 @@ export const ShowPosts = ({ post, profileId }: Props) => {
       setFollowerCount(0) // Set to 0 if not available
     }
   }, [followersData])
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   useEffect(() => {
     if (searchParams.get('createPost')) {

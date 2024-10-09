@@ -69,9 +69,12 @@ export const UserBtn = ({ profileData, setFollowerCount }: UserBtnProps) => {
             Unfollow
           </Button>
         ) : (
-          <Button onClick={handleFollow} variant={'primary'}>
-            Follow
-          </Button>
+          <div className={s.bnts}>
+            <Button onClick={handleFollow} variant={'primary'}>
+              Follow
+            </Button>
+            <Button variant={'secondary'}>Send message</Button>
+          </div>
         )}
       </div>
     </div>

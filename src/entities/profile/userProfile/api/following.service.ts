@@ -1,3 +1,7 @@
+import {
+  GetFollowResponse,
+  GetUserProfileResponse,
+} from '@/src/features/post/model/posts.service.types'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
 
 import { GetProfileByIdArgs, IProfile, UpdateGeneralProfileArgs } from '../model/types/profile'
@@ -5,17 +9,6 @@ import { GetProfileByIdArgs, IProfile, UpdateGeneralProfileArgs } from '../model
 export const FollowingService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
-      createProfileAvatar: builder.mutation<Pick<IProfile, 'avatars'>, { file: FormData }>({
-        invalidatesTags: ['Profile'],
-        query: ({ file }) => {
-          return {
-            body: file,
-            method: 'POST',
-            url: 'v1/users/profile/avatar',
-          }
-        },
-      }),
-
       // Удаление подписки на пользователя
       deleteFollower: builder.mutation<void, { userId: number }>({
         query: ({ userId }) => {
@@ -42,17 +35,18 @@ export const FollowingService = inctagramService.injectEndpoints({
       }),
 
       // Получение списка подписчиков по имени пользователя
-      getFollowersByUserName: builder.query<IProfile[], { userName: string }>({
+      getFollowersByUserName: builder.query<GetFollowResponse, { userName: string }>({
         query: ({ userName }) => {
           return {
             method: 'GET',
             url: `v1/users/${userName}/followers`,
           }
         },
+        providesTags: ['Following'],
       }),
 
       // Получение списка подписок по имени пользователя
-      getFollowingByUserName: builder.query<IProfile[], { userName: string }>({
+      getFollowingByUserName: builder.query<GetFollowResponse, { userName: string }>({
         query: ({ userName }) => {
           return {
             method: 'GET',
@@ -64,13 +58,14 @@ export const FollowingService = inctagramService.injectEndpoints({
       }),
 
       // Получение списка всех пользователей
-      getAllUsers: builder.query<IProfile[], void>({
-        query: () => {
+      getAllUsers: builder.query<GetUserProfileResponse, { userName: string }>({
+        query: ({ userName }) => {
           return {
             method: 'GET',
-            url: 'v1/users', // Здесь указываем новый URL
+            url: `v1/users/${userName}`, // Здесь указываем новый URL
           }
         },
+        providesTags: ['Following'],
       }),
     }
   },

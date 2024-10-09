@@ -172,3 +172,52 @@ export interface ProfileData {
   id: number
   userName: string
 }
+
+// followers
+
+interface FollowAvatar {
+  url: string
+  width: number
+  height: number
+  fileSize: number
+  createdAt: string // ISO формат даты
+}
+
+interface FollowItem {
+  id: number
+  userId: number
+  userName: string
+  createdAt: string // ISO формат даты
+  avatars: FollowAvatar[]
+  isFollowing: boolean
+  isFollowedBy: boolean
+}
+
+export interface GetFollowResponse {
+  totalCount: number
+  pagesCount: number
+  page: number
+  pageSize: number
+  prevCursor: number
+  nextCursor: number
+  items: FollowItem[] // Массив объектов типа Item
+}
+
+// Типизация основного объекта
+export interface GetUserProfileResponse {
+  id: number
+  userName: string
+  firstName: string
+  lastName: string
+  city: string
+  country: string
+  region: string
+  dateOfBirth: string // ISO формат даты
+  aboutMe: string
+  avatars: FollowAvatar[]
+  isFollowing: boolean
+  isFollowedBy: boolean
+  followingCount: number
+  followersCount: number
+  publicationsCount: number
+}

@@ -82,7 +82,7 @@
     "last-name": "Фамилия",
     "date-of-birth": "Дата рождения",
     "select-country": "Выберите свою страну",
-    "select-city": "Выберите свой город",
+    "enter-city": "Ввведите свой город",
     "about-me": "Обо мне",
     "country": "Страна",
     "city": "Город",
@@ -124,47 +124,51 @@
     "payment-type": "Тип Платежа",
     "no-payments": "У вас еще нет оплат"
   },
-	 "CreatePost": {
+  "CreatePost": {
     "confirn-close-modal": {
       "title": "Закрытие",
       "description": "Вы действительно хотите закрыть создание публикации? Если вы закроете, все будет удалено",
       "button-discard": "Закрыть",
       "button-draft": "Сохранить черновик"
     },
-		 "add-photo": {
+    "add-photo": {
       "title": "Добавить фото"
     },
-		 "cropping": {
+    "cropping": {
       "title": "Обрезка"
     },
-		"button-next": {
-			"next": "Дальше",
-			"publish": "Опубликовать"
-		},
-		"filters": {
-			"title": "Фильтры",
-			"original": "Оригинал",
-			"bright": "Яркий",
-			"contrast": "Контрастный",
-			"saturation": "Насыщенный",
-			"subdued": "Приглушенный",
-			"light": "Светлый",
-			"dark": "Темный",
-			"soft-contrast": "Мягкий",
-			"black-and-white": "Черно-белый"
-		},
-		"add-description": {
-			"title": "Публикация",
-			"text-area-label": "Добавить описание",
-			"publish": "Опубликовать"
-		},
-		"toast-message": {
-			"success": "Пост создан успешно",
-			"error": "Не удалось создать пост"
-		},
-		"without-photo": {
-			"button-select-files": "Выбрать",
-			"button-draft": "Открыть черновик"
-		}
+    "button-next": {
+      "next": "Дальше",
+      "publish": "Опубликовать"
+    },
+    "filters": {
+      "title": "Фильтры",
+      "original": "Оригинал",
+      "bright": "Яркий",
+      "contrast": "Контрастный",
+      "saturation": "Насыщенный",
+      "subdued": "Приглушенный",
+      "light": "Светлый",
+      "dark": "Темный",
+      "soft-contrast": "Мягкий",
+      "black-and-white": "Черно-белый"
+    },
+    "add-description": {
+      "title": "Публикация",
+      "text-area-label": "Добавить описание",
+      "publish": "Опубликовать"
+    },
+    "toast-message": {
+      "success": "Пост создан успешно",
+      "error": "Не удалось создать пост"
+    },
+    "without-photo": {
+      "button-select-files": "Выбрать",
+      "button-draft": "Открыть черновик"
+    },
+    "Search-page": {
+      "Search-placeholder": "Поиск",
+      "Requests": "Отправить запрос"
+    }
   }
 }

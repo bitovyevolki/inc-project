@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { PropsWithChildren, ReactElement } from 'react'
 
-import { IProfile } from '@/src/entities/profile/model/types/profile'
+import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { Post } from '@/src/features/post/model/posts.service.types'
 import { ShowPosts } from '@/src/features/post/ui/showPosts/ShowPosts'
 import { Layout } from '@/src/shared/ui/Layout/Layout'

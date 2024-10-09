@@ -26,6 +26,7 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
   const handleOnCollapse = () => {
     setIsCollapsed(!isCollapsed)
   }
+  const { removeQueryParamHandler } = usePostsParams()
 
   const [viewMode, setViewMode] = useState(false)
 
@@ -34,8 +35,8 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
   }
   const handlePostClose = () => {
     setViewMode(false)
+    removeQueryParamHandler('postId')
   }
-  const { removeQueryParamHandler } = usePostsParams()
 
   return (
     <div className={s.root}>
@@ -84,12 +85,7 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
       </div>
       {viewMode && (
         <ViewPostModal isOpen={viewMode} onOpenChange={handlePostClose}>
-          <ViewPost
-            closePostModal={handlePostClose}
-            post={post}
-            removeQuery={removeQueryParamHandler}
-            userName={post.userName}
-          />
+          <ViewPost closePostModal={handlePostClose} post={post} userName={post.userName} />
         </ViewPostModal>
       )}
     </div>

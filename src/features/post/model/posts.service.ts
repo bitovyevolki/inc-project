@@ -4,10 +4,10 @@ import {
   CreatePostArgs,
   CreatePostResponse,
   DeletePostArgs,
-  GetCommentAnswersArgs,
-  GetCommentAnswersResponse,
   GetLastCreatedPostsArgs,
   GetLastCreatedPostsResponse,
+  GetLikesPostArgs,
+  GetLikesPostResponse,
   GetPostByIdArgs,
   GetPostByIdResponse,
   GetPostCommentsArgs,
@@ -15,6 +15,8 @@ import {
   GetPostsByUserArgs,
   GetPostsByUserResponse,
   GetPublicPostsByUserArgs,
+  LikeCommentArgs,
+  LikePostArgs,
   UpdatePostArgs,
   UploadImageResponse,
 } from '@/src/features/post/model/posts.service.types'
@@ -50,15 +52,16 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
-      getCommentAnswers: builder.query<GetCommentAnswersResponse, GetCommentAnswersArgs>({
-        query: queryArgs => {
+      getLikesByPostId: builder.query<GetLikesPostResponse, GetLikesPostArgs>({
+        providesTags: ['LikesPost'],
+        query: ({ pageSize = 3, postId }) => {
           return {
             credentials: 'include',
-            params: queryArgs,
-            url: `/api/v1/posts/${queryArgs.postId}/comments/${queryArgs.commentId}/answers`,
+            url: `v1/posts/${postId}/likes?pageSize=${pageSize}`,
           }
         },
       }),
+
       getPostById: builder.query<GetPostByIdResponse, GetPostByIdArgs>({
         query: queryArgs => {
           return {
@@ -69,10 +72,11 @@ export const PostsService = inctagramService.injectEndpoints({
         },
       }),
       getPostComments: builder.query<GetPostCommentsResponse, GetPostCommentsArgs>({
+        providesTags: ['Comments'],
         query: queryArgs => {
           return {
             credentials: 'include',
-            params: queryArgs,
+            params: { ...queryArgs, pageSize: 3 },
             url: `v1/posts/${queryArgs.postId}/comments`,
           }
         },
@@ -114,6 +118,16 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+      updateCommentLike: builder.mutation<void, LikeCommentArgs>({
+        invalidatesTags: ['Comments'],
+        query: ({ commentId, likeStatus, postId }) => {
+          return {
+            body: { likeStatus },
+            method: 'PUT',
+            url: `v1/posts/${postId}/comments/${commentId}/like-status`,
+          }
+        },
+      }),
       updatePostById: builder.mutation<void, UpdatePostArgs>({
         async onQueryStarted({ ownerId, postId, updatedPostData }, { dispatch, queryFulfilled }) {
           const numericOwnerId = Number(ownerId)
@@ -146,6 +160,16 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+      updatePostLike: builder.mutation<void, LikePostArgs>({
+        invalidatesTags: ['LikesPost'],
+        query: ({ likeStatus, postId }) => {
+          return {
+            body: { likeStatus },
+            method: 'PUT',
+            url: `v1/posts/${postId}/like-status`,
+          }
+        },
+      }),
       uploadImages: builder.mutation<UploadImageResponse, { files: FileList }>({
         query: args => {
           const formData = new FormData()
@@ -169,6 +193,7 @@ export const {
   useCreateCommentToPostMutation,
   useCreatePostMutation,
   useDeletePostByIdMutation,
+  useGetLikesByPostIdQuery,
   useGetPostByIdQuery,
   useGetPostCommentsQuery,
   useGetPostsByUserNameQuery,
@@ -176,6 +201,8 @@ export const {
   useGetPublicPostsByUserIdQuery,
   useLazyGetPostCommentsQuery,
   useLazyGetPublicPostsByUserIdQuery,
+  useUpdateCommentLikeMutation,
   useUpdatePostByIdMutation,
+  useUpdatePostLikeMutation,
   useUploadImagesMutation,
 } = PostsService

@@ -25,7 +25,7 @@
     "last-name": "Last name",
     "date-of-birth": "Date of birth",
     "select-country": "Select your country",
-    "select-city": "Select your city",
+    "enter-city": "Enter your city",
     "about-me": "About Me",
     "country": "Country",
     "city": "City",
@@ -133,40 +133,44 @@
       "button-discard": "Discard",
       "button-draft": "Save draft"
     },
-		 "add-photo": {
+    "add-photo": {
       "title": "Add Photo"
     },
-		 "cropping": {
+    "cropping": {
       "title": "Cropping"
     },
-		"button-next": {
-			"next": "Next",
-			"publish": "Publish"
-		},
-		"filters": {
-			"title": "Filters",
-			"original": "Original",
-			"bright": "Bright",
-			"contrast": "Contrast",
-			"saturation": "Saturation",
-			"subdued": "Subdued",
-			"light": "Light",
-			"dark": "Dark",
-			"soft-contrast": "Soft contrast",
-			"black-and-white": "Black and white"
-		},
-		"add-description": {
-			"title": "Publication",
-			"text-area-label": "Add publication descriptions",
-			"publish": "Publish"
-		},
-		"toast-message": {
-			"success": "Successfully created post",
-			"error": "Failed to create post"
-		},
-		"without-photo": {
-			"button-select-files": "Select from Computer",
-			"button-draft": "Open draft"
-		}
+    "button-next": {
+      "next": "Next",
+      "publish": "Publish"
+    },
+    "filters": {
+      "title": "Filters",
+      "original": "Original",
+      "bright": "Bright",
+      "contrast": "Contrast",
+      "saturation": "Saturation",
+      "subdued": "Subdued",
+      "light": "Light",
+      "dark": "Dark",
+      "soft-contrast": "Soft contrast",
+      "black-and-white": "Black and white"
+    },
+    "add-description": {
+      "title": "Publication",
+      "text-area-label": "Add publication descriptions",
+      "publish": "Publish"
+    },
+    "toast-message": {
+      "success": "Successfully created post",
+      "error": "Failed to create post"
+    },
+    "Search-page": {
+      "Search-placeholder": "Search",
+      "Requests": "Resend Requests"
+    },
+    "without-photo": {
+      "button-select-files": "Select from Computer",
+      "button-draft": "Open draft"
+    }
   }
 }

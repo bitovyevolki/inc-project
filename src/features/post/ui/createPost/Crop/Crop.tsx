@@ -1,5 +1,4 @@
 /* eslint-disable max-lines */
-/* eslint-disable @next/next/no-img-element */
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 

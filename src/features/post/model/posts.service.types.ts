@@ -166,3 +166,9 @@ export interface UpdatePostArgs {
   postId: string
   updatedPostData: Pick<Post, 'description'>
 }
+
+export interface ProfileData {
+  avatars?: { url: string }[] // массив с аватарами
+  id: number
+  userName: string
+}

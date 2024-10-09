@@ -19,7 +19,7 @@ export const SearchItem = ({ user }: SearchItemProps) => {
         {avatarUrl ? (
           <Image alt={'avatar'} className={s.avatar} height={30} src={avatarUrl} width={30} />
         ) : (
-          <div className={s.withoutAvatar}>{user.userName.slice(0, 2)}</div>
+          <AvatarIcon className={s.avatar} height={30} width={30} />
         )}
       </div>
       <div>
@@ -32,7 +32,9 @@ export const SearchItem = ({ user }: SearchItemProps) => {
           </Link>
         </div>
         <div>
-          <Typography variant={'subTitle2'}>{`${user.firstName} ${user.lastName}`}</Typography>
+          <Typography
+            variant={'subTitle2'}
+          >{`${user?.firstName ?? 'User'} ${user?.lastName ?? 'Name'}`}</Typography>
         </div>
       </div>
     </div>

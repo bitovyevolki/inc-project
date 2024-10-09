@@ -7,11 +7,10 @@ import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { CreatePost, ViewPost } from '@/src/features/post/ui'
 import { ViewPostModal } from '@/src/features/post/ui/viewPostModal/ViewPostModal'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Button, Typography } from '@bitovyevolki/ui-kit-int'
+import { Typography } from '@bitovyevolki/ui-kit-int'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import s from './showPosts.module.scss'
 
@@ -88,7 +87,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
             )}
             <div className={s.followers}>
               <div>
-                <div>2222</div>
+                <div>222</div>
                 <div>Following</div>
               </div>
               <div>

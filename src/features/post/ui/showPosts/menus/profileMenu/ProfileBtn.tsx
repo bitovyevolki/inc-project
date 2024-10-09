@@ -1,14 +1,19 @@
+import { ProfileData } from '@/src/features/post/model/posts.service.types'
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 
 import s from './profileBtn.module.scss'
 
-interface profileDataProps {
-  profileData: any
-  showSettingsButton: any
+interface ProfileBtnProps {
+  profileData: ProfileData | undefined
+  showSettingsButton: boolean
 }
 
-export const ProfileBtn = ({ profileData, showSettingsButton }: profileDataProps) => {
+export const ProfileBtn = ({ profileData, showSettingsButton }: ProfileBtnProps) => {
+  if (!profileData) {
+    return null // Если profileData undefined, возвращаем null
+  }
+
   return (
     <div className={s.profile}>
       <div className={s.text}>

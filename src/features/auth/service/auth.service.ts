@@ -75,12 +75,12 @@ export const AuthService = inctagramService.injectEndpoints({
         query: () => ({
           body: { baseUrl: 'http://localhost:3000' },
           credentials: 'include',
-          method: 'POST',
-          url: `/v1/auth/logout`,
           headers: {
             // Добавляем токен авторизации из localStorage
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
+          method: 'POST',
+          url: `/v1/auth/logout`,
         }),
       }),
       me: builder.query<MeResponse, void>({

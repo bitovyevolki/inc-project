@@ -5,6 +5,7 @@ import Link from 'next/link'
 import s from './searchItem.module.scss'
 
 import { IUser } from '../../model/user-model'
+import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 
 interface SearchItemProps {
   user: IUser

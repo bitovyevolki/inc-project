@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useState } from 'react'
 
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
@@ -7,7 +6,6 @@ import { EditIcon } from '@/src/shared/assets/icons/edit'
 import { EllipsisIcon } from '@/src/shared/assets/icons/ellipsis'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import * as Popover from '@radix-ui/react-popover'
-import clsx from 'clsx'
 import Image from 'next/image'
 
 import s from './profileIntro.module.scss'
@@ -44,18 +42,20 @@ export const ProfileIntro = ({
 
   return (
     <div className={s.container}>
-      <div className={clsx(s.userAvatar, avatarSize === 'small' ? s.sizeS : s.sizeL)}>
-        <Image alt={'profile avatar'} fill src={avatarSelected?.url || baseUserPhoto} />
-      </div>
+      <Image
+        alt={'profile avatar'}
+        className={s.userAvatar}
+        height={36}
+        src={avatarSelected?.url || baseUserPhoto}
+        width={36}
+      />
       <div className={s.userName}>
-        <Typography as={'h6'} variant={'body1'}>
-          {userName}
-        </Typography>
+        <Typography variant={'h4'}>{userName}</Typography>
       </div>
       {postOwner && withMenu && (
         <Popover.Root>
           <Popover.Trigger asChild>
-            <EllipsisIcon className={s.ellipsisIcon} />
+            <EllipsisIcon className={s.ellipsisIcon} fill={'#397DF6'} />
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>

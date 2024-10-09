@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 import { useGetProfileByIdQuery } from '@/src/entities/profile/userProfile/api/profile.service'
@@ -57,6 +56,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const showSettingsButton = meData?.userId === profileData?.id
 
   const closeViewPostModalHandler = () => {
+    removeQueryParamHandler('postId')
     setIsViewPostModalOpen(false)
   }
 
@@ -121,16 +121,18 @@ export const ShowPosts = ({ post, profileId }: Props) => {
           ))}
         </div>
       </div>
-      <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>
-        <ViewPost
-          avatars={profileData?.avatars}
-          closePostModal={closeViewPostModalHandler}
-          deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
-          post={post as Post}
-          removeQuery={removeQueryParamHandler}
-          userName={profileData?.userName as string}
-        />
-      </ViewPostModal>
+      {post && (
+        <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>
+          <ViewPost
+            avatars={profileData?.avatars}
+            closePostModal={closeViewPostModalHandler}
+            deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
+            post={post}
+            userName={profileData?.userName as string}
+          />
+        </ViewPostModal>
+      )}
+
       <CreatePost
         addPost={addPostToCombinedPosts}
         closeModal={closeCreatePostModalHandler}

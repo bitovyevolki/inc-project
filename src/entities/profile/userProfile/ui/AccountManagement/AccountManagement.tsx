@@ -5,6 +5,9 @@ import { PaypalIcon } from '@/src/shared/assets/icons/paypal'
 import { StripeIcon } from '@/src/shared/assets/icons/stripe'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button, Checkbox, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 
@@ -25,6 +28,8 @@ import { SubscriptionCost } from './SubscriptionCost/SubscriptionCost'
 // For test pay:
 // STRIPE - Card number 4242 4242 4242 4242. For the remaining details, you can enter any values.
 // PayPal - enter test account: sb-ppuas31893847@personal.example.com password: V}!7OpkG
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string)
 
 const AccountManagement = () => {
   const t = useTranslations('AccountManagement')
@@ -136,69 +141,73 @@ const AccountManagement = () => {
   }
 
   return (
-    <>
-      <div className={s.wrapper}>
-        {havePayments && (
-          <div>
-            <Typography variant={'h4'}>{t('current-subscription')}:</Typography>
-            <div className={s.block}>
-              <CurrentSubscription autoRenewal={autoRenewal} payments={payments} />
+    <PayPalScriptProvider
+      options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID as string }}
+    >
+      <Elements stripe={stripePromise}>
+        <div className={s.wrapper}>
+          {havePayments && (
+            <div>
+              <Typography variant={'h4'}>{t('current-subscription')}:</Typography>
+              <div className={s.block}>
+                <CurrentSubscription autoRenewal={autoRenewal} payments={payments} />
+              </div>
+              {accountType === 'Business' && (
+                <Checkbox
+                  checked={autoRenewal}
+                  className={s.autoRenewal}
+                  disabled={isLoadingAutoRenewal}
+                  label={t('auto-renewal')}
+                  onChange={onClickAutoRenewal}
+                />
+              )}
             </div>
-            {accountType === 'Business' && (
-              <Checkbox
-                checked={autoRenewal}
-                className={s.autoRenewal}
-                disabled={isLoadingAutoRenewal}
-                label={t('auto-renewal')}
-                onChange={onClickAutoRenewal}
-              />
-            )}
-          </div>
-        )}
+          )}
 
-        <div>
-          <Typography variant={'h4'}>{t('account-type-title')}:</Typography>
-          <div className={s.block}>
-            <AccountType accountType={accountType} setAccountType={setAccountType} />
-          </div>
-        </div>
-        {accountType === 'Business' && (
           <div>
-            <Typography variant={'h4'}>{t('subscription-cost')}:</Typography>
+            <Typography variant={'h4'}>{t('account-type-title')}:</Typography>
             <div className={s.block}>
-              {data && <SubscriptionCost costs={costs} data={data?.data} setCosts={setCosts} />}
+              <AccountType accountType={accountType} setAccountType={setAccountType} />
             </div>
-            <div className={s.wrapperPayments}>
-              <div className={s.payments}>
-                <Button
-                  className={s.block}
-                  onClick={() => onPaymentSuccess('PAYPAL')}
-                  variant={'ghost'}
-                >
-                  <PaypalIcon />
-                </Button>
-                <p>{t('or')}</p>
-                <Button
-                  className={s.block}
-                  onClick={() => onPaymentSuccess('STRIPE')}
-                  variant={'ghost'}
-                >
-                  <StripeIcon />
-                </Button>
+          </div>
+          {accountType === 'Business' && (
+            <div>
+              <Typography variant={'h4'}>{t('subscription-cost')}:</Typography>
+              <div className={s.block}>
+                {data && <SubscriptionCost costs={costs} data={data?.data} setCosts={setCosts} />}
+              </div>
+              <div className={s.wrapperPayments}>
+                <div className={s.payments}>
+                  <Button
+                    className={s.block}
+                    onClick={() => onPaymentSuccess('PAYPAL')}
+                    variant={'ghost'}
+                  >
+                    <PaypalIcon />
+                  </Button>
+                  <p>{t('or')}</p>
+                  <Button
+                    className={s.block}
+                    onClick={() => onPaymentSuccess('STRIPE')}
+                    variant={'ghost'}
+                  >
+                    <StripeIcon />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-      <ModalWindow onOpenChange={setIsOpenModal} open={isOpenModal} title={modalContent.title}>
-        <div className={s.modal}>
-          <p>{modalContent.text}</p>
-          <Button fullWidth onClick={() => setIsOpenModal(false)} variant={'primary'}>
-            {modalContent.buttonText}
-          </Button>
+          )}
         </div>
-      </ModalWindow>
-    </>
+        <ModalWindow onOpenChange={setIsOpenModal} open={isOpenModal} title={modalContent.title}>
+          <div className={s.modal}>
+            <p>{modalContent.text}</p>
+            <Button fullWidth onClick={() => setIsOpenModal(false)} variant={'primary'}>
+              {modalContent.buttonText}
+            </Button>
+          </div>
+        </ModalWindow>
+      </Elements>
+    </PayPalScriptProvider>
   )
 }
 

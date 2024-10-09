@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
@@ -7,28 +6,33 @@ import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
-  useGetPostCommentsQuery,
+  useGetLikesByPostIdQuery,
   useLazyGetPostCommentsQuery,
   useUpdatePostByIdMutation,
+  useUpdatePostLikeMutation,
 } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
-import { HeartIcon } from '@/src/shared/assets/icons/heart'
+import { LikeIcon } from '@/src/shared/assets/icons/like'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
+import { formatDate } from '@/src/shared/utils/formatDate'
 import { Button, Card, Input, TextArea, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
+import 'moment/locale/ru'
+
 import s from './viewPost.module.scss'
 
+import { usePostsParams } from '../../lib/hooks/usePostsParams'
 import { Post } from '../../model/posts.service.types'
+import { CommentsList } from '../commentsList/CommentsList'
 
 type Props = {
   avatars?: IProfile['avatars']
-  closePostModal?: () => void
+  closePostModal: () => void
   deletePostFromCombinedPostsArray?: (postId: number) => void
   post: Post
-  removeQuery: (param: string) => void
   userName: string
 }
 
@@ -37,43 +41,53 @@ export const ViewPost = ({
   closePostModal,
   deletePostFromCombinedPostsArray,
   post,
-  removeQuery,
   userName,
 }: Props) => {
-  const { data: commentsData } = useGetPostCommentsQuery({ postId: post?.id })
-
   const { data: me } = useMeQuery()
+  const { data: likes } = useGetLikesByPostIdQuery({ postId: post.id })
   const postOwner = post.ownerId === me?.userId
-  const [description, setDescription] = useState(post?.description || '')
+  const [description, setDescription] = useState(post.description || '')
   const [isEditMode, setIsEditMode] = useState(false)
+  const likeColor = likes?.isLiked ? 'red' : 'white'
+
   const [updateComments] = useLazyGetPostCommentsQuery()
   const [createComment] = useCreateCommentToPostMutation()
   const [deletePost] = useDeletePostByIdMutation()
   const [updatePost] = useUpdatePostByIdMutation()
+  const [updatePostLike] = useUpdatePostLikeMutation()
 
+  const { changeQueryHandler } = usePostsParams()
+
+  const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
-
-  useEffect(() => {
-    return () => {
-      removeQuery('postId')
-    }
-  }, [removeQuery])
 
   const copyUrlToClipboardHandler = () => {
     navigator.clipboard.writeText(window.location.toString())
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const changePostLikeStatus = () => {
+    const newLikeStatus = likes && likes.isLiked === true ? 'DISLIKE' : 'LIKE'
 
-    const formData = new FormData(event.currentTarget)
-    const data = Object.fromEntries(formData)
-    const content = JSON.stringify(data.leaveComment)
+    updatePostLike({
+      likeStatus: newLikeStatus,
+      postId: post.id as number,
+    })
+      .unwrap()
+      .catch(error => {
+        toast.error(`Failed change like status`)
+      })
+  }
 
-    createComment({ content, postId: post?.id })
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const content = inputValue
+
+    setInputValue('')
+
+    createComment({ content, postId: post.id })
       .unwrap()
       .then(comment => {
-        updateComments({ postId: post?.id })
+        updateComments({ postId: post.id })
       })
   }
 
@@ -92,9 +106,9 @@ export const ViewPost = ({
     })
       .unwrap()
       .then(() => {
-        setIsEditMode(false)
-        closePostModal && closePostModal()
         toast.success('Post description updated', { position: 'top-right' })
+        changeQueryHandler(post.id as number)
+        setIsEditMode(false)
       })
       .catch(err => {
         toast.error(`Error updating post: ${err}`, { position: 'top-right' })
@@ -102,11 +116,11 @@ export const ViewPost = ({
   }
 
   const deletePostHandler = () => {
-    deletePost({ ownerId: post.ownerId, postId: post.id as number })
+    deletePost({ ownerId: post.ownerId, postId: post.id })
       .unwrap()
       .then(() => {
-        deletePostFromCombinedPostsArray && deletePostFromCombinedPostsArray(post?.id as number)
-        closePostModal && closePostModal()
+        deletePostFromCombinedPostsArray && deletePostFromCombinedPostsArray(post.id)
+        closePostModal()
         toast.success('Post deleted', { position: 'top-right' })
         setTimeout(() => (document.body.style.pointerEvents = ''), 0)
       })
@@ -115,21 +129,7 @@ export const ViewPost = ({
       })
   }
 
-  const commentsToShow = commentsData?.items.map(comment => {
-    return (
-      <div key={comment.id}>
-        <ProfileIntro
-          avatarSize={'small'}
-          avatars={comment.from.avatars}
-          postOwner={postOwner}
-          userName={comment.from.username}
-        />
-        <Typography as={'p'} variant={'body1'}>
-          {comment.content}
-        </Typography>
-      </div>
-    )
-  })
+  const displayDate = formatDate(post.createdAt)
 
   return (
     <Card className={s.modalBox}>
@@ -155,8 +155,9 @@ export const ViewPost = ({
             withMenu
           />
         </div>
-        <div className={s.post}>
-          {isEditMode ? (
+
+        {isEditMode && (
+          <div className={s.post}>
             <div className={s.descWrap}>
               <div>
                 <TextArea
@@ -171,39 +172,77 @@ export const ViewPost = ({
                 <Button onClick={saveDescription}>Save Changes</Button>
               </div>
             </div>
-          ) : (
-            <div>
-              <span>{post?.userName}</span>
-              <span className={s.post}>{post?.description}</span>
-            </div>
-          )}
-        </div>
-        <div>
-          {isEditMode ? null : (
-            <div className={s.reactToPost}>
-              <div className={s.reactionsBox}>
-                <div className={s.iconsBox}>
-                  <BookmarkIcon />
-                  <HeartIcon />
-                  <span onClick={copyUrlToClipboardHandler}>
-                    <PaperPlaneIcon />
-                  </span>
+          </div>
+        )}
+
+        {isEditMode ? null : <CommentsList description={post.description} postId={post.id} />}
+
+        <div className={s.reactToPost}>
+          <div className={s.reactionsBox}>
+            <div className={s.iconsBox}>
+              <div className={s.leftBlock}>
+                <div className={s.like} onClick={() => changePostLikeStatus()}>
+                  <LikeIcon fill={likeColor} height={24} width={24} />
+                </div>
+                <div onClick={copyUrlToClipboardHandler}>
+                  <PaperPlaneIcon />
                 </div>
               </div>
-              {me && (
-                <form className={s.leaveComment} onSubmit={handleSubmit}>
-                  <Input
-                    inputMode={'text'}
-                    name={'leaveComment'}
-                    placeholder={'Add a comment...'}
-                  />
-                  <Button type={'submit'} variant={'ghost'}>
-                    Publish
-                  </Button>
-                </form>
-              )}
-              <div className={s.comments}>{commentsToShow} </div>
+              <div>
+                <BookmarkIcon />
+              </div>
             </div>
+            <div className={s.likesInfo}>
+              <div className={s.likesTopBlock}>
+                {likes && likes.items.length > 0 && (
+                  <div className={s.avatarsList}>
+                    {likes?.items.map(user => (
+                      <div key={user.id}>
+                        <Image
+                          alt={'ava'}
+                          className={s.avatarsListItem}
+                          height={24}
+                          src={user.avatars[0].url}
+                          width={24}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <Typography as={'span'} variant={'body2'}>
+                  {likes?.totalCount}
+                  {` "Like"`}
+                </Typography>
+              </div>
+              <Typography className={s.postDate} variant={'caption'}>
+                {displayDate}
+              </Typography>
+            </div>
+          </div>
+
+          {me && (
+            <form className={s.leaveComment} onSubmit={e => handleSubmit(e)}>
+              <Input
+                autoComplete={'off'}
+                errorMessage={
+                  inputValue.length > 300 ? 'Comment must not exceed 300 characters.' : ''
+                }
+                inputMode={'text'}
+                name={'leaveComment'}
+                onChange={e => setInputValue(e.currentTarget.value)}
+                placeholder={'Add a comment...'}
+                rootClassName={s.customInput}
+                value={inputValue}
+              />
+              <Button
+                disabled={inputValue.length === 0 || inputValue.length > 300}
+                type={'submit'}
+                variant={'ghost'}
+              >
+                Publish
+              </Button>
+            </form>
           )}
         </div>
       </div>

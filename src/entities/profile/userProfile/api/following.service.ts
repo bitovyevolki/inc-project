@@ -24,17 +24,21 @@ export const FollowingService = inctagramService.injectEndpoints({
             url: `v1/users/follower/${userId}`,
           }
         },
+        // Добавляем invalidatesTags для обновления списков
+        invalidatesTags: ['Followers', 'Following'],
       }),
 
       // Создание подписки на пользователя
       followUser: builder.mutation<void, { selectedUserId: number }>({
         query: ({ selectedUserId }) => {
           return {
-            body: { selectedUserId }, // Убедитесь, что здесь всё корректно
+            body: { selectedUserId },
             method: 'POST',
             url: 'v1/users/following',
           }
         },
+        // Добавляем invalidatesTags для обновления списков
+        invalidatesTags: ['Followers', 'Following'],
       }),
 
       // Получение списка подписчиков по имени пользователя
@@ -55,6 +59,8 @@ export const FollowingService = inctagramService.injectEndpoints({
             url: `v1/users/${userName}/following`,
           }
         },
+        // Добавляем тег для отслеживания
+        providesTags: ['Following'],
       }),
 
       // Получение списка всех пользователей

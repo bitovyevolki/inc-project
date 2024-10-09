@@ -34,6 +34,9 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const [isViewPostModalOpen, setIsViewPostModalOpen] = useState<boolean>(false)
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
 
+  // Initialize followerCount as 0
+  const [followerCount, setFollowerCount] = useState<number>(0)
+
   const { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray } = usePosts({
     profileId,
   })
@@ -52,6 +55,16 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   })
 
   const isLoading = isLoadingMe || LoadingProfile
+
+  // Update followerCount when followersData changes
+  useEffect(() => {
+    console.log('followersData:', followersData) // Debugging
+    if (followersData && followersData.totalCount !== undefined) {
+      setFollowerCount(followersData.totalCount) // Use totalCount instead of length
+    } else {
+      setFollowerCount(0) // Устанавливаем 0, если данные о подписчиках не загружены
+    }
+  }, [followersData])
 
   useEffect(() => {
     if (searchParams.get('createPost')) {
@@ -76,6 +89,16 @@ export const ShowPosts = ({ post, profileId }: Props) => {
     setIsCreatePostModalOpen(false)
   }
 
+  const { refetch: refetchFollowers } = useGetFollowersByUserNameQuery(
+    { userName: profileData?.userName || '' },
+    { skip: !profileData }
+  )
+
+  const { refetch: refetchFollowing } = useGetFollowingByUserNameQuery(
+    { userName: profileData?.userName || '' },
+    { skip: !profileData }
+  )
+
   if (isLoading) {
     return <Loader />
   }
@@ -95,7 +118,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
             {showSettingsButton ? (
               <ProfileBtn profileData={profileData} showSettingsButton={showSettingsButton} />
             ) : (
-              <UserBtn profileData={profileData} />
+              <UserBtn profileData={profileData} setFollowerCount={setFollowerCount} />
             )}
             <div className={s.followers}>
               <div>
@@ -103,7 +126,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
                 <div>Following</div>
               </div>
               <div>
-                <div>{followersData?.length || 0}</div>
+                <div>{followerCount}</div> {/* Use local state here */}
                 <div>Followers</div>
               </div>
               <div>

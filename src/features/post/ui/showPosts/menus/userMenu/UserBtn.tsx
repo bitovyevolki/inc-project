@@ -7,40 +7,25 @@ import {
   useFollowUserMutation,
 } from '@/src/entities/profile/userProfile/api/following.service'
 
-interface ProfileBtnProps {
+interface UserBtnProps {
   profileData: ProfileData | undefined
+  setFollowerCount: React.Dispatch<React.SetStateAction<number>>
 }
 
-export const UserBtn = ({ profileData }: ProfileBtnProps) => {
+export const UserBtn = ({ profileData, setFollowerCount }: UserBtnProps) => {
   const [follow, setFollow] = useState(false)
 
-  // Хуки для подписки и отписки
   const [followUser] = useFollowUserMutation()
   const [unfollowUser] = useDeleteFollowerMutation()
 
-  // Проверяем, подписан ли текущий пользователь на этого
-  // useEffect(() => {
-  //   if (profileData?.isFollowed) {
-  //     setFollow(true)
-  //   } else {
-  //     setFollow(false)
-  //   }
-  // }, [profileData])
-
   const handleFollow = async () => {
     if (!profileData) return
-
-    const userId = Number(profileData.id) // Приведение к числу
-    console.log('User ID:', userId) // Вывод в консоль для отладки
-
-    if (userId <= 0) {
-      console.error('Invalid userId:', userId) // Проверка на валидность
-      return // Возврат, если userId недопустимый
-    }
+    const userId = Number(profileData.id)
 
     try {
       await followUser({ selectedUserId: userId }).unwrap()
       setFollow(true)
+      setFollowerCount(prevCount => prevCount + 1) // Increase follower count
     } catch (error) {
       console.error('Ошибка подписки:', error)
     }
@@ -48,25 +33,19 @@ export const UserBtn = ({ profileData }: ProfileBtnProps) => {
 
   const handleUnfollow = async () => {
     if (!profileData) return
-
-    const userId = Number(profileData.id) // Приведение к числу
-    console.log('User ID for unfollow:', userId) // Вывод в консоль для отладки
-
-    if (userId <= 0) {
-      console.error('Invalid userId for unfollow:', userId) // Проверка на валидность
-      return // Возврат, если userId недопустимый
-    }
+    const userId = Number(profileData.id)
 
     try {
       await unfollowUser({ userId }).unwrap()
       setFollow(false)
+      setFollowerCount(prevCount => prevCount - 1) // Decrease follower count
     } catch (error) {
       console.error('Ошибка отписки:', error)
     }
   }
 
   if (!profileData) {
-    return null // Если profileData undefined, возвращаем null
+    return null
   }
 
   return (
@@ -86,7 +65,6 @@ export const UserBtn = ({ profileData }: ProfileBtnProps) => {
             Follow
           </Button>
         )}
-        <Button variant={'secondary'}>Send Message</Button>
       </div>
     </div>
   )

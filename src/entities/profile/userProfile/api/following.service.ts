@@ -5,7 +5,6 @@ import { GetProfileByIdArgs, IProfile, UpdateGeneralProfileArgs } from '../model
 export const FollowingService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
-      // Пример уже существующих endpoints для профиля
       createProfileAvatar: builder.mutation<Pick<IProfile, 'avatars'>, { file: FormData }>({
         invalidatesTags: ['Profile'],
         query: ({ file }) => {
@@ -28,10 +27,10 @@ export const FollowingService = inctagramService.injectEndpoints({
       }),
 
       // Создание подписки на пользователя
-      followUser: builder.mutation<void, { userId: number }>({
-        query: ({ userId }) => {
+      followUser: builder.mutation<void, { selectedUserId: number }>({
+        query: ({ selectedUserId }) => {
           return {
-            body: { userId },
+            body: { selectedUserId }, // Убедитесь, что здесь всё корректно
             method: 'POST',
             url: 'v1/users/following',
           }
@@ -57,7 +56,16 @@ export const FollowingService = inctagramService.injectEndpoints({
           }
         },
       }),
-      // Другие методы...
+
+      // Получение списка всех пользователей
+      getAllUsers: builder.query<IProfile[], void>({
+        query: () => {
+          return {
+            method: 'GET',
+            url: 'v1/users', // Здесь указываем новый URL
+          }
+        },
+      }),
     }
   },
 })
@@ -68,4 +76,5 @@ export const {
   useFollowUserMutation,
   useGetFollowersByUserNameQuery,
   useGetFollowingByUserNameQuery,
+  useGetAllUsersQuery, // Экспортируем хук для нового запроса
 } = FollowingService

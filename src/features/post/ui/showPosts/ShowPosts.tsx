@@ -20,11 +20,16 @@ import { Post } from '../../model/posts.service.types'
 import baseUserPhoto from './../../../../../public/image/default-post.png'
 import { ProfileBtn } from './menus/profileMenu/ProfileBtn'
 import { UserBtn } from './menus/userMenu/UserBtn'
+import {
+  useGetFollowersByUserNameQuery,
+  useGetFollowingByUserNameQuery,
+} from '@/src/entities/profile/userProfile/api/following.service'
 
 type Props = {
   post: Post | null
   profileId?: string
 }
+
 export const ShowPosts = ({ post, profileId }: Props) => {
   const [isViewPostModalOpen, setIsViewPostModalOpen] = useState<boolean>(false)
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
@@ -38,6 +43,13 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
     profileId,
   } as GetProfileByIdArgs)
+
+  const { data: followersData } = useGetFollowersByUserNameQuery({
+    userName: profileData?.userName || '',
+  })
+  const { data: followingData } = useGetFollowingByUserNameQuery({
+    userName: profileData?.userName || '',
+  })
 
   const isLoading = isLoadingMe || LoadingProfile
 
@@ -87,11 +99,11 @@ export const ShowPosts = ({ post, profileId }: Props) => {
             )}
             <div className={s.followers}>
               <div>
-                <div>222</div>
+                <div>{followingData?.length || 0}</div>
                 <div>Following</div>
               </div>
               <div>
-                <div>3333</div>
+                <div>{followersData?.length || 0}</div>
                 <div>Followers</div>
               </div>
               <div>

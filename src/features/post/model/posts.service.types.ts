@@ -38,7 +38,7 @@ export type GetPostsByUserArgs = {
 export type GetPostCommentsArgs = {
   pageNumber?: number
   pageSize?: number
-  postId?: number
+  postId: number
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
@@ -66,7 +66,7 @@ export type Post = {
   avatarOwner: string
   createdAt: string
   description: string
-  id?: number
+  id: number
   images: Image[]
   isLiked: boolean
   likesCount: number
@@ -118,20 +118,6 @@ export type From = {
   username: string
 }
 
-export type GetCommentAnswersArgs = {
-  commentId: number
-  pageNumber?: number
-  pageSize?: number
-  postId: number
-  sortBy?: string
-  sortDirection?: 'asc' | 'desc'
-}
-export type GetCommentAnswersResponse = {
-  items: Answer[]
-  pageSize: number
-  totalCount: number
-}
-
 export type Answer = {
   commentId: number
   content: string
@@ -156,6 +142,39 @@ export interface GetLastCreatedPostsResponse {
   totalUsers: number
 }
 
+export interface GetLikesPostResponse {
+  isLiked: boolean
+  items: [
+    {
+      avatars: [
+        {
+          createdAt: string
+          fileSize: number
+          height: number
+          url: string
+          width: number
+        },
+      ]
+      createdAt: string
+      id: number
+      isFollowedBy: true
+      isFollowing: true
+      userId: number
+      userName: string
+    },
+  ]
+  pageSize: number
+  totalCount: number
+}
+
+export interface GetLikesPostArgs {
+  cursor?: number
+  pageNumber?: number
+  pageSize?: number
+  postId: number
+  search?: string
+}
+
 export interface DeletePostArgs {
   ownerId: number
   postId: number
@@ -165,6 +184,49 @@ export interface UpdatePostArgs {
   ownerId: string
   postId: string
   updatedPostData: Pick<Post, 'description'>
+}
+
+//ANSWERS
+export interface CreateAnswerArgs {
+  commentId: number
+  content: string
+  postId: number
+}
+
+export type GetCommentAnswersArgs = {
+  commentId: number
+  pageNumber?: number
+  pageSize?: number
+  postId: number
+  sortBy?: string
+  sortDirection?: 'asc' | 'desc'
+}
+
+export type GetCommentAnswersResponse = {
+  items: Answer[]
+  pageSize: number
+  totalCount: number
+}
+
+//LIKES
+type LikeType = 'DISLIKE' | 'LIKE'
+
+export interface LikeAnswerArgs {
+  answerId: number
+  commentId: number
+  likeStatus: LikeType
+  postId: number
+}
+
+export interface LikeCommentArgs {
+  commentId: number
+  likeStatus: LikeType
+  postId: number
+}
+
+export interface LikePostArgs {
+  likeStatus: LikeType
+  postId: number
 }
 
 export interface ProfileData {

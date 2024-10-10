@@ -1,0 +1,47 @@
+.commentsBlock {
+  overflow-y: auto;
+	height: 100%;
+
+	.commentsList {
+		padding: 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.description {
+		border-bottom: 1px solid #4c4c4c;
+		padding: 10px 16px;
+	}
+
+  &::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #0000003c;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #616161;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+}
+
+.loadMore {
+	padding: 10px 0 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

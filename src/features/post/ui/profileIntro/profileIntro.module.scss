@@ -3,33 +3,12 @@
   align-items: center;
   flex-flow: row wrap;
   position: relative;
+	padding: 10px 24px 13px;
 }
 
 .userAvatar {
-  position: relative;
-
-  overflow: hidden;
-
-  width: 52px;
-  height: 52px;
   margin-right: 12px;
-
-  background-color: #780a75;
   border-radius: 50%;
-
-  img {
-    object-fit: cover;
-  }
-
-  & .sizeS {
-    width: 36px;
-    height: 36px;
-  }
-
-  & .sizeL {
-    width: 204px;
-    height: 204px;
-  }
 }
 
 .textPresentaion {

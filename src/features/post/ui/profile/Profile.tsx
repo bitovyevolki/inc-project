@@ -58,6 +58,7 @@ export const Profile = ({ post, profileId }: Props) => {
   }, [post])
 
   const closeViewPostModalHandler = () => {
+    removeQueryParamHandler('postId')
     setIsViewPostModalOpen(false)
   }
 
@@ -91,16 +92,18 @@ export const Profile = ({ post, profileId }: Props) => {
           ))}
         </div>
       </div>
-      <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>
-        <ViewPost
-          avatars={profileData?.avatars}
-          closePostModal={closeViewPostModalHandler}
-          deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
-          post={post as Post}
-          removeQuery={removeQueryParamHandler}
-          userName={profileData?.userName as string}
-        />
-      </ViewPostModal>
+      {post && (
+        <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>
+          <ViewPost
+            avatars={profileData?.avatars}
+            closePostModal={closeViewPostModalHandler}
+            deletePostFromCombinedPostsArray={deletePostFromCombinedPostsArray}
+            post={post}
+            userName={profileData?.userName as string}
+          />
+        </ViewPostModal>
+      )}
+
       <CreatePost
         addPost={addPostToCombinedPosts}
         closeModal={closeCreatePostModalHandler}

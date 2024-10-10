@@ -1,23 +1,24 @@
 .wrap {
   display: flex;
   gap: 12px;
-  width: 320px;
+  max-width: 320px;
   height: 50px;
 }
 
 .nameField {
-  display: flex;
-  align-items: center;
+  color: #fff;
+
+	&:hover {
+		color: rgb(126 126 255);
+	}
 }
 
-.withoutAvatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.firstAndLastName {
+	p {
+		color: #8D9094;
+	}
+}
 
-  width: 30px;
-  height: 30px;
-
-  background: grey;
-  border-radius: 50%;
+.avatar {
+	border-radius: 50%;
 }

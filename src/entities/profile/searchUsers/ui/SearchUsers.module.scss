@@ -1,27 +1,36 @@
-.wrap {
-  display: flex;
-}
-
-.searchList {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  align-items: center;
-  justify-content: start;
-
+.wrapper {
   width: 100%;
   padding: 40px 24px;
-}
-
-.searchWrapper {
-  width: 100%;
 }
 
 .title {
   padding-bottom: 13px;
 }
 
-.parag {
-  margin-top: 30px;
-  margin-bottom: 17px;
+.usersList {
+	display: flex;
+	flex-direction: column;
+	gap: 11px;
+	margin-top: 24px;
+}
+
+.loadMore {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 0 20px;
+}
+
+.notFoundUsers {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	height: 100%;
+	margin-top: -40px;
+
+	p {
+		color: #BDC1C7;
+	}
 }

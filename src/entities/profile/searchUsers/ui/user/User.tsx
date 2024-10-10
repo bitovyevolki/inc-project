@@ -1,5 +1,5 @@
-import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
-import { Button, Typography } from '@bitovyevolki/ui-kit-int'
+import baseUserPhoto from '@/public/image/default-post.png'
+import { Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,26 +16,31 @@ export const User = ({ user }: SearchItemProps) => {
 
   return (
     <div className={s.wrap}>
+      <Image
+        alt={'avatar'}
+        className={s.avatar}
+        height={48}
+        src={avatarUrl || baseUserPhoto}
+        width={48}
+      />
       <div>
-        {avatarUrl ? (
-          <Image alt={'avatar'} className={s.avatar} height={30} src={avatarUrl} width={30} />
-        ) : (
-          <AvatarIcon className={s.avatar} height={30} width={30} />
-        )}
-      </div>
-      <div>
-        <div className={s.nameField}>
-          <Link href={`/profile/${user.id}`}>
-            <Typography variant={'link1'}>
-              {user.userName.slice(0, 18)}
-              {user.userName.length > 18 ? '...' : ''}
-            </Typography>
-          </Link>
-        </div>
-        <div>
-          <Typography
-            variant={'subTitle2'}
-          >{`${user?.firstName ?? 'User'} ${user?.lastName ?? 'Name'}`}</Typography>
+        <Link href={`/profile/${user.id}`}>
+          <Typography className={s.nameField} variant={'link1'}>
+            {user.userName.slice(0, 18)}
+            {user.userName.length > 18 ? '...' : ''}
+          </Typography>
+        </Link>
+        <div className={s.firstAndLastName}>
+          <Typography variant={'subTitle2'}>
+            {user.firstName || user.lastName ? (
+              <>
+                {user.firstName && `${user.firstName} `}
+                {user.lastName && user.lastName}
+              </>
+            ) : (
+              'User have not first or last name'
+            )}
+          </Typography>
         </div>
       </div>
     </div>

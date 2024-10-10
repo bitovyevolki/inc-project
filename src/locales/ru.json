@@ -168,9 +168,10 @@
     }
   },
 	"Search-page": {
-		"Search-placeholder": "Поиск",
-		"Requests": "Отправить запрос"
-	},
+    "Search": "Поиск",
+    "Oops-1": "Упс! Кажется тут пусто!",
+    "Oops-2": ""
+  },
 		"UserProfile": {
     "following": "Подписан",
     "followers": "Подписчики",

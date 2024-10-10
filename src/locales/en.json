@@ -164,14 +164,15 @@
       "success": "Successfully created post",
       "error": "Failed to create post"
     },
-    "Search-page": {
-      "Search-placeholder": "Search",
-      "Requests": "Resend Requests"
-    },
     "without-photo": {
       "button-select-files": "Select from Computer",
       "button-draft": "Open draft"
     }
+  },
+  "Search-page": {
+    "Search": "Search",
+    "Oops-1": "Oops! This place looks empty!",
+    "Oops-2": "No recent requests"
   },
 	"UserProfile": {
     "following": "Following",

@@ -1,5 +1,5 @@
 export interface IAvatar {
-  createdAt: string // Формат даты
+  createdAt: string
   fileSize: number
   height: number
   url: string
@@ -7,8 +7,8 @@ export interface IAvatar {
 }
 
 export interface IUser {
-  avatars: IAvatar[] // Массив объектов аватаров
-  createdAt: string // Формат даты
+  avatars: IAvatar[]
+  createdAt: string
   firstName: string
   id: number
   lastName: string
@@ -16,11 +16,18 @@ export interface IUser {
 }
 
 export interface IUsersResponse {
-  items: IUser[] // Предполагается, что здесь будет один объект IUser
+  items: IUser[]
   nextCursor: number
   page: number
   pageSize: number
   pagesCount: number
   prevCursor: number
   totalCount: number
+}
+
+export type GetUsersByNameArgs = {
+  cursor?: number
+  pageNumber?: number
+  pageSize?: number
+  search: string
 }

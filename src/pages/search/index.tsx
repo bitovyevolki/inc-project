@@ -1,10 +1,10 @@
-import { SearchProfile } from '@/src/entities/profile/search'
+import { SearchUsers } from '@/src/entities/profile/searchUsers'
 import { GetServerSideProps } from 'next'
 
 export default function SerachPage() {
   return (
     <div>
-      <SearchProfile />
+      <SearchUsers />
     </div>
   )
 }

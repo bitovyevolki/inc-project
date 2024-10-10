@@ -176,48 +176,48 @@ export interface ProfileData {
 // followers
 
 interface FollowAvatar {
+  createdAt: string // ISO формат даты
+  fileSize: number
+  height: number
   url: string
   width: number
-  height: number
-  fileSize: number
-  createdAt: string // ISO формат даты
 }
 
 interface FollowItem {
+  avatars: FollowAvatar[]
+  createdAt: string // ISO формат даты
   id: number
+  isFollowedBy: boolean
+  isFollowing: boolean
   userId: number
   userName: string
-  createdAt: string // ISO формат даты
-  avatars: FollowAvatar[]
-  isFollowing: boolean
-  isFollowedBy: boolean
 }
 
 export interface GetFollowResponse {
-  totalCount: number
-  pagesCount: number
+  items: FollowItem[] // Массив объектов типа Item
+  nextCursor: number
   page: number
   pageSize: number
+  pagesCount: number
   prevCursor: number
-  nextCursor: number
-  items: FollowItem[] // Массив объектов типа Item
+  totalCount: number
 }
 
 // Типизация основного объекта
 export interface GetUserProfileResponse {
-  id: number
-  userName: string
-  firstName: string
-  lastName: string
-  city: string
-  country: string
-  region: string
-  dateOfBirth: string // ISO формат даты
   aboutMe: string
   avatars: FollowAvatar[]
-  isFollowing: boolean
-  isFollowedBy: boolean
-  followingCount: number
+  city: string
+  country: string
+  dateOfBirth: string // ISO формат даты
+  firstName: string
   followersCount: number
+  followingCount: number
+  id: number
+  isFollowedBy: boolean
+  isFollowing: boolean
+  lastName: string
   publicationsCount: number
+  region: string
+  userName: string
 }

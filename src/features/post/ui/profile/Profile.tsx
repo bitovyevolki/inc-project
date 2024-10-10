@@ -1,48 +1,29 @@
-import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 import { useGetProfileByIdQuery } from '@/src/entities/profile/userProfile/api/profile.service'
-import {
-  GetProfileByIdArgs,
-  IProfile,
-} from '@/src/entities/profile/userProfile/model/types/profile'
+import { GetProfileByIdArgs } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { CreatePost, ViewPost } from '@/src/features/post/ui'
 import { ViewPostModal } from '@/src/features/post/ui/viewPostModal/ViewPostModal'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Typography } from '@bitovyevolki/ui-kit-int'
-import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
-import s from './showPosts.module.scss'
+import s from './Profile.module.scss'
 
 import { usePosts } from '../../lib/hooks/usePosts'
 import { usePostsParams } from '../../lib/hooks/usePostsParams'
 import { Post } from '../../model/posts.service.types'
-import baseUserPhoto from './../../../../../public/image/default-post.png'
-import { ProfileBtn } from './menus/profileMenu/ProfileBtn'
-import { UserBtn } from './menus/userMenu/UserBtn'
-import {
-  useGetAllUsersQuery,
-  useGetFollowersByUserNameQuery,
-  useGetFollowingByUserNameQuery,
-} from '@/src/entities/profile/userProfile/api/following.service'
-
-interface FollowersResponse {
-  totalCount: number
-  profiles: IProfile[] // Define your profile type accordingly
-}
+import { ProfileInfo } from '../profileInfo/ProfileInfo'
 
 type Props = {
   post: Post | null
   profileId?: string
 }
 
-export const ShowPosts = ({ post, profileId }: Props) => {
+export const Profile = ({ post, profileId }: Props) => {
   const [isViewPostModalOpen, setIsViewPostModalOpen] = useState<boolean>(false)
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
-  const [followerCount, setFollowerCount] = useState<number>(0)
 
   const { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray } = usePosts({
     profileId,
@@ -58,25 +39,7 @@ export const ShowPosts = ({ post, profileId }: Props) => {
     profileId,
   } as GetProfileByIdArgs)
 
-  const { data } = useGetAllUsersQuery({ userName: profileData?.userName as string })
-
-  const { data: followersData } = useGetFollowersByUserNameQuery({
-    userName: profileData?.userName || '',
-  })
-
-  const { data: followingData } = useGetFollowingByUserNameQuery({
-    userName: profileData?.userName || '',
-  })
   const isLoading = isLoadingMe || LoadingProfile
-
-  useEffect(() => {
-    console.log('followersData:', followersData) // Debugging
-    if (followersData && typeof followersData.totalCount === 'number') {
-      setFollowerCount(followersData.totalCount) // Use totalCount if available
-    } else {
-      setFollowerCount(0) // Set to 0 if not available
-    }
-  }, [followersData])
 
   useEffect(() => {
     refetch()
@@ -94,8 +57,6 @@ export const ShowPosts = ({ post, profileId }: Props) => {
     }
   }, [post])
 
-  const showSettingsButton = meData?.userId === profileData?.id
-
   const closeViewPostModalHandler = () => {
     setIsViewPostModalOpen(false)
   }
@@ -112,41 +73,10 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   return (
     <>
       <div className={s.wrapper}>
-        <div className={s.userPresentation}>
-          <div className={clsx(s.userAvatar)}>
-            <Image
-              alt={'avatar'}
-              fill
-              src={(profileData?.avatars[0]?.url as string) || baseUserPhoto}
-            />
-          </div>
-          <div className={s.info}>
-            {showSettingsButton ? (
-              <ProfileBtn profileData={profileData} showSettingsButton={showSettingsButton} />
-            ) : (
-              <UserBtn profileData={profileData} setFollowerCount={setFollowerCount} />
-            )}
-            <div className={s.followers}>
-              <div>
-                <div>{followingData?.totalCount || 0}</div>
-                <div>Following</div>
-              </div>
-              <div>
-                <div>{followerCount}</div>
-                <div>Followers</div>
-              </div>
-              <div>
-                <div>4444</div>
-                <div>Publications</div>
-              </div>
-            </div>
-            <div className={s.desc}>
-              <Typography as={'p'} variant={'body1'}>
-                {profileData?.aboutMe}
-              </Typography>
-            </div>
-          </div>
-        </div>
+        {profileData && meData && (
+          <ProfileInfo meId={meData.userId} userName={profileData.userName} />
+        )}
+
         <div className={s.postsGallery}>
           {combinedPosts.map(post => (
             <motion.div

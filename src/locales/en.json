@@ -172,5 +172,16 @@
       "button-select-files": "Select from Computer",
       "button-draft": "Open draft"
     }
+  },
+	"UserProfile": {
+    "following": "Following",
+    "followers": "Followers",
+    "publications": "Publications",
+		"buttons": {
+			"send-message": "Send message",
+			"follow": "Follow",
+			"un-follow": "Unfollow",
+			"settings": "Profile Settings"
+		}
   }
 }

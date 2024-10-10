@@ -1,5 +1,5 @@
 export * from './addPostDescription/AddPostDescription'
 export * from './createPost'
+export * from './profile'
 export * from './profileIntro'
-export * from './showPosts'
 export * from './viewPost'

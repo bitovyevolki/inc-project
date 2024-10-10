@@ -165,10 +165,21 @@
     "without-photo": {
       "button-select-files": "Выбрать",
       "button-draft": "Открыть черновик"
-    },
-    "Search-page": {
-      "Search-placeholder": "Поиск",
-      "Requests": "Отправить запрос"
     }
+  },
+	"Search-page": {
+		"Search-placeholder": "Поиск",
+		"Requests": "Отправить запрос"
+	},
+		"UserProfile": {
+    "following": "Подписан",
+    "followers": "Подписчики",
+    "publications": "Публикации",
+		"buttons": {
+			"send-message": "Отправить сообщение",
+			"follow": "Подписаться",
+			"un-follow": "Отписаться",
+			"settings": "Настройки профиля"
+		}
   }
 }

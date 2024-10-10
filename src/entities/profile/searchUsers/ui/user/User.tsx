@@ -1,17 +1,17 @@
+import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import s from './searchItem.module.scss'
+import s from './User.module.scss'
 
 import { IUser } from '../../model/user-model'
-import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 
 interface SearchItemProps {
   user: IUser
 }
 
-export const SearchItem = ({ user }: SearchItemProps) => {
+export const User = ({ user }: SearchItemProps) => {
   const avatarUrl = user.avatars && user.avatars.length > 0 ? user.avatars[0].url : ''
 
   return (

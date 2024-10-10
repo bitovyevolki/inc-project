@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { PublicPostItem } from '@/src/features/home/public-posts/public-post-item/PublicPostItem'
-import { TotalUsersCount } from '@/src/features/home/total-users-count/TotalUsersCount'
+import { TotalUsersCount } from '@/src/features/home/public-posts/total-users-count/TotalUsersCount'
 import { GetLastCreatedPostsResponse, Post } from '@/src/features/post/model/posts.service.types'
 
 import s from './PublicPosts.module.scss'

@@ -1,13 +1,20 @@
-import { SearchProfile } from '@/src/entities/profile/search'
+import { ReactElement } from 'react'
+
+import { SearchUsers } from '@/src/entities/profile/searchUsers'
+import { Layout } from '@/src/shared/ui/Layout/Layout'
 import { GetServerSideProps } from 'next'
 
-export default function SerachPage() {
-  return (
-    <div>
-      <SearchProfile />
-    </div>
-  )
+import { NextPageWithLayout } from '../_app'
+
+const SearchUsersPage: NextPageWithLayout = (props: any) => {
+  return <SearchUsers {...props} />
 }
+
+SearchUsersPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout withSidebar>{page}</Layout>
+}
+
+export default SearchUsersPage
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const locale = context.req.cookies['next-language'] || 'en'

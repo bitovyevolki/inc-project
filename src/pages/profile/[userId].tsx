@@ -1,16 +1,15 @@
-import * as React from 'react'
 import { PropsWithChildren, ReactElement } from 'react'
 
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { Post } from '@/src/features/post/model/posts.service.types'
-import { ShowPosts } from '@/src/features/post/ui/showPosts/ShowPosts'
+import { Profile } from '@/src/features/post/ui/profile/Profile'
 import { Layout } from '@/src/shared/ui/Layout/Layout'
 import { GetServerSideProps } from 'next'
 
 function ProfilePage(props: { post: Post | null; profile: IProfile }) {
   const userId = props.profile?.id?.toString()
 
-  return <ShowPosts profileId={userId} {...props} />
+  return <Profile profileId={userId} {...props} />
 }
 
 ProfilePageProtected.getLayout = function getLayout(page: ReactElement) {

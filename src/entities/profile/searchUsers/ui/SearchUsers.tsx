@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { useParamsHook } from '@/src/shared/hooks/useParamsHook'
@@ -17,7 +17,9 @@ export const SearchUsers = () => {
   const t = useTranslations('Search-page')
   const { changeQueryHandler, searchParams } = useParamsHook()
   const searchValue = searchParams.get('searchTerm')
+
   const [inputValue, setInputValue] = useState(searchValue || '')
+  const isFirstRender = useRef(true)
 
   const [users, setUsers] = useState<IUser[]>([])
   const [totalCount, setTotalCount] = useState(0)
@@ -31,6 +33,10 @@ export const SearchUsers = () => {
   })
 
   useEffect(() => {
+    setUsers([])
+  }, [searchValue])
+
+  useEffect(() => {
     if (data) {
       setTotalCount(data.totalCount)
       setUsers(prev => [...prev, ...data.items])
@@ -39,14 +45,18 @@ export const SearchUsers = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setUsers([])
       changeQueryHandler({ searchTerm: inputValue })
+      setUsersPage(1)
+      setUsers([])
     }, 500)
 
     return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue])
 
   useEffect(() => {
+    const targetElement = loadMoreRef.current
+
     const observer = new IntersectionObserver(entries => {
       const [entry] = entries
 
@@ -55,20 +65,19 @@ export const SearchUsers = () => {
       }
     })
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current)
+    if (targetElement) {
+      observer.observe(targetElement)
     }
 
     return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current)
+      if (targetElement) {
+        observer.unobserve(targetElement)
       }
     }
-  }, [users.length, totalCount, isLoading])
+  }, [users.length, isLoading, totalCount])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
-    setUsersPage(1)
   }
 
   const handleOnSearchClear = () => {
@@ -99,11 +108,12 @@ export const SearchUsers = () => {
       />
       <div className={s.usersList}>
         {users.map(user => (
-          <User key={user.id} user={user} />
+          <User key={`${user.id}${user.createdAt}`} user={user} />
         ))}
 
+        <span ref={loadMoreRef}></span>
         {isFetching && (
-          <p className={s.loadMore} ref={loadMoreRef}>
+          <p className={s.loadMore}>
             <RoundLoader variant={'small'} />
           </p>
         )}

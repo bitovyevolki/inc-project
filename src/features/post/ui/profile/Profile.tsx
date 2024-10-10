@@ -43,7 +43,7 @@ export const Profile = ({ post, profileId }: Props) => {
 
   useEffect(() => {
     refetch()
-  }, [])
+  }, [refetch])
 
   useEffect(() => {
     if (searchParams.get('createPost')) {

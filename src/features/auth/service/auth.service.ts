@@ -17,7 +17,6 @@ import { inctagramService } from '@/src/shared/model/inctagram.service'
 import Router from 'next/router'
 
 export const AuthService = inctagramService.injectEndpoints({
-  /// ADD Your Endpoints
   endpoints: builder => {
     return {
       checkPasswordRecoveryCode: builder.query<void, RecoverPasswordCodeArgs>({
@@ -64,7 +63,6 @@ export const AuthService = inctagramService.injectEndpoints({
           try {
             await queryFulfilled
             localStorage.removeItem('token')
-            //TODO should here be local api or baseApi for util methods below? They both work
             dispatch(inctagramService.util.invalidateTags(['Me']))
             dispatch(inctagramService.util.resetApiState())
             void Router.replace('/')
@@ -76,11 +74,6 @@ export const AuthService = inctagramService.injectEndpoints({
           body: { baseUrl: 'http://localhost:3000' },
           credentials: 'include',
           headers: {
-            // Добавляем токен авторизации из localStorage
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-          headers: {
-            // Добавляем токен авторизации из localStorage
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
           method: 'POST',

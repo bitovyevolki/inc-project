@@ -65,22 +65,25 @@ export const CommentsList = ({ description, postId }: Props) => {
       }
       setComments(prev => [...prev, ...commentsData.items])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commentsData])
 
   useEffect(() => {
+    const targetElement = loadMoreRef.current
+
     const observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && comments.length < totalCount) {
-        setCommentsPage(commentsPage + 1)
+        setCommentsPage(prevPage => prevPage + 1)
       }
     })
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current)
+    if (targetElement) {
+      observer.observe(targetElement)
     }
 
     return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current)
+      if (targetElement) {
+        observer.unobserve(targetElement)
       }
     }
   }, [loadMoreRef, comments.length, totalCount])

@@ -1,9 +1,9 @@
-import { ChangeEvent, ComponentPropsWithoutRef, ElementType, ReactNode, useRef } from 'react'
+import React, { ChangeEvent, ComponentPropsWithoutRef, ElementType, ReactNode, useRef } from 'react'
 
 import { Button } from '@bitovyevolki/ui-kit-int'
 
-type IntrinsicElementProps<T> = T extends keyof JSX.IntrinsicElements
-  ? JSX.IntrinsicElements[T]
+type IntrinsicElementProps<T> = T extends keyof React.JSX.IntrinsicElements
+  ? React.JSX.IntrinsicElements[T]
   : any
 
 export type FileLoaderProps<T extends ElementType = 'button'> = {

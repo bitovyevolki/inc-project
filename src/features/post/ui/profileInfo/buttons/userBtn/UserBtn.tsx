@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import {
   useFollowUserMutation,
   useUnFollowMutation,
@@ -31,8 +33,7 @@ export const UserBtn = ({ isFetchingProfile, isFollowing, userId, userName }: Pr
     try {
       await unfollowUser({ userId }).unwrap()
     } catch (error) {
-      console.error('Ошибка отписки:', error)
-      console.log('')
+      toast.error('Ошибка отписки')
     }
   }
 

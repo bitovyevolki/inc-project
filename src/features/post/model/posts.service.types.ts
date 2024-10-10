@@ -228,3 +228,58 @@ export interface LikePostArgs {
   likeStatus: LikeType
   postId: number
 }
+
+export interface ProfileData {
+  avatars?: { url: string }[] // массив с аватарами
+  id: number
+  userName: string
+}
+
+// followers
+
+interface FollowAvatar {
+  createdAt: string // ISO формат даты
+  fileSize: number
+  height: number
+  url: string
+  width: number
+}
+
+interface FollowItem {
+  avatars: FollowAvatar[]
+  createdAt: string // ISO формат даты
+  id: number
+  isFollowedBy: boolean
+  isFollowing: boolean
+  userId: number
+  userName: string
+}
+
+export interface GetFollowResponse {
+  items: FollowItem[] // Массив объектов типа Item
+  nextCursor: number
+  page: number
+  pageSize: number
+  pagesCount: number
+  prevCursor: number
+  totalCount: number
+}
+
+// Типизация основного объекта
+export interface GetUserProfileResponse {
+  aboutMe: string
+  avatars: FollowAvatar[]
+  city: string
+  country: string
+  dateOfBirth: string // ISO формат даты
+  firstName: string
+  followersCount: number
+  followingCount: number
+  id: number
+  isFollowedBy: boolean
+  isFollowing: boolean
+  lastName: string
+  publicationsCount: number
+  region: string
+  userName: string
+}

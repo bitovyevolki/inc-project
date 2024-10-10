@@ -1,0 +1,39 @@
+.userPresentation {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 90%;
+}
+
+.userAvatar {
+  position: relative;
+
+  overflow: hidden;
+
+  min-width: 204px;
+  height: 204px;
+  margin-right: 24px;
+
+  background-color: #780a75;
+  border-radius: 50%;
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.info {
+  padding-top: 35px;
+}
+
+.followers {
+  display: flex;
+  gap: 100px;
+  margin-top: 26px;
+  margin-bottom: 28px;
+}
+
+.desc {
+  width: 730px;
+  height: 73px;
+}

@@ -1,0 +1,24 @@
+.wrap {
+  display: flex;
+  gap: 12px;
+  max-width: 320px;
+  height: 50px;
+}
+
+.nameField {
+  color: #fff;
+
+	&:hover {
+		color: rgb(126 126 255);
+	}
+}
+
+.firstAndLastName {
+	p {
+		color: #8D9094;
+	}
+}
+
+.avatar {
+	border-radius: 50%;
+}

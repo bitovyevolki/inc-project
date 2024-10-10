@@ -15,5 +15,6 @@ export const inctagramService = createApi({
     'Comments',
     'LikesPost',
     'Answer',
+    'Follow',
   ],
 })

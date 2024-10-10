@@ -6,26 +6,22 @@ import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { CreatePost, ViewPost } from '@/src/features/post/ui'
 import { ViewPostModal } from '@/src/features/post/ui/viewPostModal/ViewPostModal'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Button, Typography } from '@bitovyevolki/ui-kit-int'
-import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
 
-import s from './showPosts.module.scss'
+import s from './Profile.module.scss'
 
 import { usePosts } from '../../lib/hooks/usePosts'
 import { usePostsParams } from '../../lib/hooks/usePostsParams'
 import { Post } from '../../model/posts.service.types'
-import baseUserPhoto from './../../../../../public/image/default-post.png'
-import { ProfileBtn } from './menus/profileMenu/ProfileBtn'
-import { UserBtn } from './menus/userMenu/UserBtn'
+import { ProfileInfo } from '../profileInfo/ProfileInfo'
 
 type Props = {
   post: Post | null
   profileId?: string
 }
-export const ShowPosts = ({ post, profileId }: Props) => {
+
+export const Profile = ({ post, profileId }: Props) => {
   const [isViewPostModalOpen, setIsViewPostModalOpen] = useState<boolean>(false)
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
 
@@ -35,11 +31,19 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   const { changeQueryHandler, removeQueryParamHandler, searchParams } = usePostsParams()
 
   const { data: meData, isLoading: isLoadingMe } = useMeQuery()
-  const { data: profileData, isLoading: LoadingProfile } = useGetProfileByIdQuery({
+  const {
+    data: profileData,
+    isLoading: LoadingProfile,
+    refetch,
+  } = useGetProfileByIdQuery({
     profileId,
   } as GetProfileByIdArgs)
 
   const isLoading = isLoadingMe || LoadingProfile
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   useEffect(() => {
     if (searchParams.get('createPost')) {
@@ -52,8 +56,6 @@ export const ShowPosts = ({ post, profileId }: Props) => {
       setIsViewPostModalOpen(true)
     }
   }, [post])
-
-  const showSettingsButton = meData?.userId === profileData?.id
 
   const closeViewPostModalHandler = () => {
     removeQueryParamHandler('postId')
@@ -72,41 +74,10 @@ export const ShowPosts = ({ post, profileId }: Props) => {
   return (
     <>
       <div className={s.wrapper}>
-        <div className={s.userPresentation}>
-          <div className={clsx(s.userAvatar)}>
-            <Image
-              alt={'avatar'}
-              fill
-              src={(profileData?.avatars[0]?.url as string) || baseUserPhoto}
-            />
-          </div>
-          <div className={s.info}>
-            {showSettingsButton ? (
-              <ProfileBtn profileData={profileData} showSettingsButton={showSettingsButton} />
-            ) : (
-              <UserBtn profileData={profileData} />
-            )}
-            <div className={s.followers}>
-              <div>
-                <div>2222</div>
-                <div>Following</div>
-              </div>
-              <div>
-                <div>3333</div>
-                <div>Followers</div>
-              </div>
-              <div>
-                <div>4444</div>
-                <div>Publications</div>
-              </div>
-            </div>
-            <div className={s.desc}>
-              <Typography as={'p'} variant={'body1'}>
-                {profileData?.aboutMe}
-              </Typography>
-            </div>
-          </div>
-        </div>
+        {profileData && meData && (
+          <ProfileInfo meId={meData.userId} userName={profileData.userName} />
+        )}
+
         <div className={s.postsGallery}>
           {combinedPosts.map(post => (
             <motion.div

@@ -24,10 +24,6 @@ export const ProfileInfo = ({ meId, userName }: Props) => {
     userName: userName,
   })
 
-  useEffect(() => {
-    console.log(isFetchingProfile)
-  }, [isFetchingProfile])
-
   if (!profile) {
     return <Loader />
   }

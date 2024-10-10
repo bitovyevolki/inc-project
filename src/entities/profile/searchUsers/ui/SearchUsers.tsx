@@ -44,6 +44,12 @@ export const SearchUsers = () => {
   }, [data])
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+
+      return
+    }
+
     const timer = setTimeout(() => {
       changeQueryHandler({ searchTerm: inputValue })
       setUsersPage(1)

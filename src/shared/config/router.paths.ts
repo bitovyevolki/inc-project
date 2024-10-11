@@ -4,6 +4,7 @@ export enum RouterPaths {
   EXPIRED_LINK = '/auth/expired-link',
   FORGOT_PASSWORD = '/auth/forgot-password',
   HOME = '/',
+  MESSENGER = '/messenger',
   MY_PROFILE = '/profile',
   PERSONAL_INFO = '/personal-info',
   PRIVACY_POLICY = '/auth/privacy-policy',

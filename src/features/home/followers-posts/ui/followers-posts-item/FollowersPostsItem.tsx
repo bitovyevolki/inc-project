@@ -1,4 +1,7 @@
-import { useGetPostCommentsQuery } from '@/src/features/post/model/posts.service'
+import {
+  useGetLikesByPostIdQuery,
+  useGetPostCommentsQuery,
+} from '@/src/features/post/model/posts.service'
 import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
@@ -23,6 +26,8 @@ export const FollowersPostsItem = ({ item }: IProps) => {
     { skip: !item.id }
   )
 
+  const { data: likes } = useGetLikesByPostIdQuery({ postId: item.id }, { skip: !item.id })
+
   return (
     <div className={s.post}>
       <PostHeader
@@ -32,14 +37,14 @@ export const FollowersPostsItem = ({ item }: IProps) => {
         updatedAt={item.updatedAt}
       />
       <PostCarusel images={item.images} />
-      <IconsBox ownerId={item.ownerId} postId={item.id} />
+      <IconsBox isLiked={likes?.isLiked} ownerId={item.ownerId} postId={item.id} />
       <DescriptionBox
         avatarOwner={item.avatarOwner}
         description={item.description}
         ownerId={item.ownerId}
         userName={item.userName}
       />
-      <LikesCount likesCount={item.likesCount} />
+      <LikesCount likesCount={likes?.totalCount} userAvatars={likes?.items} />
       {comments && comments?.totalCount > 0 && (
         <Typography className={s.comments} variant={'subTitle2'}>
           <Link

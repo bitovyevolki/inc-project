@@ -61,7 +61,6 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
-
       getPostById: builder.query<GetPostByIdResponse, GetPostByIdArgs>({
         query: queryArgs => {
           return {

@@ -1,5 +1,5 @@
 .post {
-  margin-top: 30px;
+  margin-top: 40px;
   width: 500px;
   display: flex;
   flex-direction: column;
@@ -7,30 +7,22 @@
   overflow: hidden;
 
   &:last-child {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
-}
-
-.descriptionBox {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-
-  & > img {
-    border-radius: 50%;
-  }
-
-  .description {
-  }
-}
-
-.likesBox {
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .comments {
   color: var(--color-light-900);
   cursor: pointer;
+}
+
+.border {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-dark-300);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-light-900);
 }

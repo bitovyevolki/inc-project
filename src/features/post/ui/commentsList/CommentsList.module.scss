@@ -1,18 +1,18 @@
 .commentsBlock {
   overflow-y: auto;
-	height: 100%;
+  height: 100%;
 
-	.commentsList {
-		padding: 16px;
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-	}
+  .commentsList {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-	.description {
-		border-bottom: 1px solid #4c4c4c;
-		padding: 10px 16px;
-	}
+  .description {
+    border-bottom: 1px solid #4c4c4c;
+    padding: 10px 16px;
+  }
 
   &::-webkit-scrollbar-button {
     width: 0;
@@ -40,8 +40,8 @@
 }
 
 .loadMore {
-	padding: 10px 0 20px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  padding: 10px 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

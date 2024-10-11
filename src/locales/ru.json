@@ -167,20 +167,20 @@
       "button-draft": "Открыть черновик"
     }
   },
-	"Search-page": {
+  "Search-page": {
     "Search": "Поиск",
     "Oops-1": "Упс! Кажется тут пусто!",
     "Oops-2": ""
   },
-		"UserProfile": {
+  "UserProfile": {
     "following": "Подписан",
     "followers": "Подписчики",
     "publications": "Публикации",
-		"buttons": {
-			"send-message": "Отправить сообщение",
-			"follow": "Подписаться",
-			"un-follow": "Отписаться",
-			"settings": "Настройки профиля"
-		}
+    "buttons": {
+      "send-message": "Отправить сообщение",
+      "follow": "Подписаться",
+      "un-follow": "Отписаться",
+      "settings": "Настройки профиля"
+    }
   }
 }

@@ -8,29 +8,29 @@
 }
 
 .usersList {
-	display: flex;
-	flex-direction: column;
-	gap: 11px;
-	margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-top: 24px;
 }
 
 .loadMore {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 10px 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 20px;
 }
 
 .notFoundUsers {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-	height: 100%;
-	margin-top: -40px;
+  height: 100%;
+  margin-top: -40px;
 
-	p {
-		color: #BDC1C7;
-	}
+  p {
+    color: #bdc1c7;
+  }
 }

@@ -1,0 +1,28 @@
+.likesBox {
+  display: flex;
+  align-items: center;
+}
+
+.count {
+  margin-left: 46px;
+  margin-right: 8px;
+}
+
+.images {
+  position: relative;
+
+  & > img {
+    border-radius: 50%;
+    object-fit: cover;
+
+    &:nth-child(2) {
+      position: absolute;
+      left: 18px;
+    }
+
+    &:nth-child(3) {
+      position: absolute;
+      left: 36px;
+    }
+  }
+}

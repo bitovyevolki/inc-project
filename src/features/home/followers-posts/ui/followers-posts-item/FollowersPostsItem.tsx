@@ -1,12 +1,15 @@
-import baseAvatar from '@/public/image/default-avatar.webp'
 import { useGetPostCommentsQuery } from '@/src/features/post/model/posts.service'
+import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Typography } from '@bitovyevolki/ui-kit-int'
-import Image from 'next/image'
+import Link from 'next/link'
 
 import s from './FollowersPostsItem.module.scss'
 
 import { IFollowersPostsItem } from '../../model/types'
+import { AddCommentForm } from './add-comment-form/AddCommentForm'
+import { DescriptionBox } from './description-box/DescriptionBox'
 import { IconsBox } from './icons-box/IconsBox'
+import { LikesCount } from './likes-count/LikesCount'
 import { PostCarusel } from './post-carusel/PostCarusel'
 import { PostHeader } from './post-header/PostHeader'
 
@@ -15,7 +18,10 @@ interface IProps {
 }
 
 export const FollowersPostsItem = ({ item }: IProps) => {
-  const { data: comments } = useGetPostCommentsQuery({ postId: item.id }, { skip: !item.id })
+  const { data: comments, refetch: refetchComments } = useGetPostCommentsQuery(
+    { postId: item.id },
+    { skip: !item.id }
+  )
 
   return (
     <div className={s.post}>
@@ -27,30 +33,25 @@ export const FollowersPostsItem = ({ item }: IProps) => {
       />
       <PostCarusel images={item.images} />
       <IconsBox ownerId={item.ownerId} postId={item.id} />
-      <div className={s.descriptionBox}>
-        <Image
-          alt={'avatarOwner'}
-          className={s.ownerAvatar}
-          height={36}
-          src={item.avatarOwner || baseAvatar}
-          width={36}
-        />
-        <Typography variant={'body1'}>{item.userName}</Typography>
-        <Typography className={s.description} variant={'body2'}>
-          {item.description}
-        </Typography>
-      </div>
-      <div className={s.likesBox}>
-        <Typography variant={'body2'}>{item.likesCount}</Typography>
-        <Typography variant={'body1'}>{'Like'}</Typography>
-      </div>
+      <DescriptionBox
+        avatarOwner={item.avatarOwner}
+        description={item.description}
+        ownerId={item.ownerId}
+        userName={item.userName}
+      />
+      <LikesCount likesCount={item.likesCount} />
       {comments && comments?.totalCount > 0 && (
         <Typography className={s.comments} variant={'subTitle2'}>
-          View All Comments({comments?.totalCount})
+          <Link
+            className={s.link}
+            href={`${RouterPaths.MY_PROFILE}/${item.ownerId}?postId=${item.id}`}
+          >
+            View All Comments({comments?.totalCount})
+          </Link>
         </Typography>
       )}
-      <div>comment</div>
-      <div>form border-bottom</div>
+      <AddCommentForm postId={item.id} refetchComments={refetchComments} />
+      <div className={s.border} />
     </div>
   )
 }

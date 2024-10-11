@@ -1,0 +1,10 @@
+.form {
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+
+  input {
+    width: 330px;
+    border: 0;
+  }
+}

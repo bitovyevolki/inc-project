@@ -1,4 +1,3 @@
-import basePost from '@/public/image/default-post.png'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import Image from 'next/image'
 
@@ -18,14 +17,14 @@ export const PostCarusel = ({ images }: IProps) => {
               alt={`post.image ${index}`}
               height={500}
               key={image.uploadId}
-              src={basePost}
+              src={image.url}
               width={500}
             />
           ))}
         </PhotoSlider>
       )}
       {images.length === 1 && (
-        <Image alt={'post image'} height={500} src={images[0].url || basePost} width={500} />
+        <Image alt={'post image'} height={500} src={images[0].url} width={500} />
       )}
     </>
   )

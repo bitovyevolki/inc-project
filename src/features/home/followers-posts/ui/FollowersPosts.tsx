@@ -3,18 +3,18 @@ import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './FollowersPosts.module.scss'
 
-import { useGetFollowersPostsQuery } from '../api/followers-posts.service'
+import { useFollowersPosts } from '../lib/useFollowersPosts'
 import { FollowersPostsItem } from './followers-posts-item/FollowersPostsItem'
 
 export const FollowersPosts = () => {
-  const { data, error, isLoading } = useGetFollowersPostsQuery({})
+  const { data, error, isLoading } = useFollowersPosts()
 
   if (error) {
     return <Typography variant={'h2'}>Ошибка загрузки публикаций</Typography>
   }
 
   if (data?.items.length === 0) {
-    return <Typography variant={'h2'}>У ваших пользователей еще нет публикаций</Typography>
+    return <Typography variant={'h2'}>У ваших друзей еще нет публикаций</Typography>
   }
 
   if (isLoading) {

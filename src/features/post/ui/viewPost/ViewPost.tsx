@@ -1,6 +1,7 @@
 import { FormEvent, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
+import baseAvatar from '@/public/image/default-avatar.webp'
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import {
@@ -202,7 +203,7 @@ export const ViewPost = ({
                           alt={'ava'}
                           className={s.avatarsListItem}
                           height={24}
-                          src={user.avatars[0].url}
+                          src={user.avatars.length > 0 ? user.avatars[0].url : baseAvatar}
                           width={24}
                         />
                       </div>

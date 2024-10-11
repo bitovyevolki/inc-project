@@ -4,8 +4,7 @@
 }
 
 .count {
-  margin-left: 46px;
-  margin-right: 8px;
+  margin: 0 8px;
 }
 
 .images {
@@ -16,13 +15,11 @@
     object-fit: cover;
 
     &:nth-child(2) {
-      position: absolute;
-      left: 18px;
+      margin-left: -18px;
     }
 
     &:nth-child(3) {
-      position: absolute;
-      left: 36px;
+      margin-left: -18px;
     }
   }
 }

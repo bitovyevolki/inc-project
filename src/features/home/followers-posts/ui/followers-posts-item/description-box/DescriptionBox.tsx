@@ -31,7 +31,8 @@ export const DescriptionBox = ({ avatarOwner, description, ownerId, userName }: 
           {userName}
         </Link>
       </Typography>
-      <Typography variant={'body2'}>
+
+      {description.length > 300 ? (
         <ReactShowMoreText
           anchorClass={s.showMore}
           expanded={isCollapsed}
@@ -43,7 +44,9 @@ export const DescriptionBox = ({ avatarOwner, description, ownerId, userName }: 
         >
           {description}
         </ReactShowMoreText>
-      </Typography>
+      ) : (
+        <>{description}</>
+      )}
     </div>
   )
 }

@@ -144,27 +144,27 @@ export interface GetLastCreatedPostsResponse {
 
 export interface GetLikesPostResponse {
   isLiked: boolean
-  items: [
-    {
-      avatars: [
-        {
-          createdAt: string
-          fileSize: number
-          height: number
-          url: string
-          width: number
-        },
-      ]
-      createdAt: string
-      id: number
-      isFollowedBy: true
-      isFollowing: true
-      userId: number
-      userName: string
-    },
-  ]
+  items: IGetLikeItem[]
   pageSize: number
   totalCount: number
+}
+
+export interface IGetLikeItem {
+  avatars: [
+    {
+      createdAt: string
+      fileSize: number
+      height: number
+      url: string
+      width: number
+    },
+  ]
+  createdAt: string
+  id: number
+  isFollowedBy: true
+  isFollowing: true
+  userId: number
+  userName: string
 }
 
 export interface GetLikesPostArgs {

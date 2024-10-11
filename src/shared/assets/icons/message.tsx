@@ -11,7 +11,7 @@ const MessageIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) =>
       viewBox={'0 0 24 24'}
       width={'24'}
       xmlns={'http://www.w3.org/2000/svg'}
-      {...props}
+      {...restProps}
     >
       <g clipPath={'url(#clip0_310_6970)'}>
         <path

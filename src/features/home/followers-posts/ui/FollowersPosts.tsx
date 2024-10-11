@@ -7,7 +7,7 @@ import { useFollowersPosts } from '../lib/useFollowersPosts'
 import { FollowersPostsItem } from './followers-posts-item/FollowersPostsItem'
 
 export const FollowersPosts = () => {
-  const { data, error, isLoading } = useFollowersPosts()
+  const { data, error, isFetching, isLoading } = useFollowersPosts()
 
   if (error) {
     return <Typography variant={'h2'}>Ошибка загрузки публикаций</Typography>
@@ -17,7 +17,7 @@ export const FollowersPosts = () => {
     return <Typography variant={'h2'}>У ваших друзей еще нет публикаций</Typography>
   }
 
-  if (isLoading) {
+  if (isLoading || data?.items.length === 0) {
     return (
       <div className={s.loader}>
         <RoundLoader variant={'large'} />
@@ -28,6 +28,11 @@ export const FollowersPosts = () => {
   return (
     <div className={s.posts}>
       {data?.items.map(p => <FollowersPostsItem item={p} key={p.id + '-' + Math.random()} />)}
+      {isFetching && (
+        <p className={s.loadMore}>
+          <RoundLoader variant={'small'} />
+        </p>
+      )}
     </div>
   )
 }

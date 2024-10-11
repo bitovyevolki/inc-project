@@ -1,3 +1,6 @@
+import { toast } from 'react-toastify'
+
+import { useGetAllUsersQuery } from '@/src/features/post/model/follow.service'
 import {
   useGetLikesByPostIdQuery,
   useGetPostCommentsQuery,
@@ -28,16 +31,37 @@ export const FollowersPostsItem = ({ item }: IProps) => {
 
   const { data: likes } = useGetLikesByPostIdQuery({ postId: item.id }, { skip: !item.id })
 
+  const { data: profile } = useGetAllUsersQuery({
+    userName: item.userName,
+  })
+
+  const copyUrlToClipboardHandler = () => {
+    navigator.clipboard.writeText(
+      `${window.location.toString()}${RouterPaths.MY_PROFILE.slice(1)}/${item.ownerId}?postId=${
+        item.id
+      }`
+    )
+
+    toast.success('The link has been copied!', { position: 'top-right' })
+  }
+
   return (
     <div className={s.post}>
       <PostHeader
         avatar={item.avatarOwner}
+        copyUrl={copyUrlToClipboardHandler}
+        isFollowing={profile?.isFollowing}
         name={item.userName}
         ownerId={item.ownerId}
         updatedAt={item.updatedAt}
       />
       <PostCarusel images={item.images} />
-      <IconsBox isLiked={likes?.isLiked} ownerId={item.ownerId} postId={item.id} />
+      <IconsBox
+        copyUrl={copyUrlToClipboardHandler}
+        isLiked={likes?.isLiked}
+        ownerId={item.ownerId}
+        postId={item.id}
+      />
       <DescriptionBox
         avatarOwner={item.avatarOwner}
         description={item.description}

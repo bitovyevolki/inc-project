@@ -8,7 +8,7 @@ export const FollowService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
       followUser: builder.mutation<void, { selectedUserId: number }>({
-        invalidatesTags: ['Follow'],
+        invalidatesTags: (result, error, args) => [{ id: args.selectedUserId, type: 'Follow' }],
         query: ({ selectedUserId }) => {
           return {
             body: { selectedUserId },
@@ -18,7 +18,7 @@ export const FollowService = inctagramService.injectEndpoints({
         },
       }),
       getAllUsers: builder.query<GetUserProfileResponse, { userName: string }>({
-        providesTags: ['Follow'],
+        providesTags: result => [{ id: result?.id, type: 'Follow' }],
         query: ({ userName }) => {
           return {
             method: 'GET',
@@ -45,7 +45,7 @@ export const FollowService = inctagramService.injectEndpoints({
         // providesTags: ['Following'],
       }),
       unFollow: builder.mutation<void, { userId: number }>({
-        invalidatesTags: ['Follow'],
+        invalidatesTags: (result, error, args) => [{ id: args.userId, type: 'Follow' }],
         query: ({ userId }) => {
           return {
             method: 'DELETE',

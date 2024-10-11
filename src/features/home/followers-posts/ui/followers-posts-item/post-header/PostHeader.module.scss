@@ -20,3 +20,26 @@
 .nameLink {
   text-decoration: none;
 }
+
+.PopoverContent {
+  border-radius: 2px;
+  border: 1px solid var(--color-dark-100);
+  background-color: var(--color-dark-500);
+  z-index: 1000;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .popoverItem {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 10px;
+  }
+}
+
+.disabledPopoverItem {
+  pointer-events: none;
+}

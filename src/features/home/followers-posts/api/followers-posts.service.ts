@@ -14,7 +14,7 @@ export const FollowersPostsService = inctagramService.injectEndpoints({
         },
         query: args => {
           const params = new URLSearchParams({
-            pageSize: args.pageSize?.toString() || '12',
+            pageSize: args.pageSize?.toString() || '8',
           })
 
           if (args.endCursorPostId) {

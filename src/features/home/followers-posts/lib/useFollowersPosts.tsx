@@ -6,7 +6,9 @@ const SCROLL_OFFSET = 5
 
 export const useFollowersPosts = () => {
   const [lastPostId, setLastPostId] = useState(0)
-  const { data, error, isLoading } = useGetFollowersPostsQuery({ endCursorPostId: lastPostId })
+  const { data, error, isFetching, isLoading } = useGetFollowersPostsQuery({
+    endCursorPostId: lastPostId,
+  })
 
   const handleScroll = useCallback(() => {
     if (
@@ -37,5 +39,5 @@ export const useFollowersPosts = () => {
     }
   }, [handleScroll])
 
-  return { data, error, isLoading }
+  return { data, error, isFetching, isLoading }
 }

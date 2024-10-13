@@ -13,9 +13,9 @@ import {
   useUpdatePostLikeMutation,
 } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
+import { SharePost } from '@/src/features/post/ui/sharePost/sharePost'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { LikeIcon } from '@/src/shared/assets/icons/like'
-import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { formatDate } from '@/src/shared/utils/formatDate'
 import { Button, Card, Input, TextArea, Typography } from '@bitovyevolki/ui-kit-int'
@@ -61,10 +61,6 @@ export const ViewPost = ({
 
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
-
-  const copyUrlToClipboardHandler = () => {
-    navigator.clipboard.writeText(window.location.toString())
-  }
 
   const changePostLikeStatus = () => {
     const newLikeStatus = likes && likes.isLiked === true ? 'DISLIKE' : 'LIKE'
@@ -185,9 +181,7 @@ export const ViewPost = ({
                 <div className={s.like} onClick={() => changePostLikeStatus()}>
                   <LikeIcon fill={likeColor} height={24} width={24} />
                 </div>
-                <div onClick={copyUrlToClipboardHandler}>
-                  <PaperPlaneIcon />
-                </div>
+                <SharePost postUrl={window.location.href} />
               </div>
               <div>
                 <BookmarkIcon />

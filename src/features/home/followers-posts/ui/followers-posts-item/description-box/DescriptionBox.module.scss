@@ -1,0 +1,19 @@
+.descriptionBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  & > img {
+    border-radius: 50%;
+  }
+}
+
+.showMore {
+  cursor: pointer;
+  color: var(--color-light-900);
+  text-decoration: underline;
+}
+
+.link {
+  text-decoration: none;
+}

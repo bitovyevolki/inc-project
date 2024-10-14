@@ -1,0 +1,28 @@
+.post {
+  margin-top: 40px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+
+  &:last-child {
+    margin-bottom: 40px;
+  }
+}
+
+.comments {
+  color: var(--color-light-900);
+  cursor: pointer;
+}
+
+.border {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-dark-300);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-light-900);
+}

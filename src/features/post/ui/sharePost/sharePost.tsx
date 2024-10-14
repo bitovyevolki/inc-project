@@ -1,66 +1,49 @@
-import { useState } from 'react'
 import {
   EmailIcon,
   EmailShareButton,
   FacebookIcon,
   FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
   TelegramIcon,
   TelegramShareButton,
   TwitterShareButton,
   VKIcon,
   VKShareButton,
+  ViberIcon,
+  ViberShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
   XIcon,
 } from 'react-share'
-
-import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
 
 import s from './sharePost.module.scss'
 
 type SharePostProps = {
+  iconSize?: number
+  onClose?: () => void
   postUrl: string
 }
 
-export const SharePost = ({ postUrl }: SharePostProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+const shareButtons = [
+  { Button: TelegramShareButton, Icon: TelegramIcon, key: 'telegram' },
+  { Button: FacebookShareButton, Icon: FacebookIcon, key: 'facebook' },
+  { Button: TwitterShareButton, Icon: XIcon, key: 'twitter' },
+  { Button: VKShareButton, Icon: VKIcon, key: 'vk' },
+  { Button: WhatsappShareButton, Icon: WhatsappIcon, key: 'whatsapp' },
+  { Button: LinkedinShareButton, Icon: LinkedinIcon, key: 'linkedin' },
+  { Button: ViberShareButton, Icon: ViberIcon, key: 'viber' },
+  { Button: EmailShareButton, Icon: EmailIcon, key: 'email' },
+]
 
-  const toggleShareOptions = () => {
-    setIsOpen(!isOpen)
-  }
-
-  const closeShareOptions = () => {
-    setIsOpen(false)
-  }
-
+export const SharePost = ({ iconSize = 36, onClose, postUrl }: SharePostProps) => {
   return (
-    <>
-      <div onClick={toggleShareOptions}>
-        <PaperPlaneIcon />
-      </div>
-
-      {isOpen && (
-        <>
-          <div className={s.overlay} onClick={closeShareOptions} />
-          <div className={s.sharePost}>
-            <div className={s.shareOptions}>
-              <TelegramShareButton url={postUrl}>
-                <TelegramIcon className={s.icon} size={32} />
-              </TelegramShareButton>
-              <FacebookShareButton url={postUrl}>
-                <FacebookIcon className={s.icon} size={32} />
-              </FacebookShareButton>
-              <TwitterShareButton url={postUrl}>
-                <XIcon className={s.icon} size={32} />
-              </TwitterShareButton>
-              <VKShareButton url={postUrl}>
-                <VKIcon className={s.icon} size={32} />
-              </VKShareButton>
-              <EmailShareButton url={postUrl}>
-                <EmailIcon className={s.icon} size={32} />
-              </EmailShareButton>
-            </div>
-          </div>
-        </>
-      )}
-    </>
+    <div className={s.shareOptions}>
+      {shareButtons.map(({ Button, Icon, key }) => (
+        <Button key={key} onClick={onClose} url={postUrl}>
+          <Icon className={s.icon} size={iconSize} />
+        </Button>
+      ))}
+    </div>
   )
 }

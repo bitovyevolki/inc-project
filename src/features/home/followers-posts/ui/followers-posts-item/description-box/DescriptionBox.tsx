@@ -6,6 +6,7 @@ import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import s from './DescriptionBox.module.scss'
 
@@ -18,6 +19,8 @@ interface IProps {
 
 export const DescriptionBox = ({ avatarOwner, description, ownerId, userName }: IProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false)
+
+  const t = useTranslations('FollowersPosts')
 
   const handleOnCollapse = () => {
     setIsCollapsed(!isCollapsed)
@@ -38,7 +41,7 @@ export const DescriptionBox = ({ avatarOwner, description, ownerId, userName }: 
           expanded={isCollapsed}
           less={'Hide'}
           lines={3}
-          more={'Show more'}
+          more={t('show-more')}
           onClick={handleOnCollapse}
           width={400}
         >

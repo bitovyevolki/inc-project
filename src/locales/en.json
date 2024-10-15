@@ -184,5 +184,20 @@
       "un-follow": "Unfollow",
       "settings": "Profile Settings"
     }
+  },
+  "FollowersPosts": {
+    "error-loading": "Error loading publications",
+    "no-publications": "Your friends don't have any publications yet",
+    "link-copied": "The link to the publication has been copied",
+    "view-all-comments": "View all comments",
+    "comment-length-error": "Comment must not exceed 300 characters",
+    "com-form-place": "Add a comment...",
+    "publish": "Publish",
+    "show-more": "Show more",
+    "follow-error": "Follow error",
+    "unfollow-error": "Unfollow error",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "copy-link": "Copy link"
   }
 }

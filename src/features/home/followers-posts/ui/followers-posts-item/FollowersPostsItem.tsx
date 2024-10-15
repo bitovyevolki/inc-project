@@ -8,6 +8,7 @@ import {
 import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
+import { useLocale, useTranslations } from 'next-intl'
 
 import s from './FollowersPostsItem.module.scss'
 
@@ -24,6 +25,10 @@ interface IProps {
 }
 
 export const FollowersPostsItem = ({ item }: IProps) => {
+  const t = useTranslations('FollowersPosts')
+
+  const locale = useLocale()
+
   const { data: comments, refetch: refetchComments } = useGetPostCommentsQuery(
     { postId: item.id },
     { skip: !item.id }
@@ -42,7 +47,7 @@ export const FollowersPostsItem = ({ item }: IProps) => {
       }`
     )
 
-    toast.success('The link has been copied!', { position: 'top-right' })
+    toast.success(t('link-copied'), { position: 'top-right' })
   }
 
   return (
@@ -75,7 +80,7 @@ export const FollowersPostsItem = ({ item }: IProps) => {
             className={s.link}
             href={`${RouterPaths.MY_PROFILE}/${item.ownerId}?postId=${item.id}`}
           >
-            View All Comments({comments?.totalCount})
+            {t('view-all-comments')}({comments?.totalCount})
           </Link>
         </Typography>
       )}

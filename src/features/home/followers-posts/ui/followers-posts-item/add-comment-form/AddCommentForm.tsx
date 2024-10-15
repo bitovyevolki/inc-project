@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react'
 import { useCreateCommentToPostMutation } from '@/src/features/post/model/posts.service'
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
 import { Button, Input } from '@bitovyevolki/ui-kit-int'
+import { useTranslations } from 'next-intl'
 
 import s from './AddCommentForm.module.scss'
 
@@ -12,6 +13,8 @@ interface IProps {
 }
 
 export const AddCommentForm = ({ postId, refetchComments }: IProps) => {
+  const t = useTranslations('FollowersPosts')
+
   const [comment, setComment] = useState('')
 
   const [createComment, { isLoading }] = useCreateCommentToPostMutation()
@@ -42,16 +45,16 @@ export const AddCommentForm = ({ postId, refetchComments }: IProps) => {
       <RoundLoader variant={'small'} />
     </div>
   ) : (
-    'Publish'
+    t('publish')
   )
 
   return (
     <div className={s.form}>
       <Input
         autoComplete={'off'}
-        errorMessage={comment.length === 300 ? 'Comment must not exceed 300 characters.' : ''}
+        errorMessage={comment.length === 300 ? t('comment-length-error') : ''}
         onChange={changeCommentHandler}
-        placeholder={'Add a comment...'}
+        placeholder={t('com-form-place')}
         value={comment}
       />
       <Button disabled={isDisabledBtn} onClick={createCommentHandler} variant={'ghost'}>

@@ -20,6 +20,7 @@ import clsx from 'clsx'
 import moment from 'moment'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import s from './PostHeader.module.scss'
 
@@ -33,6 +34,8 @@ interface IProps {
 }
 
 export const PostHeader = ({ avatar, copyUrl, isFollowing, name, ownerId, updatedAt }: IProps) => {
+  const t = useTranslations('FollowersPosts')
+
   const [followUser, { isLoading: isFollowLoading }] = useFollowUserMutation()
   const [unfollowUser, { isLoading: isUnFollowLoading }] = useUnFollowMutation()
 
@@ -40,7 +43,7 @@ export const PostHeader = ({ avatar, copyUrl, isFollowing, name, ownerId, update
     try {
       await followUser({ selectedUserId: ownerId }).unwrap()
     } catch (error) {
-      console.error('Ошибка подписки:', error)
+      toast.error(t('follow-error'))
     }
   }
 
@@ -48,7 +51,7 @@ export const PostHeader = ({ avatar, copyUrl, isFollowing, name, ownerId, update
     try {
       await unfollowUser({ userId: ownerId }).unwrap()
     } catch (error) {
-      toast.error('Ошибка отписки')
+      toast.error(t('unfollow-error'))
     }
   }
 
@@ -58,7 +61,7 @@ export const PostHeader = ({ avatar, copyUrl, isFollowing, name, ownerId, update
       onClick={unfollowHandler}
     >
       {isUnFollowLoading ? <RoundLoader variant={'small'} /> : <UnfollowIcon />}
-      <span>Unfollow</span>
+      <span>{t('unfollow')}</span>
     </div>
   ) : (
     <div
@@ -66,7 +69,7 @@ export const PostHeader = ({ avatar, copyUrl, isFollowing, name, ownerId, update
       onClick={followHandler}
     >
       {isFollowLoading ? <RoundLoader variant={'small'} /> : <FollowIcon />}
-      <span>Follow</span>
+      <span>{t('follow')}</span>
     </div>
   )
 
@@ -97,7 +100,7 @@ export const PostHeader = ({ avatar, copyUrl, isFollowing, name, ownerId, update
             {followPopoverItem}
             <div className={s.popoverItem} onClick={copyUrl}>
               <CopyIcon />
-              <span>Copy Link</span>
+              <span>{t('copy-link')}</span>
             </div>
           </Popover.Content>
         </Popover.Portal>

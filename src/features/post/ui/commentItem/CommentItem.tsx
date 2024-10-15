@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
+import baseAvatar from '@/public/image/default-avatar.webp'
 import { LikeIcon } from '@/src/shared/assets/icons/like'
 import { formatDate } from '@/src/shared/utils/formatDate'
 import { Button, Input, Typography } from '@bitovyevolki/ui-kit-int'
@@ -128,7 +129,7 @@ export const CommentItem = ({ comment, handleCommentLikeStatus }: Props) => {
           alt={'avatar'}
           className={s.avatar}
           height={36}
-          src={item.from.avatars[0].url}
+          src={item.from.avatars.length > 0 ? item.from.avatars[0].url : baseAvatar}
           width={36}
         />
         <div>

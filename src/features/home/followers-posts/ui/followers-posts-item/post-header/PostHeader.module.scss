@@ -1,20 +1,11 @@
-.container {
+.postHeader {
   display: flex;
   align-items: center;
-  flex-flow: row wrap;
-  position: relative;
-  padding: 10px 24px 13px;
+  gap: 12px;
 }
 
-.userAvatar {
-  margin-right: 12px;
+.ownerAvatar {
   border-radius: 50%;
-}
-
-.textPresentaion {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
 }
 
 .ellipsisIcon {
@@ -22,25 +13,12 @@
   cursor: pointer;
 }
 
-.deletePostModal {
-  z-index: 1000;
+.time {
+  color: var(--color-light-900);
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-  justify-content: center;
-
-  width: 378px;
-  padding: 1.5rem;
-}
-
-.buttonsContainer {
-  display: flex;
-  justify-content: space-around;
-  width: 80%;
+.nameLink {
+  text-decoration: none;
 }
 
 .PopoverContent {
@@ -60,4 +38,8 @@
     padding: 6px 12px;
     gap: 10px;
   }
+}
+
+.disabledPopoverItem {
+  pointer-events: none;
 }

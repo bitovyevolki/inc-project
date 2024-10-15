@@ -1,6 +1,7 @@
-import { FormEvent, useRef, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
+import baseAvatar from '@/public/image/default-avatar.webp'
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import {
@@ -12,9 +13,10 @@ import {
   useUpdatePostLikeMutation,
 } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
+import { SharePost } from '@/src/features/post/ui/sharePost/sharePost'
+import { PaperPlaneIcon } from '@/src/shared/assets/icons'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { LikeIcon } from '@/src/shared/assets/icons/like'
-import { PaperPlaneIcon } from '@/src/shared/assets/icons/paper-plane'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { formatDate } from '@/src/shared/utils/formatDate'
 import { Button, Card, Input, TextArea, Typography } from '@bitovyevolki/ui-kit-int'
@@ -48,6 +50,21 @@ export const ViewPost = ({
   const postOwner = post.ownerId === me?.userId
   const [description, setDescription] = useState(post.description || '')
   const [isEditMode, setIsEditMode] = useState(false)
+  const [isShareMode, setIsShareMode] = useState<boolean>(false)
+  const toggleShareOptions = (event: React.MouseEvent) => {
+    event.stopPropagation()
+    setIsShareMode(!isShareMode)
+  }
+
+  const closeShareOptions = () => {
+    setIsShareMode(false)
+  }
+
+  document.onclick = () => {
+    if (isShareMode) {
+      closeShareOptions()
+    }
+  }
   const likeColor = likes?.isLiked ? 'red' : 'white'
 
   const [updateComments] = useLazyGetPostCommentsQuery()
@@ -60,10 +77,6 @@ export const ViewPost = ({
 
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
-
-  const copyUrlToClipboardHandler = () => {
-    navigator.clipboard.writeText(window.location.toString())
-  }
 
   const changePostLikeStatus = () => {
     const newLikeStatus = likes && likes.isLiked === true ? 'DISLIKE' : 'LIKE'
@@ -176,6 +189,9 @@ export const ViewPost = ({
         )}
 
         {isEditMode ? null : <CommentsList description={post.description} postId={post.id} />}
+        {isShareMode ? (
+          <SharePost onClose={closeShareOptions} postUrl={window.location.href} />
+        ) : null}
 
         <div className={s.reactToPost}>
           <div className={s.reactionsBox}>
@@ -184,7 +200,7 @@ export const ViewPost = ({
                 <div className={s.like} onClick={() => changePostLikeStatus()}>
                   <LikeIcon fill={likeColor} height={24} width={24} />
                 </div>
-                <div onClick={copyUrlToClipboardHandler}>
+                <div onClick={toggleShareOptions}>
                   <PaperPlaneIcon />
                 </div>
               </div>
@@ -202,7 +218,7 @@ export const ViewPost = ({
                           alt={'ava'}
                           className={s.avatarsListItem}
                           height={24}
-                          src={user.avatars[0].url}
+                          src={user.avatars.length > 0 ? user.avatars[0].url : baseAvatar}
                           width={24}
                         />
                       </div>

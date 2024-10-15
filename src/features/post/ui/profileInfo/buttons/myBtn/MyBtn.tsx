@@ -20,6 +20,7 @@ export const MyBtn = ({ userName }: ProfileBtnProps) => {
         </Typography>
       </div>
       <div className={s.bnts}>
+        {/* @ts-ignore */}
         <Button as={Link} className={s.settingsButton} href={`/personal-info`} variant={'primary'}>
           {t('settings')}
         </Button>

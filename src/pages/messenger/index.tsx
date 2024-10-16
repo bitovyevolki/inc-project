@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next'
 import { NextPageWithLayout } from '../_app'
 
 const MessengerPage: NextPageWithLayout = (props: any) => {
-  return <Messenger />
+  return <Messenger {...props} />
 }
 
 MessengerPage.getLayout = function getLayout(page: ReactElement) {

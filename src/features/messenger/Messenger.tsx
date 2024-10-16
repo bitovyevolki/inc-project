@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 
 import { Loader } from '@/src/shared/ui/loader/Loader'
+import { useLocale } from 'next-intl'
 
 const RemoteMessenger = lazy(async () => {
   try {
@@ -13,6 +14,7 @@ const RemoteMessenger = lazy(async () => {
 
 export const Messenger = () => {
   const [isClient, setIsClient] = useState(false)
+  const locale = useLocale()
 
   useEffect(() => {
     setIsClient(true)
@@ -22,7 +24,7 @@ export const Messenger = () => {
     <>
       {isClient ? (
         <Suspense fallback={<Loader />}>
-          <RemoteMessenger />
+          <RemoteMessenger locale={locale} />
         </Suspense>
       ) : (
         <Loader />

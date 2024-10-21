@@ -13,7 +13,7 @@ export default function RequireAuth({ children }: PropsWithChildren) {
     if (!isError) {
       return
     }
-    void router.push(RouterPaths.SIGN_IN)
+    void router.push(RouterPaths.HOME)
   }, [isError, router])
 
   if (isLoading) {

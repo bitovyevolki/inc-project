@@ -6,3 +6,7 @@
   margin: 10px;
   padding: 10px;
 }
+
+[data-radix-popper-content-wrapper] {
+  z-index: 1000 !important;
+}

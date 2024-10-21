@@ -55,7 +55,10 @@ export const Header = ({
   const [showNotifications, setShowNotifications] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
   const [markAsRead] = useMarkNotificationsAsReadMutation()
-  const { data: notificationsData, isLoading } = useGetNotificationsByProfileQuery({ cursor: '' })
+  const { data: notificationsData, isLoading } = useGetNotificationsByProfileQuery(
+    { cursor: '' },
+    { skip: !isAuth }
+  )
 
   useEffect(() => {
     if (notificationsData) {

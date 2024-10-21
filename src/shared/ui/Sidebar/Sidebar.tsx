@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useLogOutMutation, useMeQuery } from '@/src/features/auth/service/auth.service'
+import { useLogOutMutation } from '@/src/features/auth/service/auth.service'
 import { Button, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
@@ -25,10 +25,13 @@ interface ILink {
   title: string
 }
 
-export const Sidebar = () => {
+interface IProps {
+  userId: number
+}
+
+export const Sidebar = ({ userId }: IProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { data: meData } = useMeQuery()
   const [logOut] = useLogOutMutation()
 
   const t = useTranslations('Sidebar')
@@ -36,12 +39,12 @@ export const Sidebar = () => {
   const sidebarLinks: ILink[] = [
     { path: RouterPaths.HOME, svg: HomeIcon, title: t('home') },
     {
-      path: `${RouterPaths.MY_PROFILE}/${meData?.userId}?createPost=true`,
+      path: `${RouterPaths.MY_PROFILE}/${userId}?createPost=true`,
       svg: CreateIcon,
       title: t('create'),
     },
     {
-      path: `${RouterPaths.MY_PROFILE}/${meData?.userId}`,
+      path: `${RouterPaths.MY_PROFILE}/${userId}`,
       svg: MyProfileIcon,
       title: t('my-profile'),
     },

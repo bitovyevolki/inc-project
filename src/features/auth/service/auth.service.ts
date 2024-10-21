@@ -13,6 +13,7 @@ import {
   SignUpArgs,
   SignUpResendEmailType,
 } from '@/src/features/auth/service/auth.types'
+import { RouterPaths } from '@/src/shared/config/router.paths'
 import { inctagramService } from '@/src/shared/model/inctagram.service'
 import Router from 'next/router'
 
@@ -65,7 +66,7 @@ export const AuthService = inctagramService.injectEndpoints({
             localStorage.removeItem('token')
             dispatch(inctagramService.util.invalidateTags(['Me']))
             dispatch(inctagramService.util.resetApiState())
-            void Router.replace('/')
+            void Router.replace(RouterPaths.HOME)
           } catch (error: any) {
             toast.error(error.message || 'Log out failed')
           }
@@ -102,6 +103,7 @@ export const AuthService = inctagramService.injectEndpoints({
         }),
       }),
       signIn: builder.mutation<SignInResponse, SignInArgs>({
+        invalidatesTags: ['Me'],
         async onQueryStarted(_, { queryFulfilled }) {
           const { data } = await queryFulfilled
 

@@ -6,6 +6,8 @@ import {
 } from '@reduxjs/toolkit/query'
 import { Mutex } from 'async-mutex'
 import Router from 'next/router'
+
+import { RouterPaths } from '../config/router.paths'
 // create a new mutex
 const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({
@@ -53,7 +55,7 @@ export const baseQueryWithReauth: BaseQueryFn<
         } else {
           // eslint-disable-next-line no-console
           console.log('logged out')
-          // Router.push('/auth/sign-in')
+          // Router.push(RouterPaths.HOME)
         }
       } finally {
         release()

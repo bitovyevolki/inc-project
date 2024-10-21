@@ -1,13 +1,13 @@
-import { SearchUsers } from '@/src/entities/profile/searchUsers'
+import { Messenger } from '@/src/features/messenger'
 import { GetServerSideProps } from 'next'
 
 import { NextPageWithLayout } from '../_app'
 
-const SearchUsersPage: NextPageWithLayout = (props: any) => {
-  return <SearchUsers {...props} />
+const MessengerPage: NextPageWithLayout = (props: any) => {
+  return <Messenger {...props} />
 }
 
-export default SearchUsersPage
+export default MessengerPage
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const locale = context.req.cookies['next-language'] || 'en'
@@ -15,6 +15,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
+      locale,
       messages,
     },
   }

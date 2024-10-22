@@ -1,14 +1,20 @@
 .shareOptions {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
+  flex-direction: column;
   background: var(--color-dark-100);
   border: 1px solid var(--color-dark-300);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 12px;
+  text-align: center;
+  gap: 12px;
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
 }
 .icon {
   border-radius: 50%;

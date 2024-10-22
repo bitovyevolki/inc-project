@@ -39,6 +39,8 @@ export const FollowersPostsItem = ({ item }: IProps) => {
   const { data: profile } = useGetAllUsersQuery({
     userName: item.userName,
   })
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin
+  const postUrl = `${baseUrl}/profile/${item.ownerId}?postId=${item.id}`
 
   const copyUrlToClipboardHandler = () => {
     navigator.clipboard.writeText(
@@ -62,10 +64,10 @@ export const FollowersPostsItem = ({ item }: IProps) => {
       />
       <PostCarusel images={item.images} />
       <IconsBox
-        copyUrl={copyUrlToClipboardHandler}
         isLiked={likes?.isLiked}
         ownerId={item.ownerId}
         postId={item.id}
+        postUrl={postUrl}
       />
       <DescriptionBox
         avatarOwner={item.avatarOwner}

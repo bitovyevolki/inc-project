@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   EmailIcon,
   EmailShareButton,
@@ -16,6 +17,8 @@ import {
   WhatsappShareButton,
   XIcon,
 } from 'react-share'
+
+import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './sharePost.module.scss'
 
@@ -39,11 +42,14 @@ const shareButtons = [
 export const SharePost = ({ iconSize = 36, onClose, postUrl }: SharePostProps) => {
   return (
     <div className={s.shareOptions}>
-      {shareButtons.map(({ Button, Icon, key }) => (
-        <Button key={key} onClick={onClose} url={postUrl}>
-          <Icon className={s.icon} size={iconSize} />
-        </Button>
-      ))}
+      <Typography variant={'h2'}>{'Share On:'}</Typography>
+      <div className={s.buttons}>
+        {shareButtons.map(({ Button, Icon, key }) => (
+          <Button key={key} onClick={onClose} url={postUrl}>
+            <Icon className={s.icon} size={iconSize} />
+          </Button>
+        ))}
+      </div>
     </div>
   )
 }

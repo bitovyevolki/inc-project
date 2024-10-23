@@ -80,6 +80,25 @@ export const PostsService = inctagramService.injectEndpoints({
           }
         },
       }),
+      getPostCommentsUnAuthorized: builder.query<GetPostCommentsResponse, GetPostCommentsArgs>({
+        providesTags: ['Comments'],
+        query: ({
+          pageNumber = 1,
+          pageSize = 15,
+          postId,
+          sortBy = 'createdAt',
+          sortDirection = 'desc',
+        }) => {
+          const params = new URLSearchParams({
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+            sortBy,
+            sortDirection,
+          })
+
+          return `v1/public-posts/${postId}/comments?${params.toString()}`
+        },
+      }),
       getPostsByUserName: builder.query<GetPostsByUserResponse, GetPostsByUserArgs>({
         query: queryArgs => {
           return {
@@ -195,6 +214,7 @@ export const {
   useGetLikesByPostIdQuery,
   useGetPostByIdQuery,
   useGetPostCommentsQuery,
+  useGetPostCommentsUnAuthorizedQuery,
   useGetPostsByUserNameQuery,
   useGetPublicPostsAllQuery,
   useGetPublicPostsByUserIdQuery,

@@ -33,7 +33,7 @@ export const SignInForm = () => {
     try {
       await signIn(data).unwrap()
 
-      router.push(RouterPaths.PERSONAL_INFO)
+      router.push('/')
     } catch (error) {
       const err = error as SignInResponseError
 

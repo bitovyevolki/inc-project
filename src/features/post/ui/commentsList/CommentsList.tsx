@@ -7,26 +7,39 @@ import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './CommentsList.module.scss'
 
-import { useGetPostCommentsQuery, useUpdateCommentLikeMutation } from '../../model/posts.service'
+import {
+  useGetPostCommentsQuery,
+  useGetPostCommentsUnAuthorizedQuery,
+  useUpdateCommentLikeMutation,
+} from '../../model/posts.service'
 import { Comment as CommentType } from '../../model/posts.service.types'
 import { CommentItem } from '../commentItem/CommentItem'
 
 type Props = {
   description: string
+  isAuthorized: boolean
   postId: number
 }
 
-export const CommentsList = ({ description, postId }: Props) => {
+export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
   const [commentsPage, setCommentsPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const [comments, setComments] = useState<CommentType[]>([])
   const loadMoreRef = useRef<HTMLParagraphElement>(null)
 
-  const { data: commentsData, isLoading: isLoadingComments } = useGetPostCommentsQuery({
-    pageNumber: commentsPage,
-    postId,
-  })
+  const { data: commentsDataAuthorized, isLoading: isLoadingCommentsAuthorized } =
+    useGetPostCommentsQuery({
+      pageNumber: commentsPage,
+      postId,
+    })
 
+  const { data: commentsDataUnauthorized, isLoading: isLoadingCommentsUnauthorized } =
+    useGetPostCommentsUnAuthorizedQuery({ postId })
+
+  const isLoadingComments = isAuthorized
+    ? isLoadingCommentsAuthorized
+    : isLoadingCommentsUnauthorized
+  const commentsData = isAuthorized ? commentsDataAuthorized : commentsDataUnauthorized
   const [updateCommentLike] = useUpdateCommentLikeMutation()
 
   const handleCommentLikeStatus = (comment: CommentType) => {

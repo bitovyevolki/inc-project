@@ -1,0 +1,31 @@
+.root {
+  position: relative;
+}
+
+.mainLayout {
+  position: relative;
+  margin-top: 64px;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.withSidebarLayout {
+  position: relative;
+  display: flex;
+}
+
+.withSidebarContent {
+  width: calc(100% - 300px);
+  margin-left: 300px;
+}
+
+.withoutSidebarContent {
+  margin: 6rem auto;
+}

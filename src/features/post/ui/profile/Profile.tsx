@@ -25,7 +25,12 @@ export const Profile = ({ post, profileId }: Props) => {
   const [isViewPostModalOpen, setIsViewPostModalOpen] = useState<boolean>(false)
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
 
-  const { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray } = usePosts({
+  const {
+    addPostToCombinedPosts,
+    combinedPosts,
+    deletePostFromCombinedPostsArray,
+    isLoadingPosts,
+  } = usePosts({
     profileId,
   })
   const { changeQueryHandler, removeQueryParamHandler, searchParams } = usePostsParams()
@@ -39,7 +44,7 @@ export const Profile = ({ post, profileId }: Props) => {
     profileId,
   } as GetProfileByIdArgs)
 
-  const isLoading = isLoadingMe || LoadingProfile
+  const isLoading = isLoadingMe || LoadingProfile || isLoadingPosts
 
   useEffect(() => {
     refetch()
@@ -75,22 +80,25 @@ export const Profile = ({ post, profileId }: Props) => {
     <>
       <div className={s.wrapper}>
         {profileData && meData && (
-          <ProfileInfo meId={meData.userId} userName={profileData.userName} />
+          <ProfileInfo meId={meData?.userId} userName={profileData.userName} />
         )}
 
-        <div className={s.postsGallery}>
-          {combinedPosts.map(post => (
-            <motion.div
-              animate={{ opacity: [0, 1] }}
-              className={s.galleryItem}
-              key={post.id}
-              onClick={() => changeQueryHandler(post.id as number)}
-              transition={{ duration: 0.5 }}
-            >
-              <Image alt={'post image'} fill src={post?.images?.[0]?.url} />
-            </motion.div>
-          ))}
-        </div>
+        {meData && (
+          <div className={s.postsGallery}>
+            {combinedPosts.length > 0 &&
+              combinedPosts.map(post => (
+                <motion.div
+                  animate={{ opacity: [0, 1] }}
+                  className={s.galleryItem}
+                  key={post.id}
+                  onClick={() => changeQueryHandler(post.id as number)}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Image alt={'post image'} fill priority src={post?.images?.[0]?.url} />
+                </motion.div>
+              ))}
+          </div>
+        )}
       </div>
       {post && (
         <ViewPostModal isOpen={isViewPostModalOpen} onOpenChange={closeViewPostModalHandler}>

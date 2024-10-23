@@ -1,6 +1,6 @@
 .wrapper {
   width: 100%;
-  margin: 36px 64px 48px 24px;
+  padding: 36px 64px 48px 24px;
 }
 
 .postsGallery {
@@ -11,6 +11,7 @@
   justify-content: flex-start;
 
   width: 100%;
+  min-width: 100%;
   margin: 48px auto 0;
 
   .galleryItem {

@@ -11,7 +11,7 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
   const [portionSize, setPortionSize] = useState(STANDARD_PORTION_SIZE)
   const [combinedPosts, setCombinedPosts] = useState<Post[]>([])
 
-  const { data: publicPostsData } = useGetPublicPostsByUserIdQuery(
+  const { data: publicPostsData, isLoading: isLoadingPosts } = useGetPublicPostsByUserIdQuery(
     {
       endCursorPostId: lastPostId,
       pageSize: portionSize,
@@ -69,5 +69,5 @@ export const usePosts = ({ profileId }: { profileId: string | undefined }) => {
     }
   }, [publicPostsData?.items])
 
-  return { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray }
+  return { addPostToCombinedPosts, combinedPosts, deletePostFromCombinedPostsArray, isLoadingPosts }
 }

@@ -51,6 +51,7 @@
     "react-toastify": "^10.0.5",
     "scss": "^0.2.4",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.8.0",
     "uuid": "^10.0.0",
     "webpack": "^5.95.0",
     "zod": "^3.23.8"

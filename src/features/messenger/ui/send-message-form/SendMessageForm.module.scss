@@ -1,0 +1,35 @@
+.form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  width: 100%;
+  padding: 10px 24px;
+
+  border-top: 1px solid var(--color-dark-300);
+
+  & > svg {
+    cursor: pointer;
+  }
+}
+
+.button {
+  text-align: center;
+  text-wrap: nowrap;
+}
+
+.inputWrapper {
+  width: 100%;
+}
+
+.input {
+  border: none;
+
+  &:active {
+    border: none;
+  }
+
+  &:focus {
+    border: none;
+  }
+}

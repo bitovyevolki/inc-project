@@ -199,5 +199,8 @@
     "follow": "Follow",
     "unfollow": "Unfollow",
     "copy-link": "Copy link"
+  },
+  "Messenger": {
+    "greeting": "Hello!"
   }
 }

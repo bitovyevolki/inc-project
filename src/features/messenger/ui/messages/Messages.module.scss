@@ -1,0 +1,41 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 31.25em;
+}
+
+.messagesAndButton {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+
+  height: 100%;
+  max-height: calc(100% - 3.1em);
+}
+
+.messages {
+  overflow: hidden auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
+.showThisInCenter {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: calc(100% - 3em);
+}

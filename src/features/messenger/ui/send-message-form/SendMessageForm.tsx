@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { MicrophoneIcon } from '@/src/shared/assets/icons/microphone'
@@ -9,7 +9,11 @@ import s from './SendMessageForm.module.scss'
 import { useSocket } from '../../lib/useSocket'
 import { IMessageData, MessageSendRequest, MessageType, WBEventPath } from '../../model/messenger'
 
-export const SendMessageForm = () => {
+interface IProps {
+  receiverId?: number
+}
+
+export const SendMessageForm = ({ receiverId = 921 }: IProps) => {
   const socket = useSocket()
 
   const [messageData, setMessageData] = useState<IMessageData>({
@@ -26,18 +30,18 @@ export const SendMessageForm = () => {
     setMessageData(prev => ({ ...prev, text: value }))
   }
 
+  useEffect(() => {
+    socket?.on(WBEventPath.RECEIVE_MESSAGE, data => {
+      console.log(data)
+    })
+  }, [socket, receiverId])
+
   const sendMessageHandler = () => {
-    const mockUserId = 920
+    const data: MessageSendRequest = { message: messageData.text, receiverId }
 
-    const data: MessageSendRequest = { message: messageData.text, receiverId: mockUserId }
+    socket?.emit(WBEventPath.RECEIVE_MESSAGE, data)
 
-    if (socket) {
-      socket.emit(WBEventPath.RECEIVE_MESSAGE, data)
-
-      socket.on(WBEventPath.RECEIVE_MESSAGE, data => {
-        console.log(data)
-      })
-    }
+    setMessageData({ audio: null, image: null, text: '' })
   }
 
   const isHasMessageInfo = messageData.audio || messageData.image || messageData.text

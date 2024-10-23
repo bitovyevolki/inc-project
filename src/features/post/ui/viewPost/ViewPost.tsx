@@ -8,6 +8,7 @@ import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
   useGetLikesByPostIdQuery,
+  useGetPostCommentsUnAuthorizedQuery,
   useLazyGetPostCommentsQuery,
   useUpdatePostByIdMutation,
   useUpdatePostLikeMutation,
@@ -188,7 +189,9 @@ export const ViewPost = ({
           </div>
         )}
 
-        {isEditMode ? null : <CommentsList description={post.description} postId={post.id} />}
+        {!isEditMode && (
+          <CommentsList description={post.description} isAuthorized={!!me} postId={post.id} />
+        )}
         {isShareMode ? (
           <SharePost onClose={closeShareOptions} postUrl={window.location.href} />
         ) : null}

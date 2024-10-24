@@ -1,22 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { MessageItemType } from '@/src/features/messenger/model/messenger'
 import { Socket, io } from 'socket.io-client'
-
-const enum MessageStatus {
-  READ = 'read',
-  RECEIVED = 'received',
-  SENT = 'sent',
-}
-
-interface MessageType {
-  createdAt: string
-  id: number
-  messageText: string
-  ownerId: number
-  receiverId: number
-  status: MessageStatus
-  updatedAt: string
-}
 
 interface NotificationType {
   clientId: string
@@ -37,21 +22,20 @@ const enum SocketEventPath {
 
 const useSocket = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([])
-  const [messages, setMessages] = useState<MessageType[]>([])
+  const [messages, setMessages] = useState<MessageItemType[]>([])
   const [error, setError] = useState<null | string>(null)
   const [isConnected, setIsConnected] = useState<boolean>(false)
-  const socketRef = useRef<Socket | null>(null)
 
-  const connectSocket = () => {
-    const accessToken = localStorage.getItem('token')
+  const accessToken = localStorage.getItem('token')
 
-    const queryParams = {
-      query: { accessToken },
-      transports: ['websocket', 'polling'],
-    }
+  const queryParams = {
+    query: { accessToken },
+    transports: ['websocket', 'polling'],
+  }
 
-    const socket = io('https://inctagram.work', queryParams)
+  const socket = io('https://inctagram.work', queryParams)
 
+  useEffect(() => {
     socket.on('connect', () => {
       console.log('WebSocket подключен')
       setIsConnected(true)
@@ -62,17 +46,17 @@ const useSocket = () => {
       setIsConnected(false)
     })
 
-    socket.on(SocketEventPath.RECEIVE_MESSAGE, (message: MessageType) => {
+    socket.on(SocketEventPath.RECEIVE_MESSAGE, (message: MessageItemType) => {
       console.log('Новое сообщение:', message)
       setMessages(prev => [...prev, message])
     })
 
-    socket.on(SocketEventPath.MESSAGE_SENT, (message: MessageType) => {
+    socket.on(SocketEventPath.MESSAGE_SENT, (message: MessageItemType) => {
       console.log('Сообщение отправлено:', message)
       setMessages(prev => [...prev, message])
     })
 
-    socket.on(SocketEventPath.UPDATE_MESSAGE, (updatedMessage: MessageType) => {
+    socket.on(SocketEventPath.UPDATE_MESSAGE, (updatedMessage: MessageItemType) => {
       console.log('Сообщение обновлено:', updatedMessage)
       setMessages(prev =>
         prev.map(message => (message.id === updatedMessage.id ? updatedMessage : message))
@@ -93,41 +77,13 @@ const useSocket = () => {
       console.error('Ошибка:', errorData.message)
       setError(errorData.message)
     })
-  }
-
-  const sendMessage = (messageText: string, receiverId: number) => {
-    const messageData = {
-      message: messageText,
-      receiverId,
-    }
-
-    if (socketRef.current && isConnected) {
-      socketRef.current.emit(SocketEventPath.MESSAGE_SENT, messageData)
-      console.log('Сообщение отправлено:', messageData)
-    }
-  }
-
-  const updateMessage = (message: string, id: number) => {
-    const messageData = {
-      id,
-      message,
-    }
-
-    if (socketRef.current && isConnected) {
-      socketRef.current.emit(SocketEventPath.UPDATE_MESSAGE, messageData)
-      console.log('Сообщение обновлено:', messageData)
-    }
-  }
-
-  useEffect(() => {
-    connectSocket()
 
     return () => {
-      socketRef.current?.disconnect()
+      socket.disconnect()
     }
   }, [])
 
-  return { error, isConnected, messages, notifications, sendMessage, updateMessage }
+  return { error, isConnected, messages, notifications }
 }
 
 export default useSocket

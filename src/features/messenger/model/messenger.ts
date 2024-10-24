@@ -31,3 +31,57 @@ export type MessageViewModel = {
   status: MessageStatus
   updatedAt: Date
 }
+
+type Avatar = {
+  createdAt: string
+  fileSize: number
+  height: number
+  url: string
+  width: number
+}
+
+export type DialogItemType = {
+  avatars: [] | Avatar[]
+  createdAt: string
+  id: number
+  messageText: string
+  messageType: MessageType
+  ownerId: number
+  receiverId: number
+  status: MessageStatus
+  updatedAt: string
+  userName: string
+}
+
+export type DialogListResponse = {
+  items: DialogItemType[]
+  pageSize: number
+  totalCount: number
+}
+
+export type GetDialogsListArgs = {
+  cursor?: number
+  pageSize?: number
+  searchName?: string
+}
+
+export type MessageItemType = {
+  createdAt: string
+  id: number
+  messageText: string
+  messageType: MessageType
+  ownerId: number
+  receiverId: number
+  status: MessageStatus
+  updatedAt: string
+}
+
+export type GetMessagesResponse = {
+  items: MessageItemType[]
+  pageSize: number
+  totalCount: number
+}
+
+export type GetMessagesByIdArgs = {
+  dialoguePartnerId: number
+} & GetDialogsListArgs

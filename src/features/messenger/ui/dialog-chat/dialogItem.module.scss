@@ -1,48 +1,35 @@
 .wrap {
   display: flex;
-  justify-content: center;
-  border-top: 0.5px solid rgb(17 17 17);
-  border-bottom: 0.5px solid rgb(17 17 17);
+	gap: 12px;
+	padding: 12px;
+	border-bottom: 1px solid #333;
 }
 
-.active {
-  background-color: #4c4c4c;
-}
-
-.icon {
+.avatar {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: center;
 
   width: 48px;
   height: 48px;
-  padding: 12px;
 
   border-radius: 50%;
+
+	background-color: grey;
 }
 
 .content {
   display: flex;
   flex-direction: column;
+	gap: 4px;
+	width: 100%;
+
+	.userNameAndTime {
+		display: flex;
+		justify-content: space-between;
+	}
 }
 
-.title {
-  padding-top: 12px;
-}
-
-.message {
-  padding-bottom: 12px;
-}
-
-.date {
-  display: flex;
-  align-items: start;
-  justify-content: end;
-
-  width: 50px;
-  padding-top: 12px;
-}
-
-.messageColor {
+.colorGrey {
   color: #8d9094;
 }

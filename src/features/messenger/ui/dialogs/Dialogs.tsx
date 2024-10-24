@@ -9,7 +9,7 @@ import s from './dialogs.module.scss'
 
 import { DialogItemType } from '../../model/messenger'
 import { useGetDialogsQuery } from '../../model/messenger.service'
-import { DialogItem } from '../dialog-chat/DialogItem'
+import { DialogItem } from '../dialog-item/DialogItem'
 
 type DialogProps = {
   myId: number

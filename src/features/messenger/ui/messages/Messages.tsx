@@ -27,12 +27,10 @@ export const Messages = ({ partnerId }: MessagesProps) => {
   const socket = useSocket()
 
   useEffect(() => {
-    if (socket) {
-      socket.on(WBEventPath.RECEIVE_MESSAGE, (data: MessageItemType) => {
-        setMessages(prev => [data, ...prev])
-      })
-    }
-  }, [])
+    socket?.on(WBEventPath.RECEIVE_MESSAGE, (data: MessageItemType) => {
+      setMessages(prev => [data, ...prev])
+    })
+  }, [socket, partnerId])
 
   useEffect(() => {
     setMessages([])

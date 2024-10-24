@@ -80,7 +80,7 @@ export const Messages = ({ partnerId }: MessagesProps) => {
                 )
               })}
             </div>
-            <SendMessageForm />
+            <SendMessageForm receiverId={partnerId} />
           </>
         ) : (
           <div>

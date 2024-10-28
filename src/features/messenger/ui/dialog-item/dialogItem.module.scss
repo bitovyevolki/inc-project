@@ -1,0 +1,35 @@
+.wrap {
+  display: flex;
+	gap: 12px;
+	padding: 12px;
+	border-bottom: 1px solid #333;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+
+	background-color: grey;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+	gap: 4px;
+	width: 100%;
+
+	.userNameAndTime {
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+.colorGrey {
+  color: #8d9094;
+}

@@ -10,10 +10,10 @@ import { useSocket } from '../../lib/useSocket'
 import { MessageSendRequest, WBEventPath } from '../../model/messenger'
 
 interface IProps {
-  receiverId: number
+  receiverId?: number
 }
 
-export const SendMessageForm = ({ receiverId }: IProps) => {
+export const SendMessageForm = ({ receiverId = 921 }: IProps) => {
   const socket = useSocket()
 
   const inputElement = useRef<HTMLInputElement | null>(null)

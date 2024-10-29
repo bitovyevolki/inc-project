@@ -5,11 +5,11 @@
 }
 
 .container {
-	display: grid;
+  display: grid;
   grid-template-columns: 14.5em auto;
   margin-top: 12px;
-	height: calc(100vh - 200px);
-	
+  height: calc(100vh - 200px);
+
   border: 1px solid #333;
 }
 

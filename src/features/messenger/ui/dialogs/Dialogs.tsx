@@ -10,6 +10,7 @@ import s from './dialogs.module.scss'
 import { DialogItemType } from '../../model/messenger'
 import { useGetDialogsQuery } from '../../model/messenger.service'
 import { DialogItem } from '../dialog-item/DialogItem'
+import { useInView } from 'react-intersection-observer'
 
 type DialogProps = {
   myId: number
@@ -18,13 +19,16 @@ type DialogProps = {
 export const Dialogs = ({ myId }: DialogProps) => {
   const [searchInput, setSearchInput] = useState('')
   const debouncedSearchValue = useDebounce(searchInput, 500)
-  const { data, isFetching, isLoading } = useGetDialogsQuery({ searchName: debouncedSearchValue })
+  const [cursor, setCursor] = useState<number | undefined>()
+  const { data, isFetching, isLoading } = useGetDialogsQuery({ searchName: debouncedSearchValue, cursor })
 
   const { changeQueryHandler } = useParamsHook()
+  const { ref, inView } = useInView()
 
   const [activeChatId, setActiveChatId] = useState<number>(0)
-
+	
   const [users, setUsers] = useState<DialogItemType[]>([])
+	const [totalCount, setTotalCount] = useState(0)
 
   useEffect(() => {
     setUsers([])
@@ -33,8 +37,15 @@ export const Dialogs = ({ myId }: DialogProps) => {
   useEffect(() => {
     if (data) {
       setUsers(prev => [...prev, ...data.items])
+			setTotalCount(data?.totalCount)
     }
   }, [data])
+
+		  useEffect(() => {
+    if (inView) {
+      setCursor(users[users.length - 1]?.id)
+    }
+  }, [inView])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value)
@@ -52,9 +63,6 @@ export const Dialogs = ({ myId }: DialogProps) => {
   }
 
   const dialogsList = () => {
-    if (isLoading || isFetching) {
-      return <RoundLoader variant={'small'} />
-    }
 
     if (data && data.items.length === 0) {
       return <div>Нет диалогов</div>
@@ -75,6 +83,8 @@ export const Dialogs = ({ myId }: DialogProps) => {
             </div>
           )
         })}
+				{totalCount > users.length && <div ref={ref}></div>}
+				{isFetching && <div className={s.loader}><RoundLoader variant={'small'} /></div>}
       </div>
     )
   }

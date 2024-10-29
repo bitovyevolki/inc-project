@@ -1,15 +1,15 @@
 .wrapper {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
   border-right: 1px solid #333;
-	height: calc(100vh - 200px);
+  height: calc(100vh - 200px);
 }
 
 .dialogsList {
-	height: calc(100% - 72px);
-	overflow-y: auto;
+  height: calc(100% - 72px);
+  overflow-y: auto;
 
-	&::-webkit-scrollbar-button {
+  &::-webkit-scrollbar-button {
     width: 0;
     height: 0;
     display: none;
@@ -35,41 +35,41 @@
 }
 
 .search {
-	position: relative;
+  position: relative;
 
-	height: 72px;
+  height: 72px;
   padding: 17px 12px 19px;
-	
+
   background-color: #171717;
-	border-bottom: 1px solid #333;
+  border-bottom: 1px solid #333;
 
-	input {
-		padding-left: 35px;
-	}
+  input {
+    padding-left: 35px;
+  }
 
-	.searchIcon {
-		position: absolute;
-		top: 20px;
-		left: 15px;
+  .searchIcon {
+    position: absolute;
+    top: 20px;
+    left: 15px;
 
-  	width: 25px;
-  	height: 25px;
-	}
+    width: 25px;
+    height: 25px;
+  }
 }
 
 .dialogItem {
-	cursor: pointer;
+  cursor: pointer;
 
-	&:hover {
-		background: rgba(255 255 255 / 20%);
-	}
+  &:hover {
+    background: rgba(255 255 255 / 20%);
+  }
 }
 
 .active {
   background: #4c4c4c;
-	cursor: default;
+  cursor: default;
 
-	&:hover {
-		background: #4c4c4c;
-	}
+  &:hover {
+    background: #4c4c4c;
+  }
 }

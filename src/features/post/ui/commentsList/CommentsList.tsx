@@ -102,7 +102,7 @@ export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
   }, [loadMoreRef, comments.length, totalCount])
 
   if (isLoadingComments) {
-    return <Loader />
+    return <div className={s.commentsBlock}>Loading ... </div>
   }
 
   return (

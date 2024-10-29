@@ -85,7 +85,12 @@ export const PublicPostItem = ({ post }: PublicPostItemProps) => {
       </div>
       {viewMode && (
         <ViewPostModal isOpen={viewMode} onOpenChange={handlePostClose}>
-          <ViewPost closePostModal={handlePostClose} post={post} userName={post.userName} />
+          <ViewPost
+            avatars={post.avatarOwner}
+            closePostModal={handlePostClose}
+            post={post}
+            userName={post.userName}
+          />
         </ViewPostModal>
       )}
     </div>

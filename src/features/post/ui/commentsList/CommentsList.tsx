@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
-import { Loader } from '@/src/shared/ui/loader/Loader'
 import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './CommentsList.module.scss'

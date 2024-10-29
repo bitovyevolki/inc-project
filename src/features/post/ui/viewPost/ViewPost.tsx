@@ -8,7 +8,6 @@ import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
   useGetLikesByPostIdQuery,
-  useGetPostCommentsUnAuthorizedQuery,
   useLazyGetPostCommentsQuery,
   useUpdatePostByIdMutation,
   useUpdatePostLikeMutation,
@@ -32,7 +31,7 @@ import { Post } from '../../model/posts.service.types'
 import { CommentsList } from '../commentsList/CommentsList'
 
 type Props = {
-  avatars?: IProfile['avatars']
+  avatars?: IProfile['avatars'] | string
   closePostModal: () => void
   deletePostFromCombinedPostsArray?: (postId: number) => void
   post: Post

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { AvatarIcon } from '@/src/shared/assets/icons/avatar'
 import { MicrophoneIcon } from '@/src/shared/assets/icons/microphone'
@@ -10,10 +10,10 @@ import { useSocket } from '../../lib/useSocket'
 import { IMessageData, MessageSendRequest, MessageType, WBEventPath } from '../../model/messenger'
 
 interface IProps {
-  receiverId: number
+  receiverId?: number
 }
 
-export const SendMessageForm = ({ receiverId }: IProps) => {
+export const SendMessageForm = ({ receiverId = 921 }: IProps) => {
   const socket = useSocket()
 
   const [messageData, setMessageData] = useState<IMessageData>({
@@ -29,6 +29,12 @@ export const SendMessageForm = ({ receiverId }: IProps) => {
 
     setMessageData(prev => ({ ...prev, text: value }))
   }
+
+  useEffect(() => {
+    socket?.on(WBEventPath.RECEIVE_MESSAGE, data => {
+      console.log(data)
+    })
+  }, [socket, receiverId])
 
   const sendMessageHandler = () => {
     const data: MessageSendRequest = { message: messageData.text, receiverId }

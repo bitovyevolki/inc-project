@@ -4,7 +4,9 @@ import {
   useFollowUserMutation,
   useUnFollowMutation,
 } from '@/src/features/post/model/follow.service'
+import { useParamsHook } from '@/src/shared/hooks/useParamsHook'
 import { Button, Typography } from '@bitovyevolki/ui-kit-int'
+import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 
 import s from './userBnt.module.scss'
@@ -20,6 +22,7 @@ export const UserBtn = ({ isFetchingProfile, isFollowing, userId, userName }: Pr
   const t = useTranslations('UserProfile.buttons')
   const [followUser, { isLoading: isFollowLoading }] = useFollowUserMutation()
   const [unfollowUser, { isLoading: isUnFollowLoading }] = useUnFollowMutation()
+  const router = useRouter()
 
   const handleFollow = async () => {
     try {
@@ -35,6 +38,10 @@ export const UserBtn = ({ isFetchingProfile, isFollowing, userId, userName }: Pr
     } catch (error) {
       toast.error('Ошибка отписки')
     }
+  }
+
+  const handleSendMessage = () => {
+    router.push(`/messenger?partnerId=${userId}`)
   }
 
   const isLoading = isFollowLoading || isUnFollowLoading || !isFetchingProfile
@@ -56,7 +63,7 @@ export const UserBtn = ({ isFetchingProfile, isFollowing, userId, userName }: Pr
             {t('follow')}
           </Button>
         )}
-        <Button disabled={isLoading} variant={'secondary'}>
+        <Button disabled={isLoading} onClick={handleSendMessage} variant={'secondary'}>
           {t('send-message')}
         </Button>
       </div>

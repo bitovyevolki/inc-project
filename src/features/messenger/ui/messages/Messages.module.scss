@@ -19,16 +19,19 @@
 }
 
 .messages {
+	position: relative;
+	
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
+
+	height: 100%;
 }
 
 .messagesList {
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column-reverse;
-
 	gap: 24px;
 
 	max-height: calc(100vh - 200px - 72px - 52px);
@@ -58,4 +61,24 @@
   &::-webkit-scrollbar-thumb:hover {
     background-color: #555;
   }
+}
+
+.emptyChat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: block;
+
+  padding: 10px;
+
+  background-color: var(--color-dark-300);
+}
+
+.loader{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
 }

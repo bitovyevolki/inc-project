@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 
 import { useGetProfileByIdQuery } from '@/src/entities/profile/userProfile/api/profile.service'
 import { Avatar } from '@/src/shared/ui/Avatar/Avatar'
-import { Button, Typography } from '@bitovyevolki/ui-kit-int'
+import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './Messages.module.scss'
 
+import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
+import { useInView } from 'react-intersection-observer'
 import { useSocket } from '../../lib/useSocket'
 import { MessageItemType, WBEventPath } from '../../model/messenger'
 import { useGetMessagesByUserIdQuery } from '../../model/messenger.service'
@@ -18,17 +20,28 @@ type MessagesProps = {
 
 export const Messages = ({ partnerId }: MessagesProps) => {
   const [messages, setMessages] = useState<MessageItemType[]>([])
+	const [totalCount, setTotalCount] = useState(0)
+  const [cursor, setCursor] = useState<number | undefined>()
+  const { ref, inView } = useInView()
 
-  const { data } = useGetMessagesByUserIdQuery({ dialoguePartnerId: partnerId })
+  const { data, isFetching: isFetchingMessages } = useGetMessagesByUserIdQuery({ cursor, dialoguePartnerId: partnerId })
   const { data: partnerData, isLoading: isLoadingUserData } = useGetProfileByIdQuery({
     profileId: partnerId,
   })
 
   const socket = useSocket()
 
+	
+
   useEffect(() => {
     socket?.on(WBEventPath.RECEIVE_MESSAGE, (data: MessageItemType) => {
       setMessages(prev => [data, ...prev])
+    })
+
+    socket?.on(WBEventPath.MESSAGE_SENT, (message: MessageItemType, acknowledge) => {
+      setMessages(prev => [message, ...prev])
+			console.log(message)
+			acknowledge({ message, receiverId: message.receiverId })
     })
   }, [socket, partnerId])
 
@@ -39,17 +52,20 @@ export const Messages = ({ partnerId }: MessagesProps) => {
   useEffect(() => {
     if (data) {
       setMessages(prev => [...prev, ...data.items])
+			setTotalCount(data?.totalCount)
     }
   }, [data])
 
-  if (!partnerData) {
-    return
-  }
+	  useEffect(() => {
+    if (inView) {
+      setCursor(messages[messages.length - 1]?.id)
+    }
+  }, [inView])
 
   return (
     <div className={s.wrapper}>
       <div className={s.topBlock}>
-        {partnerData && partnerData.avatars ? (
+        {partnerData && partnerData.avatars && (
           <>
             <Avatar
               height={48}
@@ -59,12 +75,10 @@ export const Messages = ({ partnerId }: MessagesProps) => {
             />
             <Typography variant={'body1'}>{partnerData.userName}</Typography>
           </>
-        ) : (
-          <>Чат не выбран</>
         )}
       </div>
       <div className={s.messages}>
-        {partnerId ? (
+        {partnerId && partnerData ? (
           <>
             <div className={s.messagesList}>
               {messages.map(m => {
@@ -79,13 +93,15 @@ export const Messages = ({ partnerId }: MessagesProps) => {
                   />
                 )
               })}
+							{messages.length < totalCount && <div ref={ref}></div>}
+							{isFetchingMessages && <div className={s.loader}><RoundLoader variant={'small'} /></div>}
             </div>
             <SendMessageForm receiverId={partnerId} />
           </>
         ) : (
-          <div>
-            <Button variant={'secondary'}>Выберите чат</Button>
-          </div>
+          <Typography className={s.emptyChat} variant={'body2'}>
+            Выберите чат
+          </Typography>
         )}
       </div>
     </div>

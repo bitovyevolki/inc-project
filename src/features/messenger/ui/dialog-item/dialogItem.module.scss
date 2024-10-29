@@ -1,8 +1,8 @@
 .wrap {
   display: flex;
-	gap: 12px;
-	padding: 12px;
-	border-bottom: 1px solid #333;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #333;
 }
 
 .avatar {
@@ -15,19 +15,19 @@
 
   border-radius: 50%;
 
-	background-color: grey;
+  background-color: grey;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-	gap: 4px;
-	width: 100%;
+  gap: 4px;
+  width: 100%;
 
-	.userNameAndTime {
-		display: flex;
-		justify-content: space-between;
-	}
+  .userNameAndTime {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .colorGrey {

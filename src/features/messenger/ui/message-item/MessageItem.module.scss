@@ -1,14 +1,14 @@
 .messageWithText {
-	display: flex;
-	gap: 12px;
-	max-width: 300px;
+  display: flex;
+  gap: 12px;
+  max-width: 300px;
 
-	.block {
-		display: flex;
-		flex-direction: column;
+  .block {
+    display: flex;
+    flex-direction: column;
 
-		min-width: 60px;
-		padding: 7px 12px 8px;
+    min-width: 60px;
+    padding: 7px 12px 8px;
 
 		background: #333;
 		border-radius: 8px;
@@ -46,12 +46,11 @@
 		}
 	}
 
-	.myMessageBackground {
-		background: #234E99;
-	}
-
+  .myMessageBackground {
+    background: #234e99;
+  }
 }
 
 .alignRight {
-	align-self: flex-end;
+  align-self: flex-end;
 }

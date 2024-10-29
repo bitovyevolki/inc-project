@@ -4,11 +4,12 @@
   align-items: center;
 
   width: 100%;
+  min-height: 58px;
   padding: 10px 24px;
 
   border-top: 1px solid var(--color-dark-300);
 
-  & > svg {
+  svg {
     cursor: pointer;
   }
 }

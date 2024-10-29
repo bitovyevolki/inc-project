@@ -24,7 +24,7 @@ export const IconsBox = ({ isLiked, ownerId, postId, postUrl }: IProps) => {
   const router = useRouter()
 
   const toMessengerHandler = () => {
-    router.push(`${RouterPaths.MESSENGER}?userId=${ownerId}`)
+    router.push(`${RouterPaths.MESSENGER}?partnerId=${ownerId}`)
   }
 
   const addLikeHandler = () => {

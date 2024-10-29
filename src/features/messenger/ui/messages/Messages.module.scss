@@ -6,16 +6,28 @@
 }
 
 .topBlock {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-
-  box-sizing: border-box;
   height: 72px;
   padding: 0.6em;
-
   background-color: #171717;
   border-bottom: 1px solid #333;
+
+	.linkToProfile {
+		cursor: pointer;
+
+		display: flex;
+		gap: 12px;
+		align-items: center;
+
+		width: fit-content;
+		padding-right: 10px;
+
+		border-radius: 20px;
+
+		&:hover {
+			background-color: rgba(255 255 255 / 15%);
+		
+		}
+	}
 }
 
 .messages {

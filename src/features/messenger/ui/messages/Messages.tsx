@@ -13,6 +13,8 @@ import { MessageItemType, WBEventPath } from '../../model/messenger'
 import { useGetMessagesByUserIdQuery } from '../../model/messenger.service'
 import { MessageItem } from '../message-item/MessageItem'
 import { SendMessageForm } from '../send-message-form/SendMessageForm'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 type MessagesProps = {
   partnerId: number
@@ -23,9 +25,10 @@ export const Messages = ({ partnerId }: MessagesProps) => {
 	const [totalCount, setTotalCount] = useState(0)
   const [cursor, setCursor] = useState<number | undefined>()
   const { ref, inView } = useInView()
+	const router = useRouter()
 
   const { data, isFetching: isFetchingMessages } = useGetMessagesByUserIdQuery({ cursor, dialoguePartnerId: partnerId })
-  const { data: partnerData, isLoading: isLoadingUserData } = useGetProfileByIdQuery({
+  const { data: partnerData } = useGetProfileByIdQuery({
     profileId: partnerId,
   })
 
@@ -66,7 +69,7 @@ export const Messages = ({ partnerId }: MessagesProps) => {
     <div className={s.wrapper}>
       <div className={s.topBlock}>
         {partnerData && partnerData.avatars && (
-          <>
+          <div className={s.linkToProfile} onClick={()=> router.push(`/profile/${partnerData.id}`)}>
             <Avatar
               height={48}
               url={partnerData.avatars[0]?.url}
@@ -74,7 +77,7 @@ export const Messages = ({ partnerId }: MessagesProps) => {
               width={48}
             />
             <Typography variant={'body1'}>{partnerData.userName}</Typography>
-          </>
+          </div>
         )}
       </div>
       <div className={s.messages}>

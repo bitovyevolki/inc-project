@@ -14,7 +14,7 @@ import baseUserPhoto from './../../../../../public/image/default-post.png'
 
 type Props = {
   avatarSize?: 'large' | 'small'
-  avatars?: IProfile['avatars']
+  avatars?: IProfile['avatars'] | string
   deletePost?: () => void
   postOwner: boolean
   updatePostHandler?: () => void
@@ -32,9 +32,15 @@ export const ProfileIntro = ({
   withMenu,
 }: Props) => {
   const [isShowDeletePostModal, setIsShowDeletePostModal] = useState(false)
-  const [avatarLarge, avatarSmall] = avatars ?? []
+  let avatarUrl: string | undefined
 
-  const avatarSelected = avatarSize === 'small' ? avatarSmall : avatarLarge
+  if (typeof avatars === 'string') {
+    avatarUrl = avatars
+  } else if (avatarSize === 'small') {
+    avatarUrl = avatars?.[1]?.url
+  } else {
+    avatarUrl = avatars?.[0]?.url
+  }
 
   const setIsShowDeletePostModalHandler = (value: boolean) => {
     setIsShowDeletePostModal(value)
@@ -46,7 +52,7 @@ export const ProfileIntro = ({
         alt={'profile avatar'}
         className={s.userAvatar}
         height={36}
-        src={avatarSelected?.url || baseUserPhoto}
+        src={avatarUrl || baseUserPhoto}
         width={36}
       />
       <div className={s.userName}>

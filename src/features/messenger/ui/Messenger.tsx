@@ -47,6 +47,7 @@ export const Messenger = () => {
 
   useEffect(() => {
     changeQueryHandler({ partnerId: `${partnerId}` })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!data) {

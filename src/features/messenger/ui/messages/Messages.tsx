@@ -66,7 +66,9 @@ export const Messages = ({ messagesSocket, myId, partnerId }: MessagesProps) => 
   useEffect(() => {
     if (data) {
       if (isFirstLoad) {
-        setMessages(data.items)
+        const newMessages = [...data.items]
+
+        setMessages(newMessages)
         setIsFirstLoad(false)
       } else {
         setMessages(prev => {
@@ -88,12 +90,14 @@ export const Messages = ({ messagesSocket, myId, partnerId }: MessagesProps) => 
         updateMessagesStatus({ ids: messagesForUpdateStatus })
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   useEffect(() => {
     if (inView) {
       setCursor(messages[messages.length - 1]?.id)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView])
 
   return (

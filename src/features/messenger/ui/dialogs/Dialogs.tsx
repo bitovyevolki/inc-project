@@ -39,7 +39,7 @@ export const Dialogs = ({ messagesSocket, myId, partnerId, setNewMessagesSocket 
   useEffect(() => {
     refetch()
     setIsUpdateUsers(true)
-  }, [messagesSocket])
+  }, [messagesSocket, refetch])
 
   useEffect(() => {
     setUsers([])
@@ -56,12 +56,14 @@ export const Dialogs = ({ messagesSocket, myId, partnerId, setNewMessagesSocket 
         setTotalCount(data.totalCount)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   useEffect(() => {
     if (inView) {
       setCursor(users[users.length - 1]?.id)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

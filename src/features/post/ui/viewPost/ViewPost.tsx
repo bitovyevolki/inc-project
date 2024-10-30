@@ -8,7 +8,6 @@ import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
   useGetLikesByPostIdQuery,
-  useGetPostCommentsUnAuthorizedQuery,
   useLazyGetPostCommentsQuery,
   useUpdatePostByIdMutation,
   useUpdatePostLikeMutation,
@@ -32,7 +31,7 @@ import { Post } from '../../model/posts.service.types'
 import { CommentsList } from '../commentsList/CommentsList'
 
 type Props = {
-  avatars?: IProfile['avatars']
+  avatars?: IProfile['avatars'] | string
   closePostModal: () => void
   deletePostFromCombinedPostsArray?: (postId: number) => void
   post: Post
@@ -196,51 +195,50 @@ export const ViewPost = ({
           <SharePost onClose={closeShareOptions} postUrl={window.location.href} />
         ) : null}
 
-        <div className={s.reactToPost}>
-          <div className={s.reactionsBox}>
-            <div className={s.iconsBox}>
-              <div className={s.leftBlock}>
-                <div className={s.like} onClick={() => changePostLikeStatus()}>
-                  <LikeIcon fill={likeColor} height={24} width={24} />
-                </div>
-                <div onClick={toggleShareOptions}>
-                  <PaperPlaneIcon />
-                </div>
-              </div>
-              <div>
-                <BookmarkIcon />
-              </div>
-            </div>
-            <div className={s.likesInfo}>
-              <div className={s.likesTopBlock}>
-                {likes && likes.items.length > 0 && (
-                  <div className={s.avatarsList}>
-                    {likes?.items.map(user => (
-                      <div key={user.id}>
-                        <Image
-                          alt={'ava'}
-                          className={s.avatarsListItem}
-                          height={24}
-                          src={user.avatars.length > 0 ? user.avatars[0].url : baseAvatar}
-                          width={24}
-                        />
-                      </div>
-                    ))}
+        {me && (
+          <div className={s.reactToPost}>
+            <div className={s.reactionsBox}>
+              <div className={s.iconsBox}>
+                <div className={s.leftBlock}>
+                  <div className={s.like} onClick={() => changePostLikeStatus()}>
+                    <LikeIcon fill={likeColor} height={24} width={24} />
                   </div>
-                )}
+                  <div onClick={toggleShareOptions}>
+                    <PaperPlaneIcon />
+                  </div>
+                </div>
+                <div>
+                  <BookmarkIcon />
+                </div>
+              </div>
+              <div className={s.likesInfo}>
+                <div className={s.likesTopBlock}>
+                  {likes && likes.items.length > 0 && (
+                    <div className={s.avatarsList}>
+                      {likes?.items.map(user => (
+                        <div key={user.id}>
+                          <Image
+                            alt={'ava'}
+                            className={s.avatarsListItem}
+                            height={24}
+                            src={user.avatars.length > 0 ? user.avatars[0].url : baseAvatar}
+                            width={24}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-                <Typography as={'span'} variant={'body2'}>
-                  {likes?.totalCount}
-                  {` "Like"`}
+                  <Typography as={'span'} variant={'body2'}>
+                    {likes?.totalCount}
+                    {` "Like"`}
+                  </Typography>
+                </div>
+                <Typography className={s.postDate} variant={'caption'}>
+                  {displayDate}
                 </Typography>
               </div>
-              <Typography className={s.postDate} variant={'caption'}>
-                {displayDate}
-              </Typography>
             </div>
-          </div>
-
-          {me && (
             <form className={s.leaveComment} onSubmit={e => handleSubmit(e)}>
               <Input
                 autoComplete={'off'}
@@ -262,8 +260,25 @@ export const ViewPost = ({
                 Publish
               </Button>
             </form>
-          )}
-        </div>
+          </div>
+        )}
+        {!me && (
+          <div className={s.reactToPost}>
+            <div className={s.reactionsBox}>
+              <div className={s.likesInfo}>
+                <div className={s.likesTopBlock}>
+                  <Typography as={'span'} variant={'body2'}>
+                    {post.likesCount}
+                    {` "Like"`}
+                  </Typography>
+                </div>
+                <Typography className={s.postDate} variant={'caption'}>
+                  {displayDate}
+                </Typography>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   )

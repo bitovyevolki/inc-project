@@ -1,9 +1,3 @@
-export interface IMessageData {
-  audio: null | string
-  image: null | string
-  text: string
-}
-
 export type MessageType = 'IMAGE' | 'TEXT' | 'VOICE'
 export type MessageStatus = 'READ' | 'RECEIVED' | 'SENT'
 

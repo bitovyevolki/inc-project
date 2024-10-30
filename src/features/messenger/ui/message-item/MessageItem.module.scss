@@ -1,14 +1,18 @@
 .messageWithText {
-	display: flex;
-	gap: 12px;
-	max-width: 300px;
+  display: flex;
+  gap: 12px;
+  max-width: 300px;
 
-	.block {
-		display: flex;
-		flex-direction: column;
+	.avatar {
+		width: 36px;
+	}
 
-		min-width: 60px;
-		padding: 7px 12px 8px;
+  .block {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 60px;
+    padding: 7px 12px 8px;
 
 		background: #333;
 		border-radius: 8px;
@@ -19,16 +23,38 @@
 		}
 	}
 
-	.time {
-		text-align: end;
+	.timeAndStatus {
+		display: flex;
+		align-items: center;
+		justify-content: end;
+		gap: 6px;
+		width: 100%;
+
+		.time {	
+			color: rgba(255 255 255 / 60%);
+		}
+
+		.checkMarkGroup {
+			position: relative;
+			display: flex;
+			align-items: center;
+
+			svg {
+				&:nth-child(2) {
+					position: absolute;
+					top: 0;
+					left: 5px;
+				}
+			}
+
+		}
 	}
 
-	.myMessageBackground {
-		background: #234E99;
-	}
-
+  .myMessageBackground {
+    background: #234e99;
+  }
 }
 
 .alignRight {
-	align-self: flex-end;
+  align-self: flex-end;
 }

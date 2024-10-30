@@ -1,4 +1,5 @@
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
+import { CheckMarkIcon } from '@/src/shared/assets/icons/checkmark'
 import { Avatar } from '@/src/shared/ui/Avatar/Avatar'
 import { formatDateSmall } from '@/src/shared/utils/formatDate'
 import { Typography } from '@bitovyevolki/ui-kit-int'
@@ -15,6 +16,34 @@ type Props = {
 }
 
 const MessageText = ({ isMyMessage, message, partnerData }: Props) => {
+  const messageStatus = () => {
+    switch (message.status) {
+      case 'SENT': {
+        return (
+          <span className={s.checkMarkGroup}>
+            <CheckMarkIcon />
+          </span>
+        )
+      }
+      case 'RECEIVED': {
+        return (
+          <span className={s.checkMarkGroup}>
+            <CheckMarkIcon />
+            <CheckMarkIcon />
+          </span>
+        )
+      }
+      case 'READ': {
+        return (
+          <span className={s.checkMarkGroup}>
+            <CheckMarkIcon />
+            <CheckMarkIcon />
+          </span>
+        )
+      }
+    }
+  }
+
   return (
     <div className={clsx(s.messageWithText, { [s.alignRight]: isMyMessage })}>
       {isMyMessage ? (
@@ -22,24 +51,29 @@ const MessageText = ({ isMyMessage, message, partnerData }: Props) => {
           <Typography className={s.text} variant={'body2'}>
             {message.messageText}
           </Typography>
-          <Typography className={s.time} variant={'caption'}>
-            {formatDateSmall(message.updatedAt)}
-          </Typography>
+          <div className={s.timeAndStatus}>
+            <Typography className={s.time} variant={'caption'}>
+              {formatDateSmall(message.createdAt)}
+            </Typography>
+            {messageStatus()}
+          </div>
         </div>
       ) : (
         <>
-          <Avatar
-            height={36}
-            url={partnerData.avatars[0]?.url}
-            userName={partnerData.userName}
-            width={36}
-          />
+          <div className={s.avatar}>
+            <Avatar
+              height={36}
+              url={partnerData.avatars[0]?.url}
+              userName={partnerData.userName}
+              width={36}
+            />
+          </div>
           <div className={s.block}>
             <Typography className={s.text} variant={'body2'}>
               {message.messageText}
             </Typography>
             <Typography className={s.time} variant={'caption'}>
-              {formatDateSmall(message.updatedAt)}
+              {formatDateSmall(message.createdAt)}
             </Typography>
           </div>
         </>

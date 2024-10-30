@@ -16,5 +16,6 @@ export const inctagramService = createApi({
     'LikesPost',
     'Answer',
     'Follow',
+    'Messenger',
   ],
 })

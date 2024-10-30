@@ -11,6 +11,7 @@ export const MessengerService = inctagramService.injectEndpoints({
   endpoints: builder => {
     return {
       getDialogs: builder.query<DialogListResponse, GetDialogsListArgs>({
+        providesTags: ['Messenger'],
         query: ({ cursor, pageSize = 12, searchName }) => {
           return {
             method: 'GET',
@@ -29,8 +30,19 @@ export const MessengerService = inctagramService.injectEndpoints({
           }
         },
       }),
+      updateMessagesStatus: builder.mutation<void, { ids: number[] }>({
+        invalidatesTags: ['Messenger'],
+        query: ({ ids }) => {
+          return {
+            body: { ids },
+            method: 'PUT',
+            url: '/v1/messanger',
+          }
+        },
+      }),
     }
   },
 })
 
-export const { useGetDialogsQuery, useGetMessagesByUserIdQuery } = MessengerService
+export const { useGetDialogsQuery, useGetMessagesByUserIdQuery, useUpdateMessagesStatusMutation } =
+  MessengerService

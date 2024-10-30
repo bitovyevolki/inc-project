@@ -53,25 +53,27 @@ const MessageText = ({ isMyMessage, message, partnerData }: Props) => {
           </Typography>
           <div className={s.timeAndStatus}>
             <Typography className={s.time} variant={'caption'}>
-              {formatDateSmall(message.updatedAt)}
+              {formatDateSmall(message.createdAt)}
             </Typography>
             {messageStatus()}
           </div>
         </div>
       ) : (
         <>
-          <Avatar
-            height={36}
-            url={partnerData.avatars[0]?.url}
-            userName={partnerData.userName}
-            width={36}
-          />
+          <div className={s.avatar}>
+            <Avatar
+              height={36}
+              url={partnerData.avatars[0]?.url}
+              userName={partnerData.userName}
+              width={36}
+            />
+          </div>
           <div className={s.block}>
             <Typography className={s.text} variant={'body2'}>
               {message.messageText}
             </Typography>
             <Typography className={s.time} variant={'caption'}>
-              {formatDateSmall(message.updatedAt)}
+              {formatDateSmall(message.createdAt)}
             </Typography>
           </div>
         </>

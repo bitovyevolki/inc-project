@@ -1,13 +1,16 @@
+import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
+import { usePostsParams } from '@/src/features/post/lib/hooks/usePostsParams'
 import { useGetAllUsersQuery } from '@/src/features/post/model/follow.service'
 import {
   useGetLikesByPostIdQuery,
   useGetPostCommentsQuery,
 } from '@/src/features/post/model/posts.service'
+import { ViewPost } from '@/src/features/post/ui'
+import { ViewPostModal } from '@/src/features/post/ui/viewPostModal'
 import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Typography } from '@bitovyevolki/ui-kit-int'
-import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 
 import s from './FollowersPostsItem.module.scss'
@@ -28,6 +31,20 @@ export const FollowersPostsItem = ({ item }: IProps) => {
   const t = useTranslations('FollowersPosts')
 
   const locale = useLocale()
+
+  const { removeQueryParamHandler } = usePostsParams()
+
+  const [viewMode, setViewMode] = useState(false)
+  const bodyRef = useRef(document.body)
+  const handleOnPostClick = () => {
+    setViewMode(true)
+    bodyRef.current.style.overflow = 'hidden'
+  }
+  const handlePostClose = () => {
+    setViewMode(false)
+    bodyRef.current.style.overflow = ''
+    removeQueryParamHandler('postId')
+  }
 
   const { data: comments, refetch: refetchComments } = useGetPostCommentsQuery(
     { postId: item.id },
@@ -77,17 +94,22 @@ export const FollowersPostsItem = ({ item }: IProps) => {
       />
       <LikesCount likesCount={likes?.totalCount} userAvatars={likes?.items} />
       {comments && comments?.totalCount > 0 && (
-        <Typography className={s.comments} variant={'subTitle2'}>
-          <Link
-            className={s.link}
-            href={`${RouterPaths.MY_PROFILE}/${item.ownerId}?postId=${item.id}`}
-          >
-            {t('view-all-comments')}({comments?.totalCount})
-          </Link>
+        <Typography className={s.comments} onClick={handleOnPostClick} variant={'subTitle2'}>
+          {t('view-all-comments')}({comments?.totalCount})
         </Typography>
       )}
       <AddCommentForm postId={item.id} refetchComments={refetchComments} />
       <div className={s.border} />
+      {viewMode && (
+        <ViewPostModal isOpen={viewMode} onOpenChange={handlePostClose}>
+          <ViewPost
+            avatars={item.avatarOwner}
+            closePostModal={handlePostClose}
+            post={item}
+            userName={item.userName}
+          />
+        </ViewPostModal>
+      )}
     </div>
   )
 }

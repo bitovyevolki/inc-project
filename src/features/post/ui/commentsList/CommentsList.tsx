@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { RoundLoader } from '@/src/shared/ui/RoundLoader/RoundLoader'
-import { Typography } from '@bitovyevolki/ui-kit-int'
 
 import s from './CommentsList.module.scss'
 
@@ -15,12 +14,11 @@ import { Comment as CommentType } from '../../model/posts.service.types'
 import { CommentItem } from '../commentItem/CommentItem'
 
 type Props = {
-  description: string
   isAuthorized: boolean
   postId: number
 }
 
-export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
+export const CommentsList = ({ isAuthorized, postId }: Props) => {
   const [commentsPage, setCommentsPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const [comments, setComments] = useState<CommentType[]>([])
@@ -105,10 +103,7 @@ export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
   }
 
   return (
-    <div className={s.commentsBlock}>
-      <Typography as={'div'} className={s.description} variant={'body1'}>
-        {description}
-      </Typography>
+    <>
       <div className={s.commentsList}>
         {comments.map(comment => (
           <CommentItem
@@ -123,6 +118,6 @@ export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
           <RoundLoader variant={'small'} />
         </p>
       )}
-    </div>
+    </>
   )
 }

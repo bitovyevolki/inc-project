@@ -187,9 +187,13 @@ export const ViewPost = ({
             </div>
           </div>
         )}
-
         {!isEditMode && (
-          <CommentsList description={post.description} isAuthorized={!!me} postId={post.id} />
+          <div className={s.descriptionBlock}>
+            <Typography as={'div'} className={s.description} variant={'body1'}>
+              {post.description}
+            </Typography>
+            <CommentsList isAuthorized={!!me} postId={post.id} />
+          </div>
         )}
         {isShareMode ? (
           <SharePost onClose={closeShareOptions} postUrl={window.location.href} />

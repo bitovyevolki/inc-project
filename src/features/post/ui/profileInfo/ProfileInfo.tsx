@@ -33,7 +33,12 @@ export const ProfileInfo = ({ meId, userName }: Props) => {
   return (
     <div className={s.userPresentation}>
       <div className={s.userAvatar}>
-        <Image alt={'avatar'} fill src={(profile.avatars[0]?.url as string) || baseUserPhoto} />
+        <Image
+          alt={'avatar'}
+          fill
+          sizes={'(max-width: 768px) 100vw, 250px'}
+          src={(profile.avatars[0]?.url as string) || baseUserPhoto}
+        />
       </div>
       <div className={s.info}>
         {isMyProfile ? (

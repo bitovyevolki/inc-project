@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import baseAvatar from '@/public/image/default-avatar.webp'
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
+import { IFollowersPostsItem } from '@/src/features/home/followers-posts/model/types'
 import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
@@ -34,7 +35,7 @@ type Props = {
   avatars?: IProfile['avatars'] | string
   closePostModal: () => void
   deletePostFromCombinedPostsArray?: (postId: number) => void
-  post: Post
+  post: IFollowersPostsItem | Post
   userName: string
 }
 
@@ -79,7 +80,7 @@ export const ViewPost = ({
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   const changePostLikeStatus = () => {
-    const newLikeStatus = likes && likes.isLiked === true ? 'DISLIKE' : 'LIKE'
+    const newLikeStatus = likes && likes.isLiked ? 'DISLIKE' : 'LIKE'
 
     updatePostLike({
       likeStatus: newLikeStatus,
@@ -189,9 +190,11 @@ export const ViewPost = ({
         )}
         {!isEditMode && (
           <div className={s.descriptionBlock}>
-            <Typography as={'div'} className={s.description} variant={'body1'}>
-              {post.description}
-            </Typography>
+            {post.description && (
+              <Typography as={'div'} className={s.description} variant={'body1'}>
+                {post.description}
+              </Typography>
+            )}
             <CommentsList isAuthorized={!!me} postId={post.id} />
           </div>
         )}

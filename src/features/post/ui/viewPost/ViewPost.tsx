@@ -9,7 +9,6 @@ import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
   useGetLikesByPostIdQuery,
-  useLazyGetPostCommentsQuery,
   useUpdatePostByIdMutation,
   useUpdatePostLikeMutation,
 } from '@/src/features/post/model/posts.service'
@@ -28,7 +27,7 @@ import 'moment/locale/ru'
 import s from './viewPost.module.scss'
 
 import { usePostsParams } from '../../lib/hooks/usePostsParams'
-import { Post } from '../../model/posts.service.types'
+import { Comment as CommentType, Post } from '../../model/posts.service.types'
 import { CommentsList } from '../commentsList/CommentsList'
 
 type Props = {
@@ -68,11 +67,12 @@ export const ViewPost = ({
   }
   const likeColor = likes?.isLiked ? 'red' : 'white'
 
-  const [updateComments] = useLazyGetPostCommentsQuery()
   const [createComment] = useCreateCommentToPostMutation()
   const [deletePost] = useDeletePostByIdMutation()
   const [updatePost] = useUpdatePostByIdMutation()
   const [updatePostLike] = useUpdatePostLikeMutation()
+
+  const [addedComment, setAddedComment] = useState<CommentType | null>(null)
 
   const { changeQueryHandler } = usePostsParams()
 
@@ -101,7 +101,7 @@ export const ViewPost = ({
     createComment({ content, postId: post.id })
       .unwrap()
       .then(comment => {
-        updateComments({ postId: post.id })
+        setAddedComment(comment)
       })
   }
 
@@ -151,7 +151,13 @@ export const ViewPost = ({
         <PhotoSlider>
           {post.images.map((image, index) => (
             <div className={s.photoBox} key={image.uploadId}>
-              <Image alt={`Post image ${index}`} fill priority src={image.url} />
+              <Image
+                alt={`Post image ${index}`}
+                fill
+                priority
+                sizes={'(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 460px'}
+                src={image.url}
+              />
             </div>
           ))}
         </PhotoSlider>
@@ -189,13 +195,19 @@ export const ViewPost = ({
           </div>
         )}
         {!isEditMode && (
+
           <div className={s.descriptionBlock}>
             {post.description && (
               <Typography as={'div'} className={s.description} variant={'body1'}>
                 {post.description}
               </Typography>
             )}
-            <CommentsList isAuthorized={!!me} postId={post.id} />
+            <CommentsList
+            addedComment={addedComment}
+            isAuthorized={!!me}
+            postId={post.id}
+            setAddedComment={setAddedComment}
+          />
           </div>
         )}
         {isShareMode ? (

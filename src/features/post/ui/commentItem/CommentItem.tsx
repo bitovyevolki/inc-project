@@ -33,6 +33,8 @@ export const CommentItem = ({ comment, handleCommentLikeStatus }: Props) => {
   const [answersPage, setAnswersPage] = useState(1)
   const [answers, setAnswers] = useState<Answer[]>([])
 
+  const [totalCount, setTotalCount] = useState(0)
+
   const [createAnswer] = useCreateAnswerMutation()
   const [updateAnswerLike] = useUpdateAnswerLikeMutation()
 
@@ -50,7 +52,18 @@ export const CommentItem = ({ comment, handleCommentLikeStatus }: Props) => {
 
   useEffect(() => {
     if (answersData && answersData.items) {
-      setAnswers(prev => [...prev, ...answersData.items])
+      setAnswers(prev => {
+        // Объединяем предыдущие и новые ответы
+        const mergedAnswers = [...prev, ...answersData.items]
+
+        // Фильтруем уникальные элементы по ID
+        const uniqueAnswers = mergedAnswers.filter(
+          (answer, index, self) => index === self.findIndex(a => a.id === answer.id)
+        )
+
+        return uniqueAnswers
+      })
+      setTotalCount(answersData.totalCount)
     }
   }, [answersData])
 
@@ -96,6 +109,7 @@ export const CommentItem = ({ comment, handleCommentLikeStatus }: Props) => {
         setAnswerInputValue('')
         setIsOpenAnswerInput(false)
         setAnswers(prev => [res, ...prev])
+        setTotalCount(prev => prev + 1)
       })
       .catch(error => {
         toast.error(`Failed change like status`)
@@ -167,16 +181,16 @@ export const CommentItem = ({ comment, handleCommentLikeStatus }: Props) => {
     <>
       {commentItem(comment)}
       <div className={s.answersBlock}>
-        {answersData && answersData.items.length !== 0 && (
+        {answers && answers.length !== 0 && (
           <div className={s.hideShowAnswersButton}>
             <div className={s.line}></div>
             {isShowAnswers ? (
               <Typography onClick={() => setIsShowAnswers(false)} variant={'caption'}>
-                {'\u00A0'}Hide Answers <span>{`(${answersData.totalCount})`}</span>
+                {'\u00A0'}Hide Answers <span>{`(${totalCount})`}</span>
               </Typography>
             ) : (
               <Typography onClick={() => setIsShowAnswers(true)} variant={'caption'}>
-                {'\u00A0'}Show Answers <span>{`(${answersData.totalCount})`}</span>
+                {'\u00A0'}Show Answers <span>{`(${totalCount})`}</span>
               </Typography>
             )}
           </div>

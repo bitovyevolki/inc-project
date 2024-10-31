@@ -19,13 +19,7 @@ type Props = {
   postId: number
   setAddedComment: (value: null) => void
 }
-export const CommentsList = ({
-  addedComment,
-  isAuthorized,
-  postId,
-  setAddedComment,
-}: Props) => {
-
+export const CommentsList = ({ addedComment, isAuthorized, postId, setAddedComment }: Props) => {
   const [commentsPage, setCommentsPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const [comments, setComments] = useState<CommentType[]>([])

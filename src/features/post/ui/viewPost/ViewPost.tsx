@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, { FormEvent, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -195,7 +196,6 @@ export const ViewPost = ({
           </div>
         )}
         {!isEditMode && (
-
           <div className={s.descriptionBlock}>
             {post.description && (
               <Typography as={'div'} className={s.description} variant={'body1'}>
@@ -203,11 +203,11 @@ export const ViewPost = ({
               </Typography>
             )}
             <CommentsList
-            addedComment={addedComment}
-            isAuthorized={!!me}
-            postId={post.id}
-            setAddedComment={setAddedComment}
-          />
+              addedComment={addedComment}
+              isAuthorized={!!me}
+              postId={post.id}
+              setAddedComment={setAddedComment}
+            />
           </div>
         )}
         {isShareMode ? (

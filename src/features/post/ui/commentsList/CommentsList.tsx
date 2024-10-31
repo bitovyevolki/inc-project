@@ -15,12 +15,20 @@ import { Comment as CommentType } from '../../model/posts.service.types'
 import { CommentItem } from '../commentItem/CommentItem'
 
 type Props = {
+  addedComment: CommentType | null
   description: string
   isAuthorized: boolean
   postId: number
+  setAddedComment: (value: null) => void
 }
 
-export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
+export const CommentsList = ({
+  addedComment,
+  description,
+  isAuthorized,
+  postId,
+  setAddedComment,
+}: Props) => {
   const [commentsPage, setCommentsPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const [comments, setComments] = useState<CommentType[]>([])
@@ -40,6 +48,13 @@ export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
     : isLoadingCommentsUnauthorized
   const commentsData = isAuthorized ? commentsDataAuthorized : commentsDataUnauthorized
   const [updateCommentLike] = useUpdateCommentLikeMutation()
+
+  useEffect(() => {
+    if (addedComment !== null) {
+      setComments(prev => [addedComment, ...prev])
+      setAddedComment(null)
+    }
+  }, [addedComment, setAddedComment])
 
   const handleCommentLikeStatus = (comment: CommentType) => {
     const newLikeStatus = comment.isLiked ? 'DISLIKE' : 'LIKE'
@@ -72,12 +87,16 @@ export const CommentsList = ({ description, isAuthorized, postId }: Props) => {
 
   useEffect(() => {
     if (commentsData) {
-      if (totalCount === 0) {
-        setTotalCount(commentsData.totalCount)
-      }
-      setComments(prev => [...prev, ...commentsData.items])
+      setTotalCount(commentsData.totalCount)
+
+      setComments(prev => {
+        const uniqueComments = [...prev, ...commentsData.items].filter(
+          (comment, index, self) => index === self.findIndex(c => c.id === comment.id)
+        )
+
+        return uniqueComments
+      })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commentsData])
 
   useEffect(() => {

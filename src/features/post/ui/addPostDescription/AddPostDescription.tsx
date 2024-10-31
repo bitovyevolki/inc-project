@@ -45,7 +45,12 @@ export const AddPostDescription = ({ files, postDescription, setPostDescription 
       <PhotoSlider>
         {files.map(item => (
           <div className={s.imageContainer} key={item.id}>
-            <Image alt={'post image'} fill src={item.url} />
+            <Image
+              alt={'post image'}
+              fill
+              sizes={'(max-width: 768px) 100vw, 460px'}
+              src={item.url}
+            />
           </div>
         ))}
       </PhotoSlider>

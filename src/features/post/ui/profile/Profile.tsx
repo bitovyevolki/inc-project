@@ -94,7 +94,13 @@ export const Profile = ({ post, profileId }: Props) => {
                   onClick={() => changeQueryHandler(post.id as number)}
                   transition={{ duration: 0.5 }}
                 >
-                  <Image alt={'post image'} fill priority src={post?.images?.[0]?.url} />
+                  <Image
+                    alt={'post image'}
+                    fill
+                    priority
+                    sizes={'(max-width: 768px) 100vw, 400px'}
+                    src={post?.images?.[0]?.url}
+                  />
                 </motion.div>
               ))}
           </div>

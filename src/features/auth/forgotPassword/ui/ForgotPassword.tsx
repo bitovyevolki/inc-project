@@ -7,17 +7,16 @@ import { toast } from 'react-toastify'
 
 import { useSendResetPasswordEmailMutation } from '@/src/features/auth/service/auth.service'
 import { ServerError } from '@/src/features/auth/service/auth.types'
+import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Nullable } from '@/src/shared/types/globalTypes'
 import { Loader } from '@/src/shared/ui/loader/Loader'
-import { Button, Card, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, FormInput, ModalWindow, Typography } from '@bitovyevolki/ui-kit-int'
 import { zodResolver } from '@hookform/resolvers/zod'
 import i18n from 'i18next'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 import s from './forgotPassword.module.scss'
-
-// import { Button, Card, ModalWindow, Typography } from '../../../../../../inc-ui'
 
 const schemaEn = z.object({
   email: z
@@ -87,7 +86,6 @@ export const ForgotPassword = () => {
   return (
     <>
       {isSuccess && (
-        // eslint-disable-next-line react/jsx-no-undef,no-undef
         <ModalWindow onOpenChange={closeModal} open={isModalOpen} title={t('ModalTitle')}>
           <div className={s.card}>
             <Typography as={'p'} variant={'body1'}>
@@ -101,45 +99,47 @@ export const ForgotPassword = () => {
           </div>
         </ModalWindow>
       )}
-      <div className={s.wrapper}>
-        <Card as={'div'} className={s.card}>
-          <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
-            {t('formTitle')}
-          </Typography>
-          <form className={s.form} onSubmit={onSubmit}>
-            {/*<FormInput*/}
-            {/*  control={control}*/}
-            {/*  errorMessage={errors.email?.message}*/}
-            {/*  inputMode={'email'}*/}
-            {/*  label={`${t('email')}`}*/}
-            {/*  name={'email'}*/}
-            {/*  placeholder={'Epam@epam.com'}*/}
-            {/*/>*/}
-            <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
-              {t('instructions')}
+      {!isModalOpen && (
+        <div className={s.wrapper}>
+          <Card as={'div'} className={s.card}>
+            <Typography as={'h1'} className={s.accentColor} variant={'h2'}>
+              {t('formTitle')}
             </Typography>
-            <Button
-              disabled={!isValid || !captchaToken}
-              fullWidth
-              type={'submit'}
-              variant={'primary'}
-            >
-              {t('sendLink')}
-            </Button>
-            {/*         <Button as={Link} fullWidth href={'/auth/sign-in'} variant={'ghost'}>
-              {t('backToSignIn')}
-            </Button>*/}
-            {/*<Button as></Button>*/}
-            <ReCAPTCHA
-              className={s.capture}
-              hl={locale}
-              onChange={captchaHandler}
-              sitekey={reCaptchaKey}
-              theme={'dark'}
-            />
-          </form>
-        </Card>
-      </div>
+            <form className={s.form} onSubmit={onSubmit}>
+              <FormInput
+                control={control}
+                errorMessage={errors.email?.message}
+                inputMode={'email'}
+                label={`${t('email')}`}
+                name={'email'}
+                placeholder={'Epam@epam.com'}
+              />
+              <Typography as={'p'} className={s.secondaryColor} variant={'caption'}>
+                {t('instructions')}
+              </Typography>
+              <Button
+                disabled={!isValid || !captchaToken}
+                fullWidth
+                type={'submit'}
+                variant={'primary'}
+              >
+                {t('sendLink')}
+              </Button>
+              <Button as={'a'} fullWidth href={RouterPaths.SIGN_IN} variant={'ghost'}>
+                {t('backToSignIn')}
+              </Button>
+
+              <ReCAPTCHA
+                className={s.capture}
+                hl={locale}
+                onChange={captchaHandler}
+                sitekey={reCaptchaKey}
+                theme={'dark'}
+              />
+            </form>
+          </Card>
+        </div>
+      )}
     </>
   )
 }

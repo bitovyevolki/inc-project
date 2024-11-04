@@ -39,12 +39,6 @@
   height: 59px;
   border-bottom: 1px solid #4c4c4c;
 }
-
-.post {
-  height: 100%;
-  width: 100%;
-}
-
 .reactToPost {
   display: flex;
   flex-flow: column nowrap;
@@ -122,32 +116,9 @@
   height: 564px;
 }
 
-.descWrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-
-  height: 460px;
-  padding: 12px 24px;
-
-  textarea {
-    min-width: 433px;
-    min-height: 120px;
-  }
-
-  button {
-    margin-bottom: 24px;
-  }
-}
 .descriptionBlock {
   overflow-y: auto;
   height: 100%;
-
-  .description {
-    border-bottom: 1px solid #4c4c4c;
-    padding: 10px 16px;
-  }
 
   &::-webkit-scrollbar-button {
     width: 0;

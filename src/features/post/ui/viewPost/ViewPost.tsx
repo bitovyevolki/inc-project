@@ -1,5 +1,4 @@
-/* eslint-disable max-lines */
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import baseAvatar from '@/public/image/default-avatar.webp'
@@ -10,24 +9,23 @@ import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
   useGetLikesByPostIdQuery,
-  useUpdatePostByIdMutation,
   useUpdatePostLikeMutation,
 } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
+import { PostDescription } from '@/src/features/post/ui/postDescription/PostDescription'
 import { SharePost } from '@/src/features/post/ui/sharePost/sharePost'
 import { PaperPlaneIcon } from '@/src/shared/assets/icons'
 import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
 import { LikeIcon } from '@/src/shared/assets/icons/like'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
 import { formatDate } from '@/src/shared/utils/formatDate'
-import { Button, Card, Input, TextArea, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
 import 'moment/locale/ru'
 
 import s from './viewPost.module.scss'
 
-import { usePostsParams } from '../../lib/hooks/usePostsParams'
 import { Comment as CommentType, Post } from '../../model/posts.service.types'
 import { CommentsList } from '../commentsList/CommentsList'
 
@@ -49,7 +47,7 @@ export const ViewPost = ({
   const { data: me } = useMeQuery()
   const { data: likes } = useGetLikesByPostIdQuery({ postId: post.id })
   const postOwner = post.ownerId === me?.userId
-  const [description, setDescription] = useState(post.description || '')
+
   const [isEditMode, setIsEditMode] = useState(false)
   const [isShareMode, setIsShareMode] = useState<boolean>(false)
   const toggleShareOptions = (event: React.MouseEvent) => {
@@ -70,15 +68,12 @@ export const ViewPost = ({
 
   const [createComment] = useCreateCommentToPostMutation()
   const [deletePost] = useDeletePostByIdMutation()
-  const [updatePost] = useUpdatePostByIdMutation()
+
   const [updatePostLike] = useUpdatePostLikeMutation()
 
   const [addedComment, setAddedComment] = useState<CommentType | null>(null)
 
-  const { changeQueryHandler } = usePostsParams()
-
   const [inputValue, setInputValue] = useState('')
-  const inputRef = useRef<HTMLTextAreaElement | null>(null)
 
   const changePostLikeStatus = () => {
     const newLikeStatus = likes && likes.isLiked ? 'DISLIKE' : 'LIKE'
@@ -108,26 +103,9 @@ export const ViewPost = ({
 
   const startEditMode = () => {
     setIsEditMode(true)
-    setTimeout(() => {
-      inputRef.current?.focus()
-    }, 0)
   }
-
-  const saveDescription = () => {
-    updatePost({
-      ownerId: String(post.ownerId),
-      postId: String(post.id),
-      updatedPostData: { description },
-    })
-      .unwrap()
-      .then(() => {
-        toast.success('Post description updated', { position: 'top-right' })
-        changeQueryHandler(post.id as number)
-        setIsEditMode(false)
-      })
-      .catch(err => {
-        toast.error(`Error updating post: ${err}`, { position: 'top-right' })
-      })
+  const stopEditMode = () => {
+    setIsEditMode(false)
   }
 
   const deletePostHandler = () => {
@@ -176,40 +154,23 @@ export const ViewPost = ({
             withMenu
           />
         </div>
-
-        {isEditMode && (
-          <div className={s.post}>
-            <div className={s.descWrap}>
-              <div>
-                <TextArea
-                  label={'Add description'}
-                  onChange={e => setDescription(e.target.value)}
-                  placeholder={'Edit description...'}
-                  ref={inputRef}
-                  value={description}
-                />
-              </div>
-              <div>
-                <Button onClick={saveDescription}>Save Changes</Button>
-              </div>
-            </div>
-          </div>
-        )}
-        {!isEditMode && (
-          <div className={s.descriptionBlock}>
-            {post.description && (
-              <Typography as={'div'} className={s.description} variant={'body1'}>
-                {post.description}
-              </Typography>
-            )}
+        <div className={s.descriptionBlock}>
+          <PostDescription
+            isEditMode={isEditMode}
+            onStopEditMode={stopEditMode}
+            ownerId={post.ownerId}
+            postDescription={post.description}
+            postId={post.id}
+          />
+          {!isEditMode && (
             <CommentsList
               addedComment={addedComment}
               isAuthorized={!!me}
               postId={post.id}
               setAddedComment={setAddedComment}
             />
-          </div>
-        )}
+          )}
+        </div>
         {isShareMode ? (
           <SharePost onClose={closeShareOptions} postUrl={window.location.href} />
         ) : null}

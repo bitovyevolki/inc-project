@@ -32,6 +32,7 @@ export const ProfileIntro = ({
   withMenu,
 }: Props) => {
   const [isShowDeletePostModal, setIsShowDeletePostModal] = useState(false)
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   let avatarUrl: string | undefined
 
   if (typeof avatars === 'string') {
@@ -44,6 +45,12 @@ export const ProfileIntro = ({
 
   const setIsShowDeletePostModalHandler = (value: boolean) => {
     setIsShowDeletePostModal(value)
+  }
+  const handleEditClick = () => {
+    setIsPopoverOpen(false)
+    if (updatePostHandler) {
+      updatePostHandler()
+    }
   }
 
   return (
@@ -59,13 +66,13 @@ export const ProfileIntro = ({
         <Typography variant={'h4'}>{userName}</Typography>
       </div>
       {postOwner && withMenu && (
-        <Popover.Root>
+        <Popover.Root onOpenChange={setIsPopoverOpen} open={isPopoverOpen}>
           <Popover.Trigger asChild>
             <EllipsisIcon className={s.ellipsisIcon} fill={'#397DF6'} />
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Content align={'end'} className={s.PopoverContent} side={'bottom'}>
-              <div className={s.popoverItem} onClick={updatePostHandler}>
+              <div className={s.popoverItem} onClick={handleEditClick}>
                 <EditIcon />
                 <span>Edit Post</span>
               </div>

@@ -37,7 +37,6 @@
 .postHeader {
   width: 100%;
   height: 59px;
-  border-bottom: 1px solid #4c4c4c;
 }
 .reactToPost {
   display: flex;
@@ -49,26 +48,6 @@
 
   border-top: 1px solid #4c4c4c;
 
-  .reactionsBox {
-    .iconsBox {
-      display: flex;
-      gap: 6px;
-      width: 100%;
-      height: 24px;
-      justify-content: space-between;
-      margin-bottom: 19px;
-
-      .leftBlock {
-        display: flex;
-        gap: 24px;
-      }
-
-      & svg {
-        cursor: pointer;
-      }
-    }
-  }
-
   .leaveComment {
     display: flex;
     gap: 24px;
@@ -77,34 +56,6 @@
 
     input {
       width: 330px;
-    }
-  }
-}
-
-.likesInfo {
-  display: flex;
-  flex-direction: column;
-
-  .postDate {
-    color: var(--color-light-900);
-    margin-bottom: 7px;
-  }
-
-  .likesTopBlock {
-    display: flex;
-
-    .avatarsList {
-      display: flex;
-      align-items: center;
-      margin-right: 12px;
-
-      .avatarsListItem {
-        border-radius: 50%;
-
-        &:not(:first-child) {
-          margin-left: -10px;
-        }
-      }
     }
   }
 }

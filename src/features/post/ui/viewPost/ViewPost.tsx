@@ -1,25 +1,19 @@
 import React, { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import baseAvatar from '@/public/image/default-avatar.webp'
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { IFollowersPostsItem } from '@/src/features/home/followers-posts/model/types'
 import {
   useCreateCommentToPostMutation,
   useDeletePostByIdMutation,
-  useGetLikesByPostIdQuery,
-  useUpdatePostLikeMutation,
 } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
 import { PostDescription } from '@/src/features/post/ui/postDescription/PostDescription'
+import { PostReactions } from '@/src/features/post/ui/postReactions/Postreactions'
 import { SharePost } from '@/src/features/post/ui/sharePost/sharePost'
-import { PaperPlaneIcon } from '@/src/shared/assets/icons'
-import { BookmarkIcon } from '@/src/shared/assets/icons/bookmark'
-import { LikeIcon } from '@/src/shared/assets/icons/like'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
-import { formatDate } from '@/src/shared/utils/formatDate'
-import { Button, Card, Input, Typography } from '@bitovyevolki/ui-kit-int'
+import { Button, Card, Input } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
 import 'moment/locale/ru'
@@ -45,7 +39,7 @@ export const ViewPost = ({
   userName,
 }: Props) => {
   const { data: me } = useMeQuery()
-  const { data: likes } = useGetLikesByPostIdQuery({ postId: post.id })
+
   const postOwner = post.ownerId === me?.userId
 
   const [isEditMode, setIsEditMode] = useState(false)
@@ -64,29 +58,13 @@ export const ViewPost = ({
       closeShareOptions()
     }
   }
-  const likeColor = likes?.isLiked ? 'red' : 'white'
 
   const [createComment] = useCreateCommentToPostMutation()
   const [deletePost] = useDeletePostByIdMutation()
 
-  const [updatePostLike] = useUpdatePostLikeMutation()
-
   const [addedComment, setAddedComment] = useState<CommentType | null>(null)
 
   const [inputValue, setInputValue] = useState('')
-
-  const changePostLikeStatus = () => {
-    const newLikeStatus = likes && likes.isLiked ? 'DISLIKE' : 'LIKE'
-
-    updatePostLike({
-      likeStatus: newLikeStatus,
-      postId: post.id as number,
-    })
-      .unwrap()
-      .catch(error => {
-        toast.error(`Failed change like status`)
-      })
-  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -122,8 +100,6 @@ export const ViewPost = ({
       })
   }
 
-  const displayDate = formatDate(post.createdAt)
-
   return (
     <Card className={s.modalBox}>
       <div className={s.sliderBox}>
@@ -141,7 +117,6 @@ export const ViewPost = ({
           ))}
         </PhotoSlider>
       </div>
-
       <div className={s.textBox}>
         <div className={s.postHeader}>
           <ProfileIntro
@@ -175,50 +150,15 @@ export const ViewPost = ({
           <SharePost onClose={closeShareOptions} postUrl={window.location.href} />
         ) : null}
 
-        {me && (
-          <div className={s.reactToPost}>
-            <div className={s.reactionsBox}>
-              <div className={s.iconsBox}>
-                <div className={s.leftBlock}>
-                  <div className={s.like} onClick={() => changePostLikeStatus()}>
-                    <LikeIcon fill={likeColor} height={24} width={24} />
-                  </div>
-                  <div onClick={toggleShareOptions}>
-                    <PaperPlaneIcon />
-                  </div>
-                </div>
-                <div>
-                  <BookmarkIcon />
-                </div>
-              </div>
-              <div className={s.likesInfo}>
-                <div className={s.likesTopBlock}>
-                  {likes && likes.items.length > 0 && (
-                    <div className={s.avatarsList}>
-                      {likes?.items.map(user => (
-                        <div key={user.id}>
-                          <Image
-                            alt={'ava'}
-                            className={s.avatarsListItem}
-                            height={24}
-                            src={user.avatars.length > 0 ? user.avatars[0].url : baseAvatar}
-                            width={24}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  <Typography as={'span'} variant={'body2'}>
-                    {likes?.totalCount}
-                    {` "Like"`}
-                  </Typography>
-                </div>
-                <Typography className={s.postDate} variant={'caption'}>
-                  {displayDate}
-                </Typography>
-              </div>
-            </div>
+        <div className={s.reactToPost}>
+          <PostReactions
+            createdAt={post.createdAt}
+            isAuthorized={Boolean(me)}
+            likesCount={post.likesCount}
+            onShareClick={toggleShareOptions}
+            postId={post.id}
+          />
+          {me && (
             <form className={s.leaveComment} onSubmit={e => handleSubmit(e)}>
               <Input
                 autoComplete={'off'}
@@ -240,25 +180,8 @@ export const ViewPost = ({
                 Publish
               </Button>
             </form>
-          </div>
-        )}
-        {!me && (
-          <div className={s.reactToPost}>
-            <div className={s.reactionsBox}>
-              <div className={s.likesInfo}>
-                <div className={s.likesTopBlock}>
-                  <Typography as={'span'} variant={'body2'}>
-                    {post.likesCount}
-                    {` "Like"`}
-                  </Typography>
-                </div>
-                <Typography className={s.postDate} variant={'caption'}>
-                  {displayDate}
-                </Typography>
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </Card>
   )

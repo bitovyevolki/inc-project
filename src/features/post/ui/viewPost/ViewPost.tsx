@@ -1,19 +1,17 @@
-import React, { FormEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { IProfile } from '@/src/entities/profile/userProfile/model/types/profile'
 import { useMeQuery } from '@/src/features/auth/service/auth.service'
 import { IFollowersPostsItem } from '@/src/features/home/followers-posts/model/types'
-import {
-  useCreateCommentToPostMutation,
-  useDeletePostByIdMutation,
-} from '@/src/features/post/model/posts.service'
+import { useDeletePostByIdMutation } from '@/src/features/post/model/posts.service'
 import { ProfileIntro } from '@/src/features/post/ui'
+import { AddCommentForm } from '@/src/features/post/ui/addCommentForm/AddCommentForm'
 import { PostDescription } from '@/src/features/post/ui/postDescription/PostDescription'
 import { PostReactions } from '@/src/features/post/ui/postReactions/Postreactions'
 import { SharePost } from '@/src/features/post/ui/sharePost/sharePost'
 import { PhotoSlider } from '@/src/shared/ui/PhotoSlider/PhotoSlider'
-import { Button, Card, Input } from '@bitovyevolki/ui-kit-int'
+import { Card } from '@bitovyevolki/ui-kit-int'
 import Image from 'next/image'
 
 import 'moment/locale/ru'
@@ -39,11 +37,12 @@ export const ViewPost = ({
   userName,
 }: Props) => {
   const { data: me } = useMeQuery()
-
-  const postOwner = post.ownerId === me?.userId
-
+  const [addedComment, setAddedComment] = useState<CommentType | null>(null)
+  const [deletePost] = useDeletePostByIdMutation()
   const [isEditMode, setIsEditMode] = useState(false)
   const [isShareMode, setIsShareMode] = useState<boolean>(false)
+  const postOwner = post.ownerId === me?.userId
+
   const toggleShareOptions = (event: React.MouseEvent) => {
     event.stopPropagation()
     setIsShareMode(!isShareMode)
@@ -57,26 +56,6 @@ export const ViewPost = ({
     if (isShareMode) {
       closeShareOptions()
     }
-  }
-
-  const [createComment] = useCreateCommentToPostMutation()
-  const [deletePost] = useDeletePostByIdMutation()
-
-  const [addedComment, setAddedComment] = useState<CommentType | null>(null)
-
-  const [inputValue, setInputValue] = useState('')
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const content = inputValue
-
-    setInputValue('')
-
-    createComment({ content, postId: post.id })
-      .unwrap()
-      .then(comment => {
-        setAddedComment(comment)
-      })
   }
 
   const startEditMode = () => {
@@ -158,29 +137,7 @@ export const ViewPost = ({
             onShareClick={toggleShareOptions}
             postId={post.id}
           />
-          {me && (
-            <form className={s.leaveComment} onSubmit={e => handleSubmit(e)}>
-              <Input
-                autoComplete={'off'}
-                errorMessage={
-                  inputValue.length > 300 ? 'Comment must not exceed 300 characters.' : ''
-                }
-                inputMode={'text'}
-                name={'leaveComment'}
-                onChange={e => setInputValue(e.currentTarget.value)}
-                placeholder={'Add a comment...'}
-                rootClassName={s.customInput}
-                value={inputValue}
-              />
-              <Button
-                disabled={inputValue.length === 0 || inputValue.length > 300}
-                type={'submit'}
-                variant={'ghost'}
-              >
-                Publish
-              </Button>
-            </form>
-          )}
+          {me && <AddCommentForm postId={post.id} setAddedComment={setAddedComment} />}
         </div>
       </div>
     </Card>

@@ -8,6 +8,7 @@ import {
   useGetPostCommentsQuery,
 } from '@/src/features/post/model/posts.service'
 import { ViewPost } from '@/src/features/post/ui'
+import { AddCommentForm } from '@/src/features/post/ui/add-comment-form/AddCommentForm'
 import { ViewPostModal } from '@/src/features/post/ui/viewPostModal'
 import { RouterPaths } from '@/src/shared/config/router.paths'
 import { Typography } from '@bitovyevolki/ui-kit-int'
@@ -16,7 +17,6 @@ import { useLocale, useTranslations } from 'next-intl'
 import s from './FollowersPostsItem.module.scss'
 
 import { IFollowersPostsItem } from '../../model/types'
-import { AddCommentForm } from './add-comment-form/AddCommentForm'
 import { DescriptionBox } from './description-box/DescriptionBox'
 import { IconsBox } from './icons-box/IconsBox'
 import { LikesCount } from './likes-count/LikesCount'
